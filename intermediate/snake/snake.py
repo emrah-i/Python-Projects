@@ -14,52 +14,60 @@ screen.bgcolor('black')
 screen.listen()
 screen.tracer(0)
 
+score = 0
+scoret = t.Turtle()
+scoret.up()
+scoret.color('white')
+scoret.goto(0, 370)
+scoret.write(f'Score: {score}', True, 'center', ('Arial', 15, 'normal'))
+scoret.hideturtle()
+
+
 snake2 = snake.clone()
 snake3 = snake.clone()
-snake2.setpos(-10, 0)
-snake3.setpos(-20, 0)
+snake2.setpos(-20, 0)
+snake3.setpos(-40, 0)
 snakes = [snake, snake2, snake3]
 screen.update()
 
-#    for i in range(2, 1, -1):
-#        snakes[i].goto(snakes[i - 1].pos())
+gameover = False
 
+def go(direction):
 
-def go_forward():
+    global gameover
+    global score
 
-    screen.tracer(0)
+    if gameover == False:
+        screen.tracer(0)
 
-    snakes[0].forward(5)
-
-    for i in range(2, 1, -1):
-        snakes[i].setpos(snakes[i - 1].pos())
-        snakes[i].forward(5)
-    
-    screen.update()
-    
-    go_forward()
+        for i in range(2, 0, -1):
+            snakes[i].goto(snakes[i-1].pos())
         
-def turn_right():
-    snakes[0].right(90)
+        if direction == 'forward':
+            snakes[0].forward(20)
+        elif direction == 'right':
+            snakes[0].right(90)
+            snakes[0].forward(20)
+        elif direction == 'left':
+            snakes[0].left(90)
+            snakes[0].forward(20)
+        
+        screen.update()
+        time.sleep(.1)
 
-    for i in range(2, 1, -1):
-        time.sleep(0.1)
-        snakes[i].setpos(snakes[i - 1].pos())
+        if snakes[0].xcor() >= 400 or snakes[0].xcor() <= -400 or snakes[0].ycor() >= 400 or snakes[0].ycor() <= -400:
+            gameover = True
+            got = t.Turtle()
+            got.goto(0,0)
+            got.color('white')
+            got.write('Game Over!', True, 'center', ('Arial', 20, 'normal'))
+            got.hideturtle()
+            return
 
-def turn_left():
-    screen.tracer(0)
-    for s in snakes:
-        numb = snakes.index(s)
-        s.forward(5 * 5)
-        s.speed(0)
-        s.left(90)
-        s.speed(2)
-    
-    screen.update()
+        go('forward')
 
-
-screen.onkey(go_forward, 'space')
-screen.onkey(turn_right, 'Right')
-screen.onkey(turn_left, 'Left')
+screen.onkey(lambda: go('forward'), 'space')
+screen.onkey(lambda: go('right'), 'Right')
+screen.onkey(lambda: go('left'), 'Left')
 
 screen.exitonclick()
