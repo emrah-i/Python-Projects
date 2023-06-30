@@ -6,13 +6,14 @@ class Paddle(Turtle):
         super().__init__()
         self.color('white')
         self.shape('square')
-        self.turtlesize(1, 3.5, 0)
+        self.turtlesize(1, 5, 0)
         self.setheading(90)
         self.speed(7)
         self.up()
 
     def moveup(self):
-        self.forward(30)
+        self.forward(50)
     
     def movedown(self):
-        self.backward(30)
+        self.backward(50)
+    

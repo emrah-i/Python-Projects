@@ -11,3 +11,7 @@ class Score(Turtle):
     
     def scoreboard(self):
         self.write(f"{self.score}", align='center', font=('Arial', 80, 'bold'))
+
+    def rewrite(self):
+        self.clear()
+        self.write(f"{self.score}", align='center', font=('Arial', 80, 'bold'))

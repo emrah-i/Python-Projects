@@ -17,3 +17,6 @@ class Line(Turtle):
         for _ in range(32):
             self.stamp()
             self.forward(40)
+
+    def gameover(self):
+        self.clear()
