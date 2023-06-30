@@ -8,4 +8,11 @@ class Paddle(Turtle):
         self.shape('square')
         self.turtlesize(1, 3.5, 0)
         self.setheading(90)
+        self.speed(7)
         self.up()
+
+    def moveup(self):
+        self.forward(30)
+    
+    def movedown(self):
+        self.backward(30)

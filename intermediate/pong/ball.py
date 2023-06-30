@@ -1,6 +1,8 @@
 from turtle import Turtle
 import random
 
+gameover = False
+
 class Ball(Turtle):
 
     def __init__(self):
@@ -11,7 +13,8 @@ class Ball(Turtle):
         self.up()
     
     def move(self):
-        self.forward(5)
+        while gameover == False:
+            self.forward(1)
 
     def rebound(self):
         coming = self.heading()

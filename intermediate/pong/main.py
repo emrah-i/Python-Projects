@@ -7,8 +7,7 @@ import random
 
 screen = Screen()
 screen.bgcolor('black')
-screen.screensize(800, 800)
-
+screen.title('Pong')
 line = Line()
 
 paddle1 = Paddle()
@@ -27,13 +26,20 @@ score2.scoreboard()
 
 ball = Ball()
 
-gameover = False
+if paddle1.distance(ball) <= 15 or paddle2.distance(ball) <= 15:
+    ball.rebound()
 
-while gameover == False:
-    ball.move()
+if ball.ycor() == 380 or ball.ycor() == -380:
+    ball.rebound()
 
 
+screen.listen()
 
+screen.onkey(paddle1.moveup, 'Up')
+screen.onkey(paddle1.movedown, 'Down')
+screen.onkey(paddle2.moveup, 'w')
+screen.onkey(paddle2.movedown, 's')
 
+ball.move()
 
 screen.exitonclick()
