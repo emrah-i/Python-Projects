@@ -35,10 +35,6 @@ def go(direction):
         go('forward')
 
 
-
-if points.pos() == snake.segments[0].pos():
-    pass
-
 screen.onkey(lambda: snake.move('forward'), 'space')
 screen.onkey(lambda: snake.move('right'), 'Right')
 screen.onkey(lambda: snake.move('left'), 'Left')
