@@ -1,9 +1,8 @@
-from turtle import Screen, Turtle
+from turtle import Screen
 from score import Score
 from line import Line
 from paddles import Paddle
 from ball import Ball
-import random
 
 screen = Screen()
 screen.bgcolor('black')

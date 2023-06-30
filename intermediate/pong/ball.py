@@ -1,6 +1,8 @@
 from turtle import Turtle
 import random
 
+
+
 class Ball(Turtle):
 
     def __init__(self):
@@ -8,7 +10,15 @@ class Ball(Turtle):
         self.pace = 5
         self.color('white')
         self.shape('circle')
-        self.setheading(random.randint(0, 360))
+        numb = random.randint(0, 100) % 2
+        if numb == 0:
+            numb2 = random.randint(0, 100) % 2
+            if numb2 == 0:
+                self.setheading(random.randint(0, 45))
+            else:
+                self.setheading(random.randint(300, 360))
+        elif numb == 1:
+            self.setheading(random.randint(120, 240))
         self.speed(0)
         self.up()
     
@@ -29,7 +39,15 @@ class Ball(Turtle):
         self.hideturtle()
         self.goto(0, 0)
         self.showturtle()
-        self.setheading(random.randint(0, 360))
+        numb = random.randint(0, 100) % 2
+        if numb == 0:
+            numb2 = random.randint(0, 100) % 2
+            if numb2 == 0:
+                self.setheading(random.randint(0, 45))
+            else:
+                self.setheading(random.randint(300, 360))
+        elif numb == 1:
+            self.setheading(random.randint(120, 240))
     
     def gameover(self, winner):
         self.hideturtle()
