@@ -1,7 +1,6 @@
-import turtle as t
+from turtle import Turtle
 
-scoret = t.Turtle()
-
+scoret = Turtle()
 
 class Score:
 
@@ -13,7 +12,7 @@ class Score:
         scoret.up()
         scoret.color('white')
         scoret.goto(0, 370)
-        scoret.write(f'Score: {self.score}', True, 'center', ('Arial', 15, 'normal'))
+        scoret.write(f'Score: {self.score}', True, 'center', ('Arial', 20, 'normal'))
         scoret.hideturtle()
 
     def update(self):
@@ -21,5 +20,5 @@ class Score:
         self.score += 1
         scoret.clear()
         scoret.goto(0, 370)
-        scoret.write(f'Score: {self.score}', True, 'center', ('Arial', 15, 'normal'))
+        scoret.write(f'Score: {self.score}', True, 'center', ('Arial', 20, 'normal'))
         scoret.hideturtle()

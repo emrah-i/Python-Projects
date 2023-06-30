@@ -1,20 +1,16 @@
-import turtle as t
+from turtle import Turtle
 import random
 
-class Food():
+class Food(Turtle):
 
     def __init__(self):
-        self.pos = (random.randint(-370, 370), random.randint(-370, 370))
+        super().__init__()
+        self.shape('circle')
+        self.color('red')
+        self.up()
+        self.turtlesize(.5, .5, 0)
+        self.goto(random.randint(-370, 370), random.randint(-370, 370))
 
-    def start(self):
+    def move(self):
 
-        points = t.Turtle()
-        points.shape(self.shape)
-        points.color(self.color)
-        points.up()
-        points.turtlesize(.5, .5, 0)
-        points.goto(self.pos)
-
-    def change(self):
-
-        self.pos = (random.randint(-370, 370), random.randint(-370, 370))
+        self.goto(random.randint(-370, 370), random.randint(-370, 370))
