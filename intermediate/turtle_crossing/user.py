@@ -27,3 +27,6 @@ class User(Turtle):
     def back(self):
         self.setheading(270)
         self.forward(20)
+
+    def reset(self):
+        self.setpos(0, -350)
