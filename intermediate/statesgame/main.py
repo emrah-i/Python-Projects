@@ -14,17 +14,25 @@ bot = Bot()
 score = Score()
 points = 0
 
+states = data['state']
+
 while points < 50:
     points = score.score
     guess = screen.textinput(f'Points: {points}/50', 'Name a state:')
 
     if guess:
-        for row in data['state']:
-            if guess.lower().strip() == row.lower():
-                score.state()
-                x = data.loc[data['state'] == row, 'x'].iloc[0]
-                y = data.loc[data['state'] == row, 'y'].iloc[0]
-                bot.state(x, y, row)
+        if guess.lower().strip() != 'exit':
+            for row in states:
+                if guess.lower().strip() == row.lower():
+                    score.state()
+                    idx = states[states == row].index[0]
+                    states = states.drop(idx)
+                    x = data.loc[data['state'] == row, 'x'].iloc[0]
+                    y = data.loc[data['state'] == row, 'y'].iloc[0]
+                    bot.state(x, y, row)
+        else:
+            break
 
+states.to_csv('intermediate/statesgame/missing_states.csv')
 
 screen.exitonclick()
