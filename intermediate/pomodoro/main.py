@@ -1,4 +1,5 @@
 from tkinter import *
+import pygame
 import time
 
 bgc = '#FEF5E7'
@@ -8,6 +9,13 @@ window = Tk()
 window.config(bg=f'{bgc}', pady=40, padx=100)
 window.title('Pomodoro Technique')
 window.minsize(width=300, height=300)
+
+pygame.mixer.init()
+
+def beep():
+     pygame.mixer.music.load('intermediate/pomodoro/beep-07a.mp3')
+     pygame.mixer.music.set_volume(.1) 
+     pygame.mixer.music.play()
 
 reg = (24, 60)
 short = (4, 60)
@@ -48,17 +56,20 @@ def timer():
             status.config(text='Long Break', fg='salmon')
             canvas.itemconfig(text_item, text=f"{minutes:02d}:{seconds:02d}")
             checks.config(text=f'{check * int(score / 2)}')
+            beep()
             timer()
         elif minutes == 0 and seconds == 0 and (score % 2) == 1:
             minutes, seconds = short
             score += 1
             status.config(text='Break', fg='salmon')
             checks.config(text=f'{check * int(score / 2)}')
+            beep()
             timer()
         elif minutes == 0 and seconds == 0 and (score % 2) == 0:
             minutes, seconds = reg
             score += 1
             status.config(text='Work', fg='green')
+            beep()
             timer()
 
     if minutes == 0 and seconds == 0 and score == 10:
