@@ -16,7 +16,7 @@ type = 'timer'
 stop = False
 
 def begin():
-    global stop
+    global stop, type
     
     if minutes == 24 and seconds == 60 and score == 0:
         status.config(text='Work', fg='green')
@@ -30,12 +30,9 @@ def begin():
     return
 
 def timer():
-    global minutes
-    global seconds
-    global score
-    global stop
+    global minutes, seconds, score, stop
 
-    if stop == False:
+    if not stop:
         if minutes >= 0 and seconds > 0 and score < 5:
             if seconds > 0:
                 seconds -= 1
@@ -63,10 +60,9 @@ def timer():
     return
 
 def break_timer():
-    global minutes
-    global seconds
+    global minutes, seconds
 
-    if stop == False:
+    if not stop:
         if minutes >= 0 and seconds > 0:
             if seconds > 0:
                 seconds -= 1
@@ -87,8 +83,7 @@ def break_timer():
     return
 
 def stop_temp():
-    global stop
-    global type
+    global stop, type
 
     if status['text'] == 'Work':
         type = 'timer'
@@ -99,11 +94,7 @@ def stop_temp():
     return
 
 def reset_button():
-    global score
-    global minutes
-    global seconds
-    global stop
-    global type
+    global score, minutes, seconds, stop, type
 
     stop = True
     type = 'timer'
