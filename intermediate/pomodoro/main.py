@@ -5,27 +5,29 @@ bgc = '#FEF5E7'
 check = '✔'
 
 window = Tk()
-window.config(bg=f'{bgc}', pady=50, padx=50)
+window.config(bg=f'{bgc}', pady=40, padx=100)
 window.title('Pomodoro Technique')
-window.minsize(300,300)
+window.minsize(width=300, height=300)
 
-minutes = 24
-seconds = 60
-score = 0
-type = 'timer'
+reg = (24, 60)
+short = (4, 60)
+long = (9, 60)
+minutes, seconds = reg
+score = 1
 stop = False
 
 def begin():
     global stop, type
     
-    if minutes == 24 and seconds == 60 and score == 0:
+    if score == 10:
+            status.config(text='Long Break', fg='salmon')
+    elif (score % 2) == 1:
         status.config(text='Work', fg='green')
+    elif (score % 2) == 0:
+            status.config(text='Break', fg='salmon')
 
     stop = False
-    if type == 'timer':
-        timer()
-    elif type == 'break':
-        break_timer()
+    timer()
 
     return
 
@@ -33,62 +35,43 @@ def timer():
     global minutes, seconds, score, stop
 
     if not stop:
-        if minutes >= 0 and seconds > 0 and score < 5:
+        if minutes >= 0 and seconds > 0 and score <= 10:
             if seconds > 0:
                 seconds -= 1
             elif seconds == 0 and minutes > 0:
                 minutes -= 1
             canvas.itemconfig(text_item, text=f"{minutes:02d}:{seconds:02d}")
             window.after(1000, timer)
-        elif minutes == 0 and seconds == 0 and score < 4:
-            minutes = 4
-            seconds = 60
+        elif minutes == 0 and seconds == 0 and score == 9:
+            minutes, seconds = long
             score += 1
-            status.config(text='Break', fg='salmon')
+            status.config(text='Long Break', fg='salmon')
             canvas.itemconfig(text_item, text=f"{minutes:02d}:{seconds:02d}")
-            checks.config(text=f'{check * score}')
-            break_timer()
-        elif minutes == 0 and seconds == 0 and score == 4:
-            minutes = 19
-            seconds = 60
-            score += 1
-            status.config(text='Break', fg='salmon')
-            canvas.itemconfig(text_item, text=f"{minutes:02d}:{seconds:02d}")
-            checks.config(text=f'{check * score}')
-            break_timer()
-        
-    return
-
-def break_timer():
-    global minutes, seconds
-
-    if not stop:
-        if minutes >= 0 and seconds > 0:
-            if seconds > 0:
-                seconds -= 1
-            elif seconds == 0 and minutes > 0:
-                minutes -= 1
-            canvas.itemconfig(text_item, text=f"{minutes:02d}:{seconds:02d}")
-            window.after(1000, break_timer)
-        elif minutes == 0 and seconds == 0 and score < 5:
-            minutes = 24
-            seconds = 60
-            status.config(text='Work', fg='green')
-            canvas.itemconfig(text_item, text=f"{minutes:02d}:{seconds:02d}")
+            checks.config(text=f'{check * int(score / 2)}')
             timer()
-        elif minutes == 0 and seconds == 0 and score == 5:
-            status.config(text='Done', fg='black')
-            canvas.itemconfig(text_item, text=f'00:00')
+        elif minutes == 0 and seconds == 0 and (score % 2) == 1:
+            minutes, seconds = short
+            score += 1
+            status.config(text='Break', fg='salmon')
+            checks.config(text=f'{check * int(score / 2)}')
+            timer()
+        elif minutes == 0 and seconds == 0 and (score % 2) == 0:
+            minutes, seconds = reg
+            score += 1
+            status.config(text='Work', fg='green')
+            timer()
+
+    if minutes == 0 and seconds == 0 and score == 10:
+        stop = True
+        status.config(text='Done', fg='black')
+        canvas.itemconfig(text_item, text=f'00:00')
         
     return
 
 def stop_temp():
     global stop, type
 
-    if status['text'] == 'Work':
-        type = 'timer'
-    else: 
-        type = 'break'
+    status.config(text='Stopped', fg='silver')
 
     stop = True
     return
@@ -97,14 +80,12 @@ def reset_button():
     global score, minutes, seconds, stop, type
 
     stop = True
-    type = 'timer'
     time.sleep(.25)
-    minutes = 24
-    seconds = 60
-    score = 0
+    minutes, seconds = reg
+    score = 1
 
     status.config(text='Timer', fg='gray')
-    checks.config(text=f'{check * score}')
+    checks.config(text=f'{check * int(score / 2)}')
     canvas.itemconfig(text_item, text='00:00')
     return
 
