@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import randint, shuffle, choice
 import pyperclip
+import json
 
 bgc = 'white'
 
@@ -12,7 +13,12 @@ window.minsize(300, 300)
 
 def add():
     web_entry, eu_entry, pass_entry = website.get(), email.get(), password.get()
-
+    new_entry = {
+        web_entry: {
+            'email': eu_entry,
+            'password': pass_entry
+        }
+    }
     if web_entry == '' or eu_entry == '' or pass_entry == '':
         messagebox.showinfo(title='Error', message='You must fill in all fields.')
         return
@@ -20,9 +26,13 @@ def add():
     is_ok = messagebox.askokcancel(title='Confirm', message=f'Is this information correct:\n{web_entry}\n{eu_entry}\n{pass_entry}')
 
     if is_ok:
-        with open('intermediate/password_manager/data.txt', mode='a') as file:
-            file.write(f'\n{web_entry} | {eu_entry} | {pass_entry}')
+        with open('intermediate/password_manager/data.json', mode='r') as file:
+            data = json.load(file)
+            data.update(new_entry)
 
+        with open('intermediate/password_manager/data.json', mode='w') as file:
+            json.dump(data, file, indent=4)
+        
         website.delete(0, END)
         email.delete(0, END)
         password.delete(0, END)
@@ -43,6 +53,20 @@ def generate():
     password.delete(0, END)
     password.insert(0, gen_pass)
 
+def search():
+    web_search = website.get().strip()
+
+    if web_search == '':
+        messagebox.showinfo(title='Error', message='Must enter text to search')
+        return
+
+    with open('intermediate/password_manager/data.json', 'r') as file:
+        data = json.load(file)
+        data.sear
+             
+    messagebox.showinfo(title='Error', message='No entry found under that name. Check whether text is correctley capitalized')
+    return
+
 
 canvas = Canvas(width=200, height=189, bg=bgc, highlightthickness=0)
 logo = PhotoImage(file='intermediate/password_manager/logo.png')
@@ -52,9 +76,12 @@ canvas.grid(column=2, row=1, sticky='EW')
 website_text = Label(text='Website:', bg=bgc)
 website_text.grid(column=1, row=2)
 
+search = Button(text="Search", highlightbackground=bgc, command=search)
+search.grid(column=3, row=2, sticky='EW')
+
 website = Entry(highlightbackground=bgc, highlightthickness=.5, width=35)
 website.focus()
-website.grid(column=2, columnspan=2, row=2, sticky='EW')
+website.grid(column=2, row=2, sticky='EW')
 
 email_text = Label(text='Email/Username:', bg=bgc)
 email_text.grid(column=1, row=3)
@@ -74,5 +101,7 @@ generate.grid(column=3, row=4, sticky='EW')
 add = Button(text='Add', highlightbackground=bgc, command=add)
 add.grid(column=2, columnspan=2, row=5, sticky='EW')
 
+space = Label(text='', bg=bgc)
+space.grid(column=1, columnspan=3, row=6, sticky='EW')
 
 window.mainloop()

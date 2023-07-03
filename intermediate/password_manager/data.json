@@ -1,0 +1,10 @@
+{
+    "Forum": {
+        "email": "em@me.com",
+        "password": "1234"
+    },
+    "Amazon": {
+        "email": "em",
+        "password": "1234"
+    }
+}
