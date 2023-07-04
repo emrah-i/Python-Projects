@@ -14,13 +14,19 @@ window.minsize(400, 400)
 side = 'front'
 words = pandas.read_csv('intermediate/flashcards/Turkish Translate .csv')
 word = random.choice(words['Turkish'])
+learned_count = 0
+
 try:
     with open('intermediate/flashcards/learned.json') as file:
         try:
             data = json.load(file)
         except:
             learned_words = []
+            words_count = 1000
+            total_count = 0
         else:
+            words_count = len(words) - len(data)
+            total_count = len(data)
             learned_words = [word for word in data]
 except FileNotFoundError:
     learned_words = []
@@ -42,6 +48,17 @@ def learned():
     global side
     global word
     global learned_words
+    global words_count
+    global learned_count
+    global total_count
+
+    words_count -= 1
+    learned_count += 1
+    total_count += 1
+
+    total.config(text=f"Words left: {words_count}")
+    learned_today.config(text=f"Learned today: {learned_count}")
+    total_learned.config(text=f"Learned in total: {total_count}")
 
     learned_words.append(word)
     adding = word
@@ -86,13 +103,22 @@ def canvas_click(event):
     
     return
 
+total = Label(text=f"Words left: {words_count}", font=('Arial', 20, 'bold'), bg=bgc)
+total.grid(column=1, row=1)
+
+learned_today = Label(text=f"Learned today: {learned_count}", font=('Arial', 20, 'bold'), bg=bgc)
+learned_today.grid(column=3, row=1)
+
+total_learned = Label(text=f"Learned in total: {total_count}", font=('Arial', 20, 'bold'), bg=bgc)
+total_learned.grid(column=5, row=1)
+
 canvas = Canvas(width=700, height=446, bg=bgc, highlightthickness=0)
 front_img = PhotoImage(file='intermediate/flashcards/front_img.png')
 back_img = PhotoImage(file='intermediate/flashcards/back_img.png')
 image_item = canvas.create_image(350, 223, image=front_img) 
 label_item = canvas.create_text(350, 180, text="Turkish", font=('Arial', 30, 'italic'), fill='black')
 text_item = canvas.create_text(350, 250, text=f"{word}", font=('Arial', 35, 'bold'), fill='black')
-canvas.grid(column=2, columnspan=3, row=1)
+canvas.grid(column=2, columnspan=3, row=2)
 canvas.bind("<Button-1>", canvas_click) 
 
 size=20
