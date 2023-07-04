@@ -11,20 +11,24 @@ window.title('Flashcards')
 window.minsize(400, 400)
 
 words = pandas.read_csv('intermediate/flashcards/Turkish Translate .csv')
+word = random.choice(words['Turkish'])
 
 canvas = Canvas(width=800, height=526, bg=bgc, highlightthickness=0)
 front = PhotoImage(file='intermediate/flashcards/card_front.png')
-back = PhotoImage(file='intermediate/flashcards/card_back.png')
+back = PhotoImage(file='intermediate/flashcards/card_front.png')
 side = 'front'
 image_item = canvas.create_image(400, 263, image=front) 
 label_item = canvas.create_text(400, 150, text="Turkish", font=('Arial', 35, 'italic'), fill='black')
-text_item = canvas.create_text(400, 263, text=f"{random.choice(words['Turkish'])}", font=('Arial', 40, 'bold'), fill='black')
+text_item = canvas.create_text(400, 263, text=f"{word}", font=('Arial', 40, 'bold'), fill='black')
 canvas.grid(column=3, columnspan=5, row=1)
 
 def canvas_click(event):
     global side
+
     if side == 'front':
-        canvas.itemconfig(image_item, image=back) 
+        canvas.itemconfig(label_item, text='English')
+        canvas.itemconfig(text_item, text=f"{words[words['Turkish'] == word]['English'].iloc[0]}")
+        canvas.itemconfig(image_item, image=back)
         side = 'back'
     elif side == 'back':
         canvas.itemconfig(image_item, image=front) 
@@ -55,7 +59,7 @@ wrong = tkm.CircleButton(window, focuscolor='', activebackground='#CC4D57', bg='
 wrong.grid(column=4, row=3)
 
 correct = tkm.CircleButton(window, focuscolor='', activebackground='#51B175', bg='#66DE93', highlightbackground=bgc, text='✔', font=('Arial', 35), fg='white', borderless=1)
-correct.grid(column=5, row=3)
+correct.grid(column=6, row=3)
 
 canvas.bind("<Button-1>", canvas_click) 
 
