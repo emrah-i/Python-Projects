@@ -2,6 +2,7 @@ from tkinter import *
 import tkmacosx as tkm
 import pandas
 import random
+import json
 
 bgc = '#91C2AF'
 
@@ -10,57 +11,95 @@ window.config(bg=bgc, padx=50, pady=50)
 window.title('Flashcards')
 window.minsize(400, 400)
 
+side = 'front'
 words = pandas.read_csv('intermediate/flashcards/Turkish Translate .csv')
 word = random.choice(words['Turkish'])
+try:
+    with open('intermediate/flashcards/learned.json') as file:
+        try:
+            data = json.load(file)
+        except:
+            learned_words = []
+        else:
+            learned_words = [word for word in data]
+except FileNotFoundError:
+    learned_words = []
 
-canvas = Canvas(width=800, height=526, bg=bgc, highlightthickness=0)
-front = PhotoImage(file='intermediate/flashcards/card_front.png')
-back = PhotoImage(file='intermediate/flashcards/card_front.png')
-side = 'front'
-image_item = canvas.create_image(400, 263, image=front) 
-label_item = canvas.create_text(400, 150, text="Turkish", font=('Arial', 35, 'italic'), fill='black')
-text_item = canvas.create_text(400, 263, text=f"{word}", font=('Arial', 40, 'bold'), fill='black')
-canvas.grid(column=3, columnspan=5, row=1)
+def missed():
+    global side
+    global word
+
+    word = random.choice(words['Turkish'])
+    while word in learned_words:
+        word = random.choice(words['Turkish'])
+
+    side = 'front'
+    canvas.itemconfig(label_item, text='Turkish', fill='black')
+    canvas.itemconfig(text_item, text=f"{word}", fill='black')
+    canvas.itemconfig(image_item, image=front_img)
+
+def learned():
+    global side
+    global word
+    global learned_words
+
+    learned_words.append(word)
+    adding = word
+
+    word = random.choice(words['Turkish'])
+    while word in learned_words:
+        word = random.choice(words['Turkish'])
+        
+    side = 'front'
+    canvas.itemconfig(label_item, text='Turkish', fill='black')
+    canvas.itemconfig(text_item, text=f"{word}", fill='black')
+    canvas.itemconfig(image_item, image=front_img)
+
+    try:
+        with open('intermediate/flashcards/learned.json') as file:
+            try:
+                data = json.load(file)
+            except:
+                with open('intermediate/flashcards/learned.json', mode='w') as file:
+                    json.dump(learned_words, file)
+            else:
+                data.append(adding)
+                with open('intermediate/flashcards/learned.json', mode='w') as file:
+                    json.dump(data, file)
+    except FileNotFoundError:
+        with open('intermediate/flashcards/learned.json', mode='w') as file:
+            json.dump(learned_words, file)
 
 def canvas_click(event):
     global side
 
     if side == 'front':
-        canvas.itemconfig(label_item, text='English')
-        canvas.itemconfig(text_item, text=f"{words[words['Turkish'] == word]['English'].iloc[0]}")
-        canvas.itemconfig(image_item, image=back)
+        canvas.itemconfig(label_item, text='English', fill='white')
+        canvas.itemconfig(text_item, text=f"{words[words['Turkish'] == word]['English'].iloc[0]}",  fill='white')
+        canvas.itemconfig(image_item, image=back_img) 
         side = 'back'
     elif side == 'back':
-        canvas.itemconfig(image_item, image=front) 
+        canvas.itemconfig(label_item, text='Turkish', fill='black')
+        canvas.itemconfig(text_item, text=f"{word}", fill='black')
+        canvas.itemconfig(image_item, image=front_img) 
         side = 'front'
     
     return
 
-empty = Label()
-empty.config(text='', bg=bgc)
-empty.grid(column=2, columnspan=5, row=2)
+canvas = Canvas(width=700, height=446, bg=bgc, highlightthickness=0)
+front_img = PhotoImage(file='intermediate/flashcards/front_img.png')
+back_img = PhotoImage(file='intermediate/flashcards/back_img.png')
+image_item = canvas.create_image(350, 223, image=front_img) 
+label_item = canvas.create_text(350, 180, text="Turkish", font=('Arial', 30, 'italic'), fill='black')
+text_item = canvas.create_text(350, 250, text=f"{word}", font=('Arial', 35, 'bold'), fill='black')
+canvas.grid(column=2, columnspan=3, row=1)
+canvas.bind("<Button-1>", canvas_click) 
 
 size=20
-back = tkm.CircleButton(window, focuscolor='', activebackground='silver', bg='white', padx=90, highlightbackground=bgc, text='<', font=('Arial', 35), fg='black', borderless=1)
-back.grid(column=1, row=1)
+wrong = tkm.CircleButton(window, focuscolor='', activebackground='#CC4D57', bg='#FF616D', highlightbackground=bgc, text='✘', font=('Arial', 35), fg='white', borderless=1, command=missed)
+wrong.grid(column=2, row=3)
 
-space = Label()
-space.config(text='       ', bg=bgc)
-space.grid(column=2, row=1)
-
-space2 = Label()
-space2.config(text='       ', bg=bgc)
-space2.grid(column=8, row=1)
-
-next = tkm.CircleButton(window, focuscolor='', activebackground='silver', bg='white', highlightbackground=bgc, text='>', font=('Arial', 35), fg='black', borderless=1)
-next.grid(column=9, row=1)
-
-wrong = tkm.CircleButton(window, focuscolor='', activebackground='#CC4D57', bg='#FF616D', highlightbackground=bgc, text='✘', font=('Arial', 35), fg='white', borderless=1)
-wrong.grid(column=4, row=3)
-
-correct = tkm.CircleButton(window, focuscolor='', activebackground='#51B175', bg='#66DE93', highlightbackground=bgc, text='✔', font=('Arial', 35), fg='white', borderless=1)
-correct.grid(column=6, row=3)
-
-canvas.bind("<Button-1>", canvas_click) 
+correct = tkm.CircleButton(window, focuscolor='', activebackground='#51B175', bg='#66DE93', highlightbackground=bgc, text='✔', font=('Arial', 35), fg='white', borderless=1, command=learned)
+correct.grid(column=4, row=3)
 
 window.mainloop()
