@@ -4,12 +4,25 @@ from random import randint, shuffle, choice
 import pyperclip
 import json
 
-bgc = 'white'
+bgc = '#FEF5E7'
 
 window = Tk()
 window.config(bg=bgc, padx=50, pady=50)
 window.title('Password Manager')
 window.minsize(300, 300)
+
+win = Toplevel(bg=bgc, padx=25, pady=25)
+win.minsize(150, 150)
+win.title('Information')
+win.withdraw()
+message = Label(win, font=('Arial', 15, 'normal'), bg=bgc, pady=30)
+message.grid(column=2, row=1)
+copy_pass = Button(win, text='Copy Password', width=10, highlightbackground=bgc)
+copy_pass.grid(column=1, row=2)
+copy_email = Button(win, text='Copy User', width=10, highlightbackground=bgc)
+copy_email.grid(column=2, row=2)
+close = Button(win, text='Close', width=10, highlightbackground=bgc)
+close.grid(column=3, row=2)
 
 def add():
     web_entry, eu_entry, pass_entry = website.get(), email.get(), password.get()
@@ -59,14 +72,34 @@ def search():
     if web_search == '':
         messagebox.showinfo(title='Error', message='Must enter text to search')
         return
-
-    with open('intermediate/password_manager/data.json', 'r') as file:
-        data = json.load(file)
-        data.sear
-             
-    messagebox.showinfo(title='Error', message='No entry found under that name. Check whether text is correctley capitalized')
+    
+    try:
+        with open('intermediate/password_manager/data.json', 'r') as file:
+            data = json.load(file)
+            try:
+                entry = data[web_search]
+            except KeyError:
+                messagebox.showinfo(title='Error', message='No entry found under that website. Check whether text is correctely capitalized')
+            else:
+                win.deiconify()
+                message.config(text=f"Website: {web_search}\nUser: {entry['email']}\nPassword: {entry['password']}")
+                copy_pass.config(command=lambda: pyperclip.copy(entry['password']))
+                copy_email.config(command=lambda: pyperclip.copy(entry['email']))
+                close.config(command=lambda: win.withdraw())
+    except FileNotFoundError:
+        messagebox.showerror(title='No File', message='A password file does not exist. You must first create a password entry.')
+            
     return
 
+def clear_inputs():
+    aus = messagebox.askyesno(title='Clear', message='Are you sure you want to clear all fields?')
+
+    if aus == True:
+        website.delete(0, END)
+        email.delete(0, END)
+        password.delete(0, END)
+    
+    return
 
 canvas = Canvas(width=200, height=189, bg=bgc, highlightthickness=0)
 logo = PhotoImage(file='intermediate/password_manager/logo.png')
@@ -79,27 +112,30 @@ website_text.grid(column=1, row=2)
 search = Button(text="Search", highlightbackground=bgc, command=search)
 search.grid(column=3, row=2, sticky='EW')
 
-website = Entry(highlightbackground=bgc, highlightthickness=.5, width=35)
+website = Entry(highlightbackground=bgc, highlightthickness=.5)
 website.focus()
 website.grid(column=2, row=2, sticky='EW')
 
 email_text = Label(text='Email/Username:', bg=bgc)
 email_text.grid(column=1, row=3)
 
-email = Entry(highlightbackground=bgc, highlightthickness=.5, width=35)
+email = Entry(highlightbackground=bgc, highlightthickness=.5)
 email.grid(column=2, columnspan=2, row=3, sticky='EW')
 
 password_text = Label(text='Password:', bg=bgc)
 password_text.grid(column=1, row=4)
 
-password = Entry(highlightbackground=bgc, highlightthickness=.5, width=15)
+password = Entry(highlightbackground=bgc, highlightthickness=.5)
 password.grid(column=2, row=4, sticky='EW')
 
 generate = Button(text="Generate Password", highlightbackground=bgc, command=generate)
 generate.grid(column=3, row=4, sticky='EW')
 
 add = Button(text='Add', highlightbackground=bgc, command=add)
-add.grid(column=2, columnspan=2, row=5, sticky='EW')
+add.grid(column=2, row=5, sticky='EW')
+
+clear = Button(text='Clear', highlightbackground=bgc, command=clear_inputs)
+clear.grid(column=3, row=5, sticky='EW')
 
 space = Label(text='', bg=bgc)
 space.grid(column=1, columnspan=3, row=6, sticky='EW')
