@@ -27,7 +27,7 @@ with open('intermediate/birthday_manager/birthdays.json') as file:
             birthday = person['birthday']
             convert = datetime.strptime(birthday, "%m-%d")
             convert_day = f"{convert.month:02d}-{convert.day:02d}"
-            if today.month - convert.month == 0:
+            if today.month - convert.month == 0 and today.day - convert.day > 0:
                 closest_people.append(person['name'])
         if len(closest_people) > 1:
             print(f"No birthdays today. However, {', '.join(closest_people[:-1]) + ' and ' + closest_people[-1]} have a birthday this month.")
