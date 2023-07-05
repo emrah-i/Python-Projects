@@ -7,7 +7,6 @@ today = datetime.now()
 day = today.strftime("%m-%d")
 year = today.year
 
-
 my_email = 'emrakhibragimov5@gmail.com'
 password = 'rgbzaerhvevmdoou'
 
