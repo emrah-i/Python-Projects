@@ -1,4 +1,3 @@
-import csv
 import pandas
 
 '''with open("intermediate/weather_data/data.csv") as file:

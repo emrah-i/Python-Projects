@@ -1,0 +1,72 @@
+[
+  {
+    "name": "John Smith",
+    "birthday": "07-12",
+    "year": 1985,
+    "subject": "Happy Birthday, John!",
+    "body": "Dear John, \n\nWishing you a very happy birthday! May this special day bring you joy, laughter, and wonderful memories. Enjoy your day to the fullest and make it a year filled with happiness and success. \n\nWarmest wishes, \nYour Friends at XYZ Company"
+  },
+  {
+    "name": "Emily Johnson",
+    "birthday": "07-25",
+    "year": 1990,
+    "subject": "Happy Birthday, Emily!",
+    "body": "Dear Emily, \n\nHappy birthday to an amazing person! May your day be filled with love, laughter, and all the things that bring you happiness. Celebrate this special milestone and create beautiful memories that will last a lifetime. \n\nBest wishes, \nThe Team at ABC Corporation"
+  },
+  {
+    "name": "Michael Davis",
+    "birthday": "11-08",
+    "year": 1982,
+    "subject": "Happy Birthday, Michael!",
+    "body": "Dear Michael, \n\nOn your special day, we wanted to take a moment to wish you a very happy birthday! May this year bring you great opportunities, good health, and success in all your endeavors. Enjoy your celebrations and have a fantastic year ahead. \n\nSincerely, \nThe Staff at XYZ Corporation"
+  },
+  {
+    "name": "Sophia Brown",
+    "birthday": "07-17",
+    "year": 1995,
+    "subject": "Happy Birthday, Sophia!",
+    "body": "Dear Sophia, \n\nSending you warmest birthday wishes on your special day! May your life be filled with happiness, love, and all the things that bring you joy. Celebrate this milestone with your loved ones and make unforgettable memories. \n\nWith best regards, \nThe Team at ABC Enterprises"
+  },
+  {
+    "name": "Daniel Wilson",
+    "birthday": "02-03",
+    "year": 1989,
+    "subject": "Happy Birthday, Daniel!",
+    "body": "Dear Daniel, \n\nHappy birthday to an incredible individual! May your special day be surrounded by loved ones and filled with laughter, joy, and all the things that make you smile. Wishing you a year ahead that is full of amazing adventures and achievements. \n\nWarmest regards, \nThe Staff at XYZ Solutions"
+  },
+  {
+    "name": "Olivia Taylor",
+    "birthday": "09-21",
+    "year": 1994,
+    "subject": "Happy Birthday, Olivia!",
+    "body": "Dear Olivia, \n\nWishing you the happiest of birthdays! May your day be as wonderful and beautiful as you are. May this year be filled with exciting opportunities, good health, and success in all your endeavors. Enjoy your special day to the fullest! \n\nBest wishes, \nThe Team at ABC Tech"
+  },
+  {
+    "name": "Matthew Anderson",
+    "birthday": "12-02",
+    "year": 1987,
+    "subject": "Happy Birthday, Matthew!",
+    "body": "Dear Matthew, \n\nHappy birthday to an amazing individual! Today, we celebrate you and all the wonderful qualities that make you special. May this year be filled with happiness, fulfillment, and extraordinary achievements. Have a fantastic birthday and a fantastic year ahead! \n\nSincerely, \nThe Staff at XYZ Industries"
+  },
+  {
+    "name": "Ava Martinez",
+    "birthday": "05-09",
+    "year": 1998,
+    "subject": "Happy Birthday, Ava!",
+    "body": "Dear Ava, \n\nWishing you the happiest of birthdays! May this special day bring you boundless joy, laughter, and cherished moments. May your year ahead be filled with love, success, and exciting opportunities. Enjoy your celebrations and have an unforgettable day! \n\nWarmest regards, \nThe Team at ABC Services"
+  },
+  {
+    "name": "William Thompson",
+    "birthday": "08-14",
+    "year": 1991,
+    "subject": "Happy Birthday, William!",
+    "body": "Dear William, \n\nHappy birthday to an incredible person! May your special day be filled with happiness, good health, and great success in all your endeavors. May your celebrations be memorable, and may the year ahead be your best one yet. \n\nBest wishes, \nThe Staff at XYZ Corporation"
+  },
+  {
+    "name": "Samantha Hernandez",
+    "birthday": "04-28",
+    "year": 1996,
+    "subject": "Happy Birthday, Samantha!",
+    "body": "Dear Samantha, \n\nWishing you a very happy birthday filled with love, laughter, and wonderful surprises! May this year bring you endless joy, new opportunities, and cherished moments with your loved ones. Have a fantastic celebration and a fabulous year ahead! \n\nSincerely, \nThe Team at ABC Enterprises"
+  }
+]
