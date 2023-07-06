@@ -1,57 +1,52 @@
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from twilio.rest import Client
 
 stock = "TSLA"
-cmpny = "Tesla Inc"
+cmpny = "Tesla"
+news_api_key = 'b1ee1a9d861a41999b417954e6e2e0de'
 time_series = 'TIME_SERIES_DAILY_ADJUSTED'
 stock_api_key = 'DLRC08HBOHI6IKV3'
+account_sid = 'ACe623bfcec1d9eb7873721f4b182f20fa'
+auth_token = '64c7526fb299e71c72570776258b77e8'
+client = Client(account_sid, auth_token)
 
-## STEP 1: Use https://www.alphavantage.co
-# When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
-'''response = requests.get(f'https://www.alphavantage.co/query?function={time_series}&symbol={stock}&interval=5min&apikey={stock_api_key}')
+response = requests.get(f'https://www.alphavantage.co/query?function={time_series}&symbol={stock}&apikey={stock_api_key}')
 raw = response.json()
 data = raw['Time Series (Daily)']
 all_keys = list(data.keys())
 
-for i in range(len(data)):
-    open = float(data[all_keys[i]]['1. open'])
-    close = float(data[all_keys[i+1]]['4. close'])
+open = float(data[all_keys[0]]['1. open'])
+close = float(data[all_keys[1]]['4. close'])
 
-    change = round(((close - open) / close * 100), 2)
+change = round(((close - open) / close * 100), 2)
+abs_change = abs(change) 
 
-    if change > 0:
-        change = f"🔺 {abs(change)}"
-    elif change < 0:
-        change = f"🔻 {abs(change)}"
-    else:
-        change = "~0"
+if change > 0:
+    text_change = f"🔺 {abs_change}"
+elif change < 0:
+    text_change = f"🔻 {abs_change}"
+else:
+    text_change = "~0"
 
-    print(f"TSLA shares {change}% from {all_keys[i]} to {all_keys[i+1]}")   
+if abs_change >= 5:
+    resp = requests.get(url=f"https://newsapi.org/v2/everything?q={cmpny}&sortby=popularity&from={all_keys[1]}&to={all_keys[0]}&language=en&pageSize=3&page=1&apiKey={news_api_key}")
+    resp.raise_for_status()
+    data = resp.json()
 
-    if i == 7:
-        exit()'''
+    for article in data['articles']:
+        msg = f"Stock: {stock}\nChange: {text_change}\nPublisher: {article['source']['name']}\nHeadline: {article['title']}\nContent: {article['description']}\nPublished:, {datetime.fromisoformat(article['publishedAt'])}"
+        message = client.messages.create(
+            from_='+18444267905',
+            to='+12405208934',
+            body= msg
+            )
 
-## STEP 2: Use https://newsapi.org
-# Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
-news_api_key = 'b1ee1a9d861a41999b417954e6e2e0de'
-
-resp = requests.get(url=f"https://newsapi.org/v2/top-headlines?q={cmpny}&pageSize=3&page=1&country=us&apiKey=")
-data = resp.json()
-print(data)
-
-## STEP 3: Use https://www.twilio.com
-# Send a seperate message with the percentage change and each article's title and description to your phone number. 
-
-
-#Optional: Format the SMS message like this: 
-"""
-TSLA: 🔺2%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-or
-"TSLA: 🔻5%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-"""
+else: 
+    msg = f"Stock: {stock}\nChange: {text_change}"
+    message = client.messages.create(
+        from_='+18444267905',
+        to='+12405208934',
+        body= msg
+        )
 
