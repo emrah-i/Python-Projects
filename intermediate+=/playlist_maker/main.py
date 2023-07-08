@@ -18,23 +18,23 @@ soup = BeautifulSoup(data, 'html.parser')
 song = soup.select('div[class="o-chart-results-list-row-container"] ul li[class="lrv-u-width-100p"] ul h3')
 artists = soup.select('div[class="o-chart-results-list-row-container"] ul li[class="lrv-u-width-100p"] ul li span[class]')
 
-artists = [name.text for name in artists if name.get("class")[1] == 'a-no-trucate']
-
-songs = [f"{artists[i].strip()}-{song[i].text.strip()}" for i in range(len(artists))]
+artists = [name.text.strip() for name in artists if name.get("class")[1] == 'a-no-trucate']
+songs = [song[i].text.strip() for i in range(len(artists))]
 
 client_id = '6e8733d5c93346929371e20f250ba4c1'
 client_secret = '85382ad5178145afae9198ba9e8b16e3'
 
 scope = "user-library-read"
-
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(show_dialog=True, username='emrakh26', cache_path='intermediate+=/playlist_maker/info.text', client_id=client_id, client_secret=client_secret, redirect_uri="http://example.com", scope="playlist-modify-private"))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(show_dialog=True, username='emrakh26', cache_path='intermediate+=/playlist_maker/info.txt', client_id=client_id, client_secret=client_secret, redirect_uri="http://example.com", scope="playlist-modify-private"))
 user = sp.current_user()
-sp.user_playlist_create(name="12342", user=user['id'])
+playlist = sp.user_playlist_create(name=f"{date} Playlist", user=user['id'], public=False)
 
-'''song_ids = []
-for song in songs:
-    item = sp.search(song, limit=1)
-    song_ids.append(item['tracks']['items'][0]['id'])
-    
-sp.playlist_add_items(items=song_ids)'''
+song_ids = []
+for i in range(len(songs)):
+    try: 
+        item = sp.search(q=f"track:{songs[i]} artist:{artists[i].split(' ')[0]} year:{int(dates[0])-3}-{int(dates[0])}", limit=1)
+        song_ids.append(item['tracks']['items'][0]['id'])
+    except IndexError:
+        pass
+ 
+sp.playlist_add_items(items=song_ids, playlist_id=playlist['id'])
