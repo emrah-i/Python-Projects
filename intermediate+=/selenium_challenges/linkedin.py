@@ -20,25 +20,34 @@ password.send_keys('emrakh1234')
 password.send_keys(Keys.ENTER)
 
 search = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'search-global-typeahead__input')))
-search.click()
 search.send_keys('Python Developer')
 search.send_keys(Keys.ENTER)
 
-jobs = wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="search-reusables__filters-bar"]/ul/li[1]/button')))
-jobs.click()
+options = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'button[aria-label="Show all filters. Clicking this button displays all available filter options."]')))
+options.click()
 
-'''level = wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="ember1317"]/button')))
-level.click()
-entry = wait.until(EC.visibility_of_element_located((By.ID, 'ember2220')))
-child = entry.find_element(By.XPATH, ".//button")
-child.click()
+entry = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,'label[for="advanced-filter-experience-2"]')))
+entry.click()
 
-level_search = driver.find_element(By.XPATH, '//*[@id="ember1414"')
-level_search.click()'''
+time.sleep(1)
 
-easy = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#ember2244')))
-easy.click()
+remote = driver.find_element(By.CSS_SELECTOR, 'label[for="advanced-filter-workplaceType-2"]')
+remote.click()
 
-time.sleep(10)
+time.sleep(1)
+
+search = driver.find_element(By.CSS_SELECTOR, 'button[aria-label="Apply current filters to show results"]')
+search.click()
+
+wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".reusable-search__filters-bar-selected-filters-reset")))
+items = driver.find_elements(By.CSS_SELECTOR, '#main > div > div.scaffold-layout__list > div > ul li')
+
+for item in items:
+    
+    item.click()
+    time.sleep(2)
+    save = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '.jobs-details__main-content .jobs-save-button')))
+    save.click()
+    time.sleep(2)
 
 driver.quit()
