@@ -43,10 +43,11 @@ nt.click()
 everything = driver.find_element(By.CSS_SELECTOR, 'main')
 action_chains = ActionChains(driver)
 
-for _ in range(100):
-    time.sleep(5)
-    action_chains.move_to_element(everything).send_keys(Keys.ARROW_LEFT).perform()                          
+accept = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'div[data-nosnippet="true"] button[data-size="medium"]')))
+accept.click()
 
-time.sleep(1000)
+for _ in range(100):
+    time.sleep(3)
+    action_chains.move_to_element(everything).send_keys(Keys.ARROW_LEFT).perform()                       
 
 driver.quit()
