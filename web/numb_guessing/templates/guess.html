@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if numb == guess %}
+        <p style='text-align: center;margin-top: 5%;'><b>YOU ARE CORRECT!</b><p><img style='margin:0 35%;' src='https://media.giphy.com/media/ummeQH0c3jdm2o3Olp/giphy.gif' width=500><p style='text-align: center;margin-top: 30px;'><a href='/'>Click here to get a new number</a></p>
+    {% elif numb > guess %}
+        <p style='text-align: center;margin-top: 5%;'><b>YOUR GUESS IS TOO LOW!</b></p><img style='margin:0 35%;' src='https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif' width=500><p style="text-align:center;"><a href='/choice'>Click here to choose</a></p>
+    {% else %}
+        <p style='text-align: center;margin-top: 5%;'><b>YOUR GUESS IS TOO HIGH!</b></p><img style='margin:0 35%;' src='https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif' width=500><p style="text-align:center"><a href='/choice'>Click here to choose</a></p>
+    {% endif %}
+
+</body>
+</html>
