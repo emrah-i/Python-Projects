@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div style="width:60vw;margin:0 auto;">
+    <table>
+        <tr>
+            {% for book in books %}
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td><img src={{ book.img }} width="200"></td>
+            {% endfor %}
+        </tr>
+    </table>
+</div>
+{% endblock %}

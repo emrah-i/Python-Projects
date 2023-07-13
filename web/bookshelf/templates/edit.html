@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block body %}
+<div id="entry-form">
+    <p>Please enter the title and author's name in the proper case and spelling.</p>
+    {{ message|safe }}
+    <h2>Enter the New Book:</h2>
+    <form action="/edit" method="post">
+        {{ add.csrf_token }}
+        <input type="hidden" name="method" value="add">
+        {{ render_form(add) }}    
+    </form>
+    <p id="delete-p">Select the book you would like to delete:</p>
+    {{ message|safe }}
+    <h2>Delete a Book:</h2>
+    <form action="/edit" method="post">
+        {{ delete.csrf_token }}
+        <input type="hidden" name="method" value="delete">
+        {{ render_form(delete) }}    
+    </form>
+</div>
+{% endblock %}
