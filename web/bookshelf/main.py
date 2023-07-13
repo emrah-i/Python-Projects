@@ -1,6 +1,7 @@
 from flask import render_template, redirect, request, url_for
-from models import app, db, Books, BookForm, Delete
+from models import app, db, Books, BookForm, Delete, RecommendBook
 from flask_bootstrap import Bootstrap5
+import smtplib 
 import requests
 
 app.config['SECRET_KEY'] = 'ilovecats'
@@ -15,15 +16,16 @@ def main():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
+
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
     books.insert(0, "")
     add = BookForm()
     delete = Delete()
     delete.book.choices = books
+
     if request.method == 'POST':
-        if add.validate_on_submit() or delete.validate_on_submit():
-            type = request.form.get('method')
+        if add.validate_on_submit():
             if type == 'add':
                     title = add.title.data.strip()
                     author = add.author.data.strip()
@@ -34,33 +36,66 @@ def edit():
                     new_book = Books(title=title, author=author, img=img, read=read)
                     db.session.add(new_book)
                     db.session.commit()
-                    return redirect('/edit')
-            elif type == 'delete':
-                    title = delete.book.data.split(' --- ')[0]
-                    entry = db.session.query(Books).filter(Books.title == title).first()
-                    db.session.delete(entry)
-                    db.session.commit()
-                    return redirect('/edit')
+                    return redirect(url_for('edit'))
         else:
             message = "<p style='color:red'>*ERROR*</p>"
-            return render_template('edit.html', add=add, delete=delete, message=message)
+            return render_template('edit.html', add=add, delete=delete, new_message=message)
+        
     else:
         return render_template('edit.html', add=add, delete=delete)
+    
+@app.route('/delete', methods=['POST'])
+def delete():
+
+    results = db.session.query(Books.title, Books.author).all()
+    books = [f"{row.title} --- {row.author}" for row in results]
+    books.insert(0, "")
+    add = BookForm()
+    delete = Delete()
+    delete.book.choices = books
+
+    if delete.validate_on_submit():
+        title = delete.book.data.split(' --- ')[0]
+        entry = db.session.query(Books).filter(Books.title == title).first()
+        db.session.delete(entry)
+        db.session.commit()
+        return redirect(url_for('edit'))
+    else:
+        message = "<p style='color:red'>*ERROR*</p>"
+        return render_template('edit.html', add=add, delete=delete, del_message=message)
 
 @app.route('/read')
 def read():
     results = db.session.query(Books).filter(Books.read == True).all()
-    return render_template('books.html', books=results)
+    return render_template('books.html', books=results, heading='Read Books')
 
 @app.route('/unread')
 def unread():
     results = db.session.query(Books).filter(Books.read == False).all()
-    return render_template('books.html', books=results)
+    return render_template('books.html', books=results, heading='Reading List')
 
-@app.route('/read_list')
-def read_list():
-    return render_template('books.html')
+@app.route('/rec', methods=['GET', 'POST'])
+def rec():
+    my_email = 'emrakhibragimov5@gmail.com'
+    password = 'rgbzaerhvevmdoou'
 
-@app.route('/recommend')
-def recommend():
-    return render_template('index.html')
+    rec = RecommendBook()
+    if request.method == 'POST':
+        if rec.validate_on_submit():
+            title = rec.title.data
+            author = rec.author.data
+            details = rec.details.data
+            their_email = rec.email.data
+            connection = smtplib.SMTP("smtp.gmail.com")
+            connection.starttls()
+            connection.login(my_email, password)
+            connection.sendmail(from_addr=my_email, to_addrs=my_email, 
+                                msg=f'Subject: Book Recommendation!\n\n{title} by {author} was recommended by {their_email}. They recommended this book because: {details}')
+            connection.close()
+            return redirect(url_for('rec'))
+        
+        else:
+            message = "<p style='color:red'>*ERROR*</p>"
+            return render_template('rec.html', message=message)
+        
+    return render_template('rec.html', form=rec)

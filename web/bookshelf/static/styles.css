@@ -6,3 +6,33 @@
 #delete-p {
     margin-top: 10vh;
 }
+
+#books {
+    width: 80vw;
+    margin: 5vh auto;
+    text-align: center;
+    font-weight: 500;
+}
+
+.book-img:hover {
+    background-color: silver;
+}
+
+.book-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    height: 350px;
+    padding: 15px;
+    overflow: hidden;
+}
+
+#books p {
+    margin: 10px 0 30px 0;
+}
+
+#recommend {
+    width: 40vw;
+    margin: 5vh auto;
+}

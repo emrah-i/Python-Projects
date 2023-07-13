@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block body %}
+<div id="recommend">
+    <h2>Recommend me a book!</h2>
+    {{ message }}
+    <form action="/rec" method="post">
+        {{ form.csrf_token }}
+        {{ render_form(form) }}
+    </form>
+</div>
+{% endblock %}

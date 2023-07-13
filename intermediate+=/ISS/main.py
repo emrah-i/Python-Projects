@@ -39,5 +39,6 @@ while True:
         connection.starttls()
         connection.login(my_email, password)
         connection.sendmail(from_addr=my_email, to_addrs=my_email, msg='Subject: Look Up!!\n\nThe ISS is overhead!')
+        connection.close()
     
     time.sleep(60)
