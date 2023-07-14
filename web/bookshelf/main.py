@@ -1,5 +1,5 @@
 from flask import render_template, redirect, request, url_for
-from models import app, db, Books, BookForm, Delete, RecommendBook, Image, get_image
+from models import app, db, Books, BookForm, Delete, RecommendBook, Image, Read, get_image
 from flask_bootstrap import Bootstrap5
 import smtplib 
 
@@ -19,10 +19,15 @@ def edit():
 
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
+    ur_results = db.session.query(Books.title, Books.author).filter(Books.read == 0).all()
+    ur_books = [f"{row.title} --- {row.author}" for row in ur_results]
     books.insert(0, "")
+    ur_books.insert(0, "")
     add = BookForm()
     delete = Delete()
     image = Image()
+    read = Read()
+    read.book.choices = ur_books
     delete.book.choices = books
     image.book.choices = books
 
@@ -40,20 +45,52 @@ def edit():
             return redirect(url_for('edit'))
         else:
             message = "<p style='color:red'>*ERROR*</p>"
-            return render_template('edit.html', add=add, image=image, delete=delete, img_message=message)
+            return render_template('edit.html', add=add, image=image, delete=delete, read=read, new_message=message)
         
     else:
-        return render_template('edit.html', add=add, delete=delete, image=image)
+        return render_template('edit.html', add=add, delete=delete, read=read, image=image)
+    
+@app.route('/read_book', methods=['POST'])
+def read_book():
+
+    results = db.session.query(Books.title, Books.author).all()
+    books = [f"{row.title} --- {row.author}" for row in results]
+    ur_results = db.session.query(Books.title, Books.author).filter(Books.read == 0).all()
+    ur_books = [f"{row.title} --- {row.author}" for row in ur_results]
+    books.insert(0, "")
+    ur_books.insert(0, "")
+    add = BookForm()
+    delete = Delete()
+    image = Image()
+    read = Read()
+    read.book.choices = ur_books
+    delete.book.choices = books
+    image.book.choices = books
+
+    if read.validate_on_submit():
+        title = image.book.data.split(' --- ')[0]
+        entry = db.session.query(Books).filter(Books.title == title).first()
+        entry.read = 1
+        db.session.commit()
+        return redirect(url_for('edit'))
+    else:
+        message = "<p style='color:red'>*ERROR*</p>"
+        return render_template('edit.html', add=add, delete=delete, image=image, read=read, rd_message=message)
     
 @app.route('/image', methods=['POST'])
 def image():
 
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
+    ur_results = db.session.query(Books.title, Books.author).filter(Books.read == 0).all()
+    ur_books = [f"{row.title} --- {row.author}" for row in ur_results]
     books.insert(0, "")
+    ur_books.insert(0, "")
     add = BookForm()
     delete = Delete()
     image = Image()
+    read = Read()
+    read.book.choices = ur_books
     delete.book.choices = books
     image.book.choices = books
 
@@ -66,17 +103,22 @@ def image():
         return redirect(url_for('edit'))
     else:
         message = "<p style='color:red'>*ERROR*</p>"
-        return render_template('edit.html', add=add, delete=delete, image=image, del_message=message)
+        return render_template('edit.html', add=add, delete=delete, image=image, read=read, img_message=message)
     
 @app.route('/delete', methods=['POST'])
 def delete():
 
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
+    ur_results = db.session.query(Books.title, Books.author).filter(Books.read == 0).all()
+    ur_books = [f"{row.title} --- {row.author}" for row in ur_results]
     books.insert(0, "")
+    ur_books.insert(0, "")
     add = BookForm()
     delete = Delete()
     image = Image()
+    read = Read()
+    read.book.choices = ur_books
     delete.book.choices = books
     image.book.choices = books
 
@@ -88,7 +130,7 @@ def delete():
         return redirect(url_for('edit'))
     else:
         message = "<p style='color:red'>*ERROR*</p>"
-        return render_template('edit.html', add=add, image=image, delete=delete, del_message=message)
+        return render_template('edit.html', add=add, image=image, delete=delete, read=read, del_message=message)
 
 @app.route('/read')
 def read():

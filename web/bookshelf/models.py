@@ -60,6 +60,11 @@ class Delete(FlaskForm):
     book = SelectField('Select Book:', validators=[DataRequired()])
     delete = SubmitField(render_kw={'value': 'Delete', 'style': 'background-color: #E74C3C;border-color: #E74C3C'})
 
+class Read(FlaskForm):
+    key = PasswordField('Key:', validators=[DataRequired(), must_equal_validator], render_kw={'placeholder': 'Keyword'})
+    book = SelectField('Select Book:', validators=[DataRequired()])
+    read = SubmitField(render_kw={'value': 'Read'})
+
 class RecommendBook(FlaskForm):
     title = StringField('Title:', validators=[DataRequired(), Length(min=2, max=150)], render_kw={'placeholder': 'Title'})
     author = StringField('Author:', validators=[DataRequired(), Length(min=2, max=150)], render_kw={'placeholder': 'Author'})

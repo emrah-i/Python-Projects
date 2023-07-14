@@ -11,9 +11,16 @@
         {{ add.csrf_token }}
         {{ render_form(add) }}    
     </form>
+    <p id="read-p">Please select the book from the reading list you have read.</p>
+    {{ rd_message|safe }}
+    <h2>Change a Book to Read:</h2>
+    <form action="/read_book" method="post">
+        {{ add.csrf_token }}
+        {{ render_form(read) }}    
+    </form>
     <p id="image-p">Please select the book and the link of the new image source.</p>
     {{ img_message|safe }}
-    <h2>Change a Book Cover</h2>
+    <h2>Change a Book Cover:</h2>
     <form action="/image" method="post">
         {{ add.csrf_token }}
         {{ render_form(image) }}    
