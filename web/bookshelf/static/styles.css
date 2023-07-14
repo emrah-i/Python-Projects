@@ -1,10 +1,5 @@
 #entry-form {
-    width: 40vw;
     margin: 7vh auto;
-}
-
-#delete-p, #image-p, #read-p {
-    margin-top: 10vh;
 }
 
 #books {
@@ -34,9 +29,4 @@
 
 #books p {
     margin: 10px 0 30px 0;
-}
-
-#recommend {
-    width: 40vw;
-    margin: 5vh auto;
 }
