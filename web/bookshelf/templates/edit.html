@@ -11,6 +11,13 @@
         {{ add.csrf_token }}
         {{ render_form(add) }}    
     </form>
+    <p id="image-p">Please select the book and the link of the new image source.</p>
+    {{ img_message|safe }}
+    <h2>Change a Book Cover</h2>
+    <form action="/image" method="post">
+        {{ add.csrf_token }}
+        {{ render_form(image) }}    
+    </form>
     <p id="delete-p">Select the book you would like to delete:</p>
     {{ del_message|safe }}
     <h2>Delete a Book:</h2>

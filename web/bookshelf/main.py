@@ -1,8 +1,8 @@
 from flask import render_template, redirect, request, url_for
-from models import app, db, Books, BookForm, Delete, RecommendBook
+from models import app, db, Books, BookForm, Delete, RecommendBook, Image, get_image
 from flask_bootstrap import Bootstrap5
 import smtplib 
-import requests
+
 
 app.config['SECRET_KEY'] = 'ilovecats'
 bootstrap = Bootstrap5(app)
@@ -22,27 +22,51 @@ def edit():
     books.insert(0, "")
     add = BookForm()
     delete = Delete()
+    image = Image()
     delete.book.choices = books
+    image.book.choices = books
 
     if request.method == 'POST':
         if add.validate_on_submit():
-            if type == 'add':
-                    title = add.title.data.strip()
-                    author = add.author.data.strip()
-                    read = add.read.data
-                    response = requests.get(f'https://api.bookcover.longitood.com/bookcover?book_title={title}&author_name={author}')
-                    data = response.json()
-                    img = data['url']
-                    new_book = Books(title=title, author=author, img=img, read=read)
-                    db.session.add(new_book)
-                    db.session.commit()
-                    return redirect(url_for('edit'))
+            title = add.title.data.strip()
+            author = add.author.data.strip()
+            read = add.read.data
+            img = get_image(title)
+            if img == None:
+                img = 'static/no-cover.png'
+            new_book = Books(title=title, author=author, img=img, read=read)
+            db.session.add(new_book)
+            db.session.commit()
+            return redirect(url_for('edit'))
         else:
             message = "<p style='color:red'>*ERROR*</p>"
-            return render_template('edit.html', add=add, delete=delete, new_message=message)
+            return render_template('edit.html', add=add, image=image, delete=delete, img_message=message)
         
     else:
-        return render_template('edit.html', add=add, delete=delete)
+        return render_template('edit.html', add=add, delete=delete, image=image)
+    
+@app.route('/image', methods=['POST'])
+def image():
+
+    results = db.session.query(Books.title, Books.author).all()
+    books = [f"{row.title} --- {row.author}" for row in results]
+    books.insert(0, "")
+    add = BookForm()
+    delete = Delete()
+    image = Image()
+    delete.book.choices = books
+    image.book.choices = books
+
+    if image.validate_on_submit():
+        title = image.book.data.split(' --- ')[0]
+        entry = db.session.query(Books).filter(Books.title == title).first()
+        image = image.image.data
+        entry.img = image
+        db.session.commit()
+        return redirect(url_for('edit'))
+    else:
+        message = "<p style='color:red'>*ERROR*</p>"
+        return render_template('edit.html', add=add, delete=delete, image=image, del_message=message)
     
 @app.route('/delete', methods=['POST'])
 def delete():
@@ -52,7 +76,9 @@ def delete():
     books.insert(0, "")
     add = BookForm()
     delete = Delete()
+    image = Image()
     delete.book.choices = books
+    image.book.choices = books
 
     if delete.validate_on_submit():
         title = delete.book.data.split(' --- ')[0]
@@ -62,7 +88,7 @@ def delete():
         return redirect(url_for('edit'))
     else:
         message = "<p style='color:red'>*ERROR*</p>"
-        return render_template('edit.html', add=add, delete=delete, del_message=message)
+        return render_template('edit.html', add=add, image=image, delete=delete, del_message=message)
 
 @app.route('/read')
 def read():

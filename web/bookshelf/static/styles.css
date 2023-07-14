@@ -3,7 +3,7 @@
     margin: 7vh auto;
 }
 
-#delete-p {
+#delete-p, #image-p {
     margin-top: 10vh;
 }
 
@@ -14,10 +14,6 @@
     font-weight: 500;
 }
 
-.book-img:hover {
-    background-color: silver;
-}
-
 .book-img {
     display: flex;
     align-items: center;
@@ -26,6 +22,14 @@
     height: 350px;
     padding: 15px;
     overflow: hidden;
+}
+
+#img-title-box {
+    transition: transform 0.3s;
+}
+
+#img-title-box:hover {
+    transform: scale(1.15);
 }
 
 #books p {
