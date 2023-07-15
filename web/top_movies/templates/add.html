@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div id="header">
+    <h1><b>Movie Details</b></h1>
+    <hr>
+    <p>Check if this is the correct movie, rate the movie, and write a small comment about it.</p>
+</div>
+<div class="container" id="movie_info">
+    <div class="row d-flex justify-content-center">
+        <div class="col-8 d-flex justify-content-center">
+            <img src="{{ movie.img_src }}" width="300">
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-8 d-flex justify-content-center">
+            <ul>
+                <li><u>Title</u>: {{ movie.title }}</li>
+                <li><u>Release Date</u>: {{ movie.release_date }}</li>
+                <li><u>Summary</u>: {{ movie.overview }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<form action="/add" method="post" id="adding_form">
+    <ul>
+        <li><input id="movie_rating_input" type="number" max="10" min="0" name="rating" placeholder="Rating"> / 10 <span style="color:gold;">&starf;</span></li>
+        <li><textarea placeholder="What did you like about it?" id="movie_comment_input"></textarea><br></li>
+        <li><button type="submit" class="btn btn-primary btn-lg">Submit</button></li>
+    </ul>
+</form>
+{% endblock %}

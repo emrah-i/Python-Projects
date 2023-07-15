@@ -1,8 +1,7 @@
 from flask import render_template, redirect, request, url_for
 from models import app, db, Books, BookForm, Delete, RecommendBook, Image, Read, get_image
 from flask_bootstrap import Bootstrap5
-import smtplib 
-
+import smtplib
 
 app.config['SECRET_KEY'] = 'ilovecats'
 bootstrap = Bootstrap5(app)
