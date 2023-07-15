@@ -6,8 +6,15 @@
     <hr>
     <p>These are my top ten favorite movies of all time. I am actively updating it.</p>
 </div>
-<div id="movies">
-
+{% for movie in movies %}
+<div class="container d-flex justify-content-center" id="movies">
+    <div class="col-8 d-flex justify-content-center" id="movie_container">
+        <img src="{{ movie.img }}" alt="{{ movie.title }}"><br>
+        <p id="movie_place">{{ loop.revindex }}</p>
+    </div>
+</div><br>
+{% endfor %}
+<div class="container d-flex justify-content-center">
+    <button type="button" class="btn btn-primary btn-lg" id="add_button" onclick="window.location.pathname = '/search'">Add Movie</button>
 </div>
-<button type="button" class="btn btn-primary btn-lg" id="add_button" onclick="window.location.pathname = '/search'">Add Movie</button>
 {% endblock %}

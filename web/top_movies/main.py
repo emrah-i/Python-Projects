@@ -1,19 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, request, redirect, url_for
+from models import Movies, db, app
 import requests
 
-app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ilovecats'
-db = SQLAlchemy()
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
-db.init_app(app)
 
 with app.app_context():
     db.create_all()
 
 @app.route('/')
 def main():
-    return render_template('index.html')
+    movies = db.session.query(Movies).order_by(Movies.rating.asc()).all()
+    return render_template('index.html', movies=movies)
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
@@ -43,6 +40,7 @@ def search():
 
 @app.route('/add/<int:id>', methods=['POST', 'GET'])
 def add(id):
+
     start = 'https://image.tmdb.org/t/p/w1280/'
     url = f"https://api.themoviedb.org/3/movie/{id}"
     headers = {
@@ -52,7 +50,24 @@ def add(id):
     response = requests.get(url, headers=headers)
     movie = response.json()
     movie['img_src'] = start + movie['poster_path']
-    return render_template('add.html', movie=movie)
+
+    if request.method == 'POST':
+        rating = request.form.get('rating')
+        comment = request.form.get('comment')
+
+        new_movie = Movies()
+        new_movie.id = movie['id']
+        new_movie.title = movie['title']
+        new_movie.release = movie['release_date']
+        new_movie.description = movie['overview']
+        new_movie.img = movie['img_src']
+        new_movie.comment = comment
+        new_movie.rating = rating
+        db.session.add(new_movie)
+        db.session.commit()
+        return redirect('/')
+    else:
+        return render_template('add.html', movie=movie)
 
 @app.route('/update')
 def update():

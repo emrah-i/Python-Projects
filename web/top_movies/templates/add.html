@@ -22,10 +22,10 @@
         </div>
     </div>
 </div>
-<form action="/add" method="post" id="adding_form">
+<form action="/add/{{ movie.id }}" method="post" id="adding_form">
     <ul>
-        <li><input id="movie_rating_input" type="number" max="10" min="0" name="rating" placeholder="Rating"> / 10 <span style="color:gold;">&starf;</span></li>
-        <li><textarea placeholder="What did you like about it?" id="movie_comment_input"></textarea><br></li>
+        <li><input id="movie_rating_input" type="number" step="0.1" max="10" min="0" name="rating" placeholder="Rating"> / 10 <span style="color:gold;">&starf;</span></li>
+        <li><textarea placeholder="What did you like about it?" id="movie_comment_input" name="comment"></textarea><br></li>
         <li><button type="submit" class="btn btn-primary btn-lg">Submit</button></li>
     </ul>
 </form>
