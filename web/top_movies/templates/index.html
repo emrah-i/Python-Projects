@@ -6,15 +6,27 @@
     <hr>
     <p>These are my top ten favorite movies of all time. I am actively updating it.</p>
 </div>
-{% for movie in movies %}
-<div class="container d-flex justify-content-center" id="movies">
-    <div class="col-8 d-flex justify-content-center" id="movie_container">
-        <img src="{{ movie.img }}" alt="{{ movie.title }}"><br>
-        <p id="movie_place">{{ loop.revindex }}</p>
-    </div>
-</div><br>
-{% endfor %}
 <div class="container d-flex justify-content-center">
     <button type="button" class="btn btn-primary btn-lg" id="add_button" onclick="window.location.pathname = '/search'">Add Movie</button>
 </div>
+{% for movie in movies %}
+<div class="container d-flex justify-content-center py-0">
+    <div class="col-md-6 d-flex justify-content-center py-0">
+        <div class="flip-card" id="movies">
+            <div class="flip-card-inner d-flex justify-content-center" id="movie_container">
+                <div class="flip-card-front">
+                    <p id="movie_place">{{ loop.revindex }}</p>
+                    <img src="{{ movie.img }}" alt="{{ movie.title }}" aria-placeholder="10"><br>
+                </div>
+                <div class="flip-card-back">
+                    <h4>{{ movie.title }}</h4>
+                    <p>{{ movie.rating }} / 10 <span style="color:gold;">&starf;</span></p>
+                    <p>"{{ movie.comment }}"</p>
+                    <p>{{ movie.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
