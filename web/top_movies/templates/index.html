@@ -23,6 +23,14 @@
                     <p>{{ movie.rating }} / 10 <span style="color:gold;">&starf;</span></p>
                     <p>"{{ movie.comment }}"</p>
                     <p>{{ movie.description }}</p>
+                    <div class="container d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary btn-lg" id="update_button" data-id="{{ movie.id }}">Update</button>
+                        <button type="button" class="btn btn-primary btn-lg" id="delete_button" data-id="{{ movie.id }}">Delete</button>
+                    </div>
+                    <form action="/update" method="post" style="display:none;" id="update_form">
+                        <input type="text" placeholder="Rating">
+                        <textarea placeholder="Comments"></textarea>
+                    </form>
                 </div>
             </div>
         </div>
