@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('#update_button').forEach((element) => {
             element.addEventListener('click', (event) => {
                 id = event.target.dataset.id;
-                document.querySelector('#delete_button[data-id="' + id + '"]').style.display = 'none';
-                event.target.style.display = 'none';
+                document.querySelector('#back_items' + id).style.display = 'none';
                 form = document.querySelector('#update_form' + id);
                 form.style.display = 'block';
                 form.querySelector('input').value = event.target.dataset.rating;
