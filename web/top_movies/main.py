@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect
 from models import Movies, db, app
 import requests
 
@@ -14,6 +14,7 @@ def main():
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
+
     if request.method == 'POST':
         type = request.form.get('type')
 
@@ -69,10 +70,19 @@ def add(id):
     else:
         return render_template('add.html', movie=movie)
 
-@app.route('/update')
-def update():
-    return render_template('index.html')
+@app.route('/update/<int:id>', methods=['POST'])
+def update(id):
+    rating = request.form.get('rating')
+    comment = request.form.get('comments')
+    movie = db.session.query(Movies).filter(Movies.id == id).first()
+    movie.rating = rating
+    movie.comment = comment
+    db.session.commit()
+    return redirect('/')
 
-@app.route('/delete')
-def delete():
-    return render_template('index.html')
+@app.route('/delete/<int:id>', methods=['POST', 'GET'])
+def delete(id):
+    movie = db.session.query(Movies).filter(Movies.id == id).first()
+    db.session.delete(movie)
+    db.session.commit()
+    return redirect('/')

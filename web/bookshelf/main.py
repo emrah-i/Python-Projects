@@ -1,9 +1,11 @@
 from flask import render_template, redirect, request, url_for
 from models import app, db, Books, BookForm, Delete, RecommendBook, Image, Read, get_image
 from flask_bootstrap import Bootstrap5
+from flask_wtf.csrf import CSRFProtect, validate_csrf
 import smtplib
 
 app.config['SECRET_KEY'] = 'ilovecats'
+csrf = CSRFProtect(app)
 bootstrap = Bootstrap5(app)
 
 with app.app_context():
@@ -15,6 +17,9 @@ def main():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
+
+    csrf_token = request.form.get('csrf_token')
+    validate_csrf(csrf_token)
 
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
@@ -52,6 +57,9 @@ def edit():
 @app.route('/read_book', methods=['POST'])
 def read_book():
 
+    csrf_token = request.form.get('csrf_token')
+    validate_csrf(csrf_token)
+
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
     ur_results = db.session.query(Books.title, Books.author).filter(Books.read == 0).all()
@@ -78,6 +86,9 @@ def read_book():
     
 @app.route('/image', methods=['POST'])
 def image():
+
+    csrf_token = request.form.get('csrf_token')
+    validate_csrf(csrf_token)
 
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
@@ -106,6 +117,9 @@ def image():
     
 @app.route('/delete', methods=['POST'])
 def delete():
+
+    csrf_token = request.form.get('csrf_token')
+    validate_csrf(csrf_token)
 
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]

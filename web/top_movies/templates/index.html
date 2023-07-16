@@ -4,7 +4,7 @@
 <div id="header">
     <h1><b>MY TOP MOVIES</b></h1>
     <hr>
-    <p>These are my top ten favorite movies of all time. I am actively updating it.</p>
+    <p>These are my top favorite movies of all time.</p>
 </div>
 <div class="container d-flex justify-content-center">
     <button type="button" class="btn btn-primary btn-lg" id="add_button" onclick="window.location.pathname = '/search'">Add Movie</button>
@@ -24,17 +24,19 @@
                     <p>"{{ movie.comment }}"</p>
                     <p>{{ movie.description }}</p>
                     <div class="container d-flex justify-content-center">
-                        <button type="button" class="btn btn-lg" id="update_button" data-id="{{ movie.id }}">Update</button>
-                        <button type="button" class="btn btn-lg" id="delete_button" data-id="{{ movie.id }}">Delete</button>
-                    </div><br>
-                    <form action="/update" method="post">
-                        <input hidden value="{{ movie.id }}">
-                    </form>
+                        <button type="button" class="btn btn-lg" id="update_button" data-id="{{ movie.id }}" data-rating="{{ movie.rating }}" data-comments="{{ movie.comment }}">Update</button>
+                        &nbsp&nbsp
+                        <form action="/delete/{{ movie.id }}" method="post">
+                            <button type="button" class="btn btn-lg" id="delete_button" data-id="{{ movie.id }}">Delete</button>
+                        </form>
+                    </div>
                     <div id="update_forms">
-                        <form action="/update" method="post" style="display:none;" id="update_form{{ movie.id }}">
-                            <input type="text" placeholder="Rating" required><br>
-                            <textarea placeholder="Comments" required></textarea><br>
-                            <button type="button" class="btn btn-lg">Submit</button>
+                        <form action="/update/{{ movie.id }}" method="post" style="display:none;" id="update_form{{ movie.id }}">
+                            <input type="text" name="rating" placeholder="Rating" required><br>
+                            <textarea placeholder="Comments" name="comments" required></textarea><br>
+                            <button type="button" class="btn btn-lg" id="update_submit_button">Submit</button>
+                            &nbsp
+                            <button type="button" class="btn btn-lg" id="update_cancel_button">Cancel</button>
                         </form>
                     </div>
                 </div>

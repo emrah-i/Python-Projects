@@ -17,13 +17,19 @@
         </li>
     {% endfor %}
     </ul>
-    <button type="submit" class="btn btn-primary btn-lg" id="movie_search_button">Select</button>
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary btn-lg" id="movie_search_button">Select</button>
+        &nbsp&nbsp
+        <button type="button" class="btn btn-primary btn-lg" id="search_cancel_button" onclick="window.location.pathname = '/search'">Cancel</button>
+    </div>
 </form>
 {% else %}
 <form action="/search" method="post">
     <input hidden value="search" name="type">
     <input type="text" placeholder="Movie Title" name="title" id="movie_search_input" required>
-    <button type="submit" class="btn btn-primary btn-lg" id="movie_search_button">Search</button>
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary btn-lg" id="movie_search_button">Search</button>
+    </div>
 </form>
 {% endif %}
 {% endblock %}

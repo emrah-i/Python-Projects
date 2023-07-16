@@ -21,7 +21,7 @@
             {{ rd_message|safe }}
             <h2>Change a Book to Read:</h2>
             <form action="/read_book" method="post">
-                {{ add.csrf_token }}
+                {{ read.csrf_token }}
                 {{ render_form(read) }}    
             </form>
         </div>
@@ -32,7 +32,7 @@
             {{ img_message|safe }}
             <h2>Change a Book Cover:</h2>
             <form action="/image" method="post">
-                {{ add.csrf_token }}
+                {{ image.csrf_token }}
                 {{ render_form(image) }}    
             </form>
         </div>
