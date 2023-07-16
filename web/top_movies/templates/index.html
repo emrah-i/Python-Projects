@@ -2,7 +2,7 @@
 
 {% block body %}
 <div id="header">
-    <h1><b>MY TOP 10 MOVIES</b></h1>
+    <h1><b>MY TOP MOVIES</b></h1>
     <hr>
     <p>These are my top ten favorite movies of all time. I am actively updating it.</p>
 </div>
@@ -10,8 +10,8 @@
     <button type="button" class="btn btn-primary btn-lg" id="add_button" onclick="window.location.pathname = '/search'">Add Movie</button>
 </div>
 {% for movie in movies %}
-<div class="container d-flex justify-content-center py-0">
-    <div class="col-md-6 d-flex justify-content-center py-0">
+<div class="container d-flex justify-content-center" id="movies_container">
+    <div class="d-flex justify-content-center">
         <div class="flip-card" id="movies">
             <div class="flip-card-inner d-flex justify-content-center" id="movie_container">
                 <div class="flip-card-front">
@@ -24,13 +24,19 @@
                     <p>"{{ movie.comment }}"</p>
                     <p>{{ movie.description }}</p>
                     <div class="container d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary btn-lg" id="update_button" data-id="{{ movie.id }}">Update</button>
-                        <button type="button" class="btn btn-primary btn-lg" id="delete_button" data-id="{{ movie.id }}">Delete</button>
-                    </div>
-                    <form action="/update" method="post" style="display:none;" id="update_form">
-                        <input type="text" placeholder="Rating">
-                        <textarea placeholder="Comments"></textarea>
+                        <button type="button" class="btn btn-lg" id="update_button" data-id="{{ movie.id }}">Update</button>
+                        <button type="button" class="btn btn-lg" id="delete_button" data-id="{{ movie.id }}">Delete</button>
+                    </div><br>
+                    <form action="/update" method="post">
+                        <input hidden value="{{ movie.id }}">
                     </form>
+                    <div id="update_forms">
+                        <form action="/update" method="post" style="display:none;" id="update_form{{ movie.id }}">
+                            <input type="text" placeholder="Rating" required><br>
+                            <textarea placeholder="Comments" required></textarea><br>
+                            <button type="button" class="btn btn-lg">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
