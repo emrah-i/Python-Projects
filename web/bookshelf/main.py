@@ -18,9 +18,6 @@ def main():
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
 
-    csrf_token = request.form.get('csrf_token')
-    validate_csrf(csrf_token)
-
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
     ur_results = db.session.query(Books.title, Books.author).filter(Books.read == 0).all()
@@ -57,9 +54,6 @@ def edit():
 @app.route('/read_book', methods=['POST'])
 def read_book():
 
-    csrf_token = request.form.get('csrf_token')
-    validate_csrf(csrf_token)
-
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
     ur_results = db.session.query(Books.title, Books.author).filter(Books.read == 0).all()
@@ -86,9 +80,6 @@ def read_book():
     
 @app.route('/image', methods=['POST'])
 def image():
-
-    csrf_token = request.form.get('csrf_token')
-    validate_csrf(csrf_token)
 
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
@@ -117,9 +108,6 @@ def image():
     
 @app.route('/delete', methods=['POST'])
 def delete():
-
-    csrf_token = request.form.get('csrf_token')
-    validate_csrf(csrf_token)
 
     results = db.session.query(Books.title, Books.author).all()
     books = [f"{row.title} --- {row.author}" for row in results]
