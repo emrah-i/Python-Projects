@@ -16,6 +16,6 @@ for file in os.listdir(folder_path):
     img_path = os.path.join(folder_path, file)
     with Image.open(img_path) as image:
         text = pytesseract.image_to_string(image)
-        parts = text.replace('|', 'I').replace('\n', ' ').replace('"  ', '"').split('--')
+        parts = text.replace('|', 'I').replace('\n', ' ').replace('"  ', '"').replace(' -- ', ' ').replace('"', '').split('--')
         cursor.execute("INSERT INTO quotes (quote, author) VALUES (?, ?)", (parts[0], parts[1]))
         db.commit()
