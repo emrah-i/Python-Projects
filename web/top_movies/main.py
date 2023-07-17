@@ -7,6 +7,8 @@ app.config['SECRET_KEY'] = 'ilovecats'
 with app.app_context():
     db.create_all()
 
+code = 'ilovecats'
+
 @app.route('/')
 def main():
     movies = db.session.query(Movies).order_by(Movies.rating.asc()).all()
