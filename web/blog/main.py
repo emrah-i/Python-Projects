@@ -10,7 +10,8 @@ with app.app_context():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    posts = db.session.query(Posts).limit(3).all()
+    return render_template('index.html', posts=posts)
 
 @app.route('/all')
 def all():

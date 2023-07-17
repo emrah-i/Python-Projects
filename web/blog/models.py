@@ -15,7 +15,7 @@ class Posts(db.Model):
     id = Column(Integer(), primary_key=True)
     title = Column(String(80), unique=True, nullable=False)
     subtitle = Column(String(80), unique=True, nullable=False)
-    author = Column(String(100), unique=True, nullable=False)
+    author = Column(String(100), unique=False, nullable=False)
     body = Column(String(1600), unique=True, nullable=False)
     img_src = Column(String(), unique=False, nullable=False)
     date = Column(DateTime(), default=datetime.now(), nullable=False)
