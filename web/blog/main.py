@@ -1,5 +1,8 @@
 from flask import redirect, render_template
+from flask_wtf import CSRFProtect
 from models import app, db, Posts
+
+csrf = CSRFProtect(app)
 
 with app.app_context():
     db.create_all()
