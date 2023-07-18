@@ -19,9 +19,16 @@ New Post
                 <input class="form-control" type="text" name="author" maxlength="100" placeholder="Enter Author" required><br>
                 <label for="img">Image Source: </label>
                 <input class="form-control" type="text" name="img" placeholder="Enter Image Source" required><br>
+                <label for="categories">Select Category: </label>
+                <select class="form-control" name="category" required>
+                    <option selected disabled>Select from list</option>
+                    {% for category in categories %}
+                    <option>{{ category }}</option>
+                    {% endfor %}
+                </select><br>
                 <label for="body">Body: </label>
                 <textarea name="body" id="editor" required></textarea><br>
-                <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+                <button type="submit" id="new_post_button" class="btn btn-lg btn-primary mb-5">Submit</button>
             </form>
         </div>
     </div>

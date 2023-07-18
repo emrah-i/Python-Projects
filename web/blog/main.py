@@ -10,12 +10,14 @@ with app.app_context():
 
 @app.route('/')
 def index():
+    categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
     posts = db.session.query(Posts).limit(3).all()
-    return render_template('index.html', posts=posts)
+    return render_template('index.html', posts=posts, categories=categories)
 
 @app.route('/all')
 def all():
-    return render_template('all.html')
+    posts = db.session.query(Posts).all()
+    return render_template('all.html', posts=posts)
 
 @app.route('/new', methods=['POST', 'GET'])
 def new():
@@ -26,11 +28,13 @@ def new():
         new_post.author = request.form.get('author')
         new_post.body = request.form.get('body')
         new_post.img_src = request.form.get('img')
+        new_post.category = request.form.get('category')
         db.session.add(new_post)
         db.session.commit()
         return redirect('/new')
     else:
-        return render_template('new.html')
+        categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
+        return render_template('new.html', categories=categories)
 
 @app.route('/post/<int:id>')
 def post(id):

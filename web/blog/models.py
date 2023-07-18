@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, CheckConstraint
 from datetime import datetime
 from flask import Flask
 
@@ -10,6 +10,8 @@ app = Flask(__name__)
 db = SQLAlchemy()
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blogs.db"
 db.init_app(app)
+
+categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
 
 class Posts(db.Model):
     id = Column(Integer(), primary_key=True)
@@ -19,3 +21,10 @@ class Posts(db.Model):
     body = Column(String(1600), unique=True, nullable=False)
     img_src = Column(String(), unique=False, nullable=False)
     date = Column(DateTime(), default=datetime.now(), nullable=False)
+    category = Column(String(), nullable=False)
+    __table_args__ = (
+        CheckConstraint(
+            category.in_(categories),
+            name='category_check'
+        ),
+    )
