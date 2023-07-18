@@ -33,9 +33,14 @@ def load():
     posts = []
 
     for i in range(start, end + 1):
-        if all_posts[i]:
-            all_posts[i].date = all_posts[i].date.strftime("%B %d, %Y %I:%M %p")
+        if len(all_posts) > i:
+            all_posts[i] = all_posts[i].__dict__
+            print(all_posts[i])
+            del all_posts[i]['_sa_instance_state']
+            all_posts[i]['date'] = all_posts[i]['date'].strftime("%B %d, %Y %I:%M %p")
             posts.append(all_posts[i])
+        else:
+            break
 
     return jsonify(posts)
 

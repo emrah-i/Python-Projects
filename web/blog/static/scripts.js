@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
           .then(response => response.json())
           .then(data => {
 
+            if (data.length === 0) {
+              alert('No more blog posts.')
+              exit()
+            }
+
             for (i=0;i<data.length;i++) {
               id = data[i]['id']
               title = data[i]['title']
@@ -27,7 +32,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 window.location.pathname = '/post/' + id
               })
 
-              new_element.innerHTML = ```
+              new_element.innerHTML = `
               <div class="card all_posts_container">
                 <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                     <image href="${img_src}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
@@ -38,9 +43,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     <small class="text-muted">${date}</small>
                 </div>
               </div>
-              ```
+              `
 
-              main_div.innerHTML += new_element
+              main_div.append(new_element)
             }
           })
           .catch(error => {
