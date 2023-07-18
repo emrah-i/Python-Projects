@@ -38,7 +38,8 @@ def new():
 
 @app.route('/post/<int:id>')
 def post(id):
-    return render_template('post.html')
+    post = db.session.query(Posts).filter(Posts.id == id).first()
+    return render_template('post.html', post=post)
 
 @app.route('/update/<int:id>', methods=['PATCH', 'GET'])
 def update(id):

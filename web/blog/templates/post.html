@@ -1,7 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div>
-    
+<div class="p-4" id="ind-post">
+    <div>
+        <h1><b>{{ post.title }}</b></h1>    
+        <p id="ind-post-subtitle">{{ post.subtitle }}</p>
+        <p class="text-muted">Posted by {{ post.author }} on {{ post.date.strftime("%B %d, %Y %I:%M %p") }}</p>
+        <hr>
+        <img src="{{ post.img_src }}" alt="Post Image" width="45%" style="box-shadow: 0px 0px 12px gray;">
+    </div>
+    <div id="ind-post-body">
+        {{ post.body|safe }}
+    </div>
 </div>
 {% endblock %}
