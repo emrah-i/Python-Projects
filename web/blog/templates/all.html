@@ -1,36 +1,39 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div>
-    <div class="album py-5 bg-light">
-        <div class="container">
-    
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for post in posts %}
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <image href="{{ post.img_src }}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
-                    <text x="50%" y="50%" fill="white">Thumbnail</text>
-                </svg>
-    
-                <div class="card-body">
-                  <p class="card-text" style="min-height: 5vh;">{{ post.subtitle }}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-secondary" style="border-right: 1.5px solid black;">View</button>
-                      <button type="button" class="btn btn-sm btn-secondary" style="border-left: 1.5px solid black;">Edit</button>
-                    </div>
-                    <small class="text-muted">{{ post.date.strftime("%B %d, %Y %I:%M %p") }}</small>
-                  </div>
+<div class="album py-5 bg-light">
+    <div class="d-flex justify-content-center mb-2">
+        <h1>All Posts</h1>
+    </div>
+    <div class="container">
+
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3">
+        {% for post in posts %}
+        <div class="col">
+            <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>Placeholder</title>
+                <image href="{{ post.img_src }}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
+            </svg>
+
+            <div class="card-body">
+                <p class="card-text" style="min-height: 5vh;"><b>{{ post.title }}</b></p>
+                <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-secondary" style="border-right: 1.5px solid black;">View</button>
+                    <button type="button" class="btn btn-sm btn-secondary" style="border-left: 1.5px solid black;">Edit</button>
                 </div>
-              </div>
+                <small class="text-muted">{{ post.date.strftime("%B %d, %Y %I:%M %p") }}</small>
+                </div>
             </div>
-            {% endfor %}
-          </div>
-        
+            </div>
         </div>
+        {% endfor %}
+        </div>
+    
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary btn-lg">Load More</button>
     </div>
 </div>
 {% endblock %}

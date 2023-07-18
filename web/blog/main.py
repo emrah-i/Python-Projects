@@ -16,7 +16,7 @@ def index():
 
 @app.route('/all')
 def all():
-    posts = db.session.query(Posts).all()
+    posts = db.session.query(Posts).limit(6).all()
     return render_template('all.html', posts=posts)
 
 @app.route('/new', methods=['POST', 'GET'])

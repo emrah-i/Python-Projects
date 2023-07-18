@@ -11,8 +11,8 @@
     </div>
 </div>
 <div class="container">
-    <div class="row">
-        <div class="col-9">
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
+        <div class="col-lg-9 col-md-12">
             <div class="main_posts container mt-5">
                 {% for post in posts %}
                 <div class="row d-flex justify-content-center">
@@ -24,7 +24,8 @@
                     </div>
                 </div>
                 {% endfor %}
-                <button type="submit" id="new_post_button" class="btn btn-lg btn-primary mb-5" onclick="window.location.pathname = '/new'">New Post</button>
+                <button type="submit" id="new_post_button" class="btn btn-lg btn-primary mb-5 me-2" onclick="window.location.pathname = '/new'">New Post</button>
+                <button type="submit" id="new_post_button" class="btn btn-lg btn-primary mb-5" onclick="window.location.pathname = '/all'">All Posts</button>
             </div>
         </div>
         <div class="col-3">
