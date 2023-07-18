@@ -1,9 +1,12 @@
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, jsonify
 from flask_wtf.csrf import CSRFProtect
 from models import app, db, Posts
+from flask_migrate import Migrate
+from datetime import datetime
 
 app.config['SECRET_KEY'] = 'ilovecats'
 csrf = CSRFProtect(app)
+migrate = Migrate(app, db)
 
 with app.app_context():
     db.create_all()
@@ -17,7 +20,24 @@ def index():
 @app.route('/all')
 def all():
     posts = db.session.query(Posts).limit(6).all()
+    for post in posts:
+        post.date = post.date.strftime("%B %d, %Y %I:%M %p")
     return render_template('all.html', posts=posts)
+
+@app.route('/load')
+def load():
+    start = int(request.args.get('start')) or 0
+    end = start + 5
+
+    all_posts = db.session.query(Posts).all()
+    posts = []
+
+    for i in range(start, end + 1):
+        if all_posts[i]:
+            all_posts[i].date = all_posts[i].date.strftime("%B %d, %Y %I:%M %p")
+            posts.append(all_posts[i])
+
+    return jsonify(posts)
 
 @app.route('/new', methods=['POST', 'GET'])
 def new():
