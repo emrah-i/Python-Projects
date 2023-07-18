@@ -3,10 +3,22 @@
 {% block body %}
 <div class="album py-5 bg-light">
     <div class="d-flex justify-content-center mb-2">
+        {% if heading == 'All' %}
         <h1>All Posts</h1>
+        {% else %}
+        <h1>All Posts in "{{ heading }}"</h1>
+        {% endif %}
     </div>
     <div class="container">
 
+        {% if posts|length == 0 %}
+        <div class="d-flex justify-content-center mt-5">
+            <ul style="list-style: none;text-align: center;padding: 0;">
+                <li><h5>No posts in this category.</h5></li>
+                <li style="margin:20px"><button class="btn btn-primary btn-lg" onclick="window.location.pathname='/'">Return Home</button></li>
+            </ul>
+        </div>
+        {% else %}
         <div class="album_rows row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3">
         {% for post in posts %}
             <div class="col" onclick="window.location.pathname = '/post/' + {{ post.id }}">
@@ -24,9 +36,8 @@
         {% endfor %}
         </div>
     
-    </div>
-    <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-primary btn-lg" id="all-posts-load-button">Load More</button>
-    </div>
+        </div>
+        {{ button|safe }}
+        {% endif %}
 </div>
 {% endblock %}

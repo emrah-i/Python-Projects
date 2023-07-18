@@ -22,7 +22,12 @@ def all():
     posts = db.session.query(Posts).limit(6).all()
     for post in posts:
         post.date = post.date.strftime("%B %d, %Y %I:%M %p")
-    return render_template('all.html', posts=posts)
+    
+    button = '''
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary btn-lg" id="all-posts-load-button">Load More</button>
+    </div>'''
+    return render_template('all.html', posts=posts, heading='All', button=button)
 
 @app.route('/load')
 def load():
@@ -65,6 +70,38 @@ def new():
 def post(id):
     post = db.session.query(Posts).filter(Posts.id == id).first()
     return render_template('post.html', post=post)
+
+@app.route('/category/<category>')
+def category(category):
+    posts = db.session.query(Posts).filter(Posts.category == category).limit(6).all()
+    for post in posts:
+        post.date = post.date.strftime("%B %d, %Y %I:%M %p")
+
+    button = f'''
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary btn-lg" id="category-load-button" data-category="{category}">Load More</button>
+    </div>'''
+    return render_template('all.html', posts=posts, heading=category, button=button)
+
+@app.route('/category_load/<category>')
+def category_load(category):
+    start = int(request.args.get('start')) or 0
+    end = start + 5
+
+    all_posts = db.session.query(Posts).filter(Posts.category == category).all()
+    posts = []
+
+    for i in range(start, end + 1):
+        if len(all_posts) > i:
+            all_posts[i] = all_posts[i].__dict__
+            print(all_posts[i])
+            del all_posts[i]['_sa_instance_state']
+            all_posts[i]['date'] = all_posts[i]['date'].strftime("%B %d, %Y %I:%M %p")
+            posts.append(all_posts[i])
+        else:
+            break
+
+    return jsonify(posts)
 
 @app.route('/update/<int:id>', methods=['PATCH', 'GET'])
 def update(id):

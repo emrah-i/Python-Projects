@@ -47,6 +47,10 @@
     font-size: 1.5rem;
 }
 
+.main-post-info {
+    font-size: 1.1rem;
+}
+
 .main_posts_text:hover {
     color: gray;
 }
