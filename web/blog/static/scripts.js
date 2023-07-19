@@ -4,6 +4,7 @@ cat_counter = 0
 
 document.addEventListener('DOMContentLoaded', ()=>{
     CKEDITOR.replace('editor');
+    CKEDITOR.replace('editor2');
 
     if (document.querySelector('#all-posts-load-button')) {
       document.querySelector('#all-posts-load-button').addEventListener('click', ()=>{

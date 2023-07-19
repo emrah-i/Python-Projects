@@ -83,3 +83,16 @@
 #ind-post-comments {
     display: none;
 }
+
+.ind-post-comments-section table {
+    width: 100%;
+}
+
+.ind-post-comments-section tr {
+    text-align: left; 
+    border: 2px solid black;
+}
+
+.ind-post-comments-section td {
+    padding: 10px;
+}

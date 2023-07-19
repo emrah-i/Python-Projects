@@ -163,21 +163,21 @@ def category_load(category):
 
     return jsonify(posts)
 
-@app.route('/comment/<int:id>', methods=['POST'])
-def comment(id):
+@app.route('/comment/<int:postid>', methods=['POST'])
+def comment(postid):
 
     username = request.form.get('username')
-    post_id = request.form.get('post')
     body = request.form.get('body')
 
     new_comment = Comments()
     new_comment.comment = body
     new_comment.author = username
-    new_comment.post = post_id
+    new_comment.post = postid
     new_comment.date = datetime.now().strftime("%B %d, %Y %I:%M %p")
     db.session.add(new_comment)
     db.session.commit()
-    return redirect(f'/post/{id}')
+
+    return redirect(f'/post/{postid}')
 
 @app.route('/update/<int:id>', methods=['PATCH', 'GET'])
 @login_required

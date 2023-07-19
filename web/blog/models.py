@@ -40,10 +40,8 @@ class Comments(db.Model):
     id = db.Column(Integer(), primary_key=True)
     comment = db.Column(String(250), nullable=False)
     author = db.Column(String(), ForeignKey('users.username'), nullable=False)
-    parent_id = db.Column(Integer(), ForeignKey('comments.id'), nullable=True)
     post = db.Column(Integer(), ForeignKey('posts.id'), nullable=False)
     date = db.Column(String(), nullable=False)
-    parent_node = relationship("Comments", remote_side=[id], backref='replies')
 
 class Users(db.Model, UserMixin):
     id = db.Column(Integer(), primary_key=True)
