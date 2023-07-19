@@ -1,6 +1,6 @@
 from flask import redirect, render_template, request, jsonify, flash
 from functools import wraps
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, generate_csrf
 from models import app, db, login_manager, Posts, Users, Comments
 from flask_migrate import Migrate
 from datetime import datetime
@@ -10,7 +10,6 @@ from flask_login import login_user, login_required, logout_user, current_user
 app.config['SECRET_KEY'] = 'ilovecats'
 csrf = CSRFProtect(app)
 migrate = Migrate(app, db)
-
 
 with app.app_context():
     db.create_all()
@@ -33,6 +32,11 @@ def admin_only(f):
             return redirect('/')
         return f(*args, **kwargs)
     return decorated_function
+
+@app.route('/csrf_token', methods=['GET'])
+def get_csrf_token():
+    csrf_token = generate_csrf()
+    return jsonify({"csrf_token": csrf_token})
 
 @app.route('/')
 def index():
@@ -144,9 +148,9 @@ def new():
         categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
         return render_template('new.html', categories=categories)
 
-@app.route('/post/<int:id>')
-def post(id):
-    post = db.session.query(Posts).filter(Posts.id == id).first()
+@app.route('/post/<int:postid>')
+def post(postid):
+    post = db.session.query(Posts).filter(Posts.id == postid).first()
     comments = []
     for comment in post.comments:
         comments.append(comment)
@@ -196,10 +200,10 @@ def comment(postid):
 
     return redirect(f'/post/{postid}')
 
-@app.route('/update/<int:id>', methods=['PATCH', 'GET'])
+@app.route('/update/<int:postid>', methods=['PATCH', 'GET'])
 @login_required
 @admin_only
-def update(id):
+def update(postid):
     return render_template('index.html')
 
 @app.route('/delete/<int:postid>', methods=['DELETE'])

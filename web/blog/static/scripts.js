@@ -115,29 +115,50 @@ document.addEventListener('DOMContentLoaded', ()=>{
         make_comment.style.display = 'block'
       })
     }
-
+    
     if (document.querySelector('#edit_post')) {}
 
     if (document.querySelector('#delete_post')) {
       document.querySelector('#delete_post').addEventListener('click', (event)=>{
         if (confirm("Are you sure you want to delete this post?")) {
-          id = event.target.dataset.id
-          fetch(`/delete/${id}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json'
-              }
-            })
-            .then(response => response.json())
-            .then(data => {
-              console.log(data);
-              window.location.pathname = '/'
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+          postid = event.target.dataset.id
+          delete_post(postid)
         }
       })
     }
-    
+  
   });
+
+
+  async function getCSRF() {
+    const response = await fetch("/csrf_token", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const data = await response.json();
+    const csrfToken = data.csrf_token;
+    return csrfToken
+  }
+
+  async function delete_post(postid) {
+    csrf = await getCSRF()
+
+    fetch(`/delete/${postid}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        window.location.pathname = '/'
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
