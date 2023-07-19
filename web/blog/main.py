@@ -1,12 +1,17 @@
 from flask import redirect, render_template, request, jsonify
 from flask_wtf.csrf import CSRFProtect
-from models import app, db, Posts
+from models import app, db, login_manager, Posts, Users
 from flask_migrate import Migrate
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app.config['SECRET_KEY'] = 'ilovecats'
 csrf = CSRFProtect(app)
 migrate = Migrate(app, db)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.get(user_id)
 
 with app.app_context():
     db.create_all()

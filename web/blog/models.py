@@ -5,11 +5,14 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, DateTime, CheckConstraint
 from datetime import datetime
 from flask import Flask
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
 db = SQLAlchemy()
+login_manager = LoginManager()
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blogs.db"
 db.init_app(app)
+login_manager.init_app(app)
 
 categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
 
@@ -28,3 +31,11 @@ class Posts(db.Model):
             name='category_check'
         ),
     )
+
+class Users(db.Model, UserMixin):
+    id = Column(Integer(), primary_key=True)
+    f_name = Column(String(), unique=False, nullable=False)
+    l_name = Column(String(), unique=False, nullable=False)
+    email = Column(String(), unique=True, nullable=False)
+    username = Column(String(), unique=True, nullable=False)
+    password = Column(String(80), unique=False, nullable=False)
