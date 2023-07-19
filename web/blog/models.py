@@ -9,10 +9,12 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 app = Flask(__name__)
 db = SQLAlchemy()
-login_manager = LoginManager()
+login_manager = LoginManager(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blogs.db"
 db.init_app(app)
-login_manager.init_app(app)
+
+login_manager.login_view = "login"
+login_manager.login_message = "You must login to view that content."
 
 categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
 

@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="col-xl-4 col-lg-6 col-md-8 col-sm-11 col-12 justify-content-center align-items-center" style="text-align: left; font-size: 1.1rem;">
+        <form action="/register" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <h2>Register:</h2>
+            {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+            <p style="color:red;">{{ message }}</p>
+            {% endfor %}
+            {% endwith %}
+            <label class="mt-2" for="f_name">First Name:</label>
+            <input class="form-control" name="f_name" type="text" placeholder="Enter First Name" required autofocus>
+            <label class="mt-2" for="l_name">Last Name:</label>
+            <input class="form-control" name="l_name" type="text" placeholder="Enter Last Name" required>
+            <label class="mt-2" for="email">Email:</label>
+            <input class="form-control" name="email" type="email" placeholder="Enter Email" required autofocus>
+            <label class="mt-2" for="username">Username:</label>
+            <input class="form-control" name="username" type="text" placeholder="Enter Username" required autofocus minlength="6" maxlength="16">
+            <label class="mt-2" for="password">Password:</label>
+            <input class="form-control" name="password" type="password" placeholder="Enter Password" required minlength="10" maxlength="20">
+            <label class="mt-2" for="confirm">Confirm Password:</label>
+            <input class="form-control" name="confirm" type="password" placeholder="Renter Password" required minlength="10" maxlength="20">
+            <button type="submit" class="btn btn-md btn-primary mt-3">Register</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

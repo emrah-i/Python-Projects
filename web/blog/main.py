@@ -1,17 +1,19 @@
-from flask import redirect, render_template, request, jsonify
+from flask import redirect, render_template, request, jsonify, flash
 from flask_wtf.csrf import CSRFProtect
 from models import app, db, login_manager, Posts, Users
 from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, login_required, logout_user, current_user
 
 app.config['SECRET_KEY'] = 'ilovecats'
 csrf = CSRFProtect(app)
 migrate = Migrate(app, db)
 
 @login_manager.user_loader
-def load_user(user_id):
-    return Users.get(user_id)
+def load_user(id):
+    user  = db.session.query(Users).filter(Users.id == id).first()
+    return user
 
 with app.app_context():
     db.create_all()
@@ -21,6 +23,62 @@ def index():
     categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
     posts = db.session.query(Posts).limit(3).all()
     return render_template('index.html', posts=posts, categories=categories)
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    
+    if request.method == 'POST':
+
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = db.session.query(Users).filter(Users.username == username).first()
+
+        if user is None:
+            flash('Username and password do not match.')
+            return render_template('login.html')
+
+        elif not check_password_hash(user.password, password):
+            flash('Your passwords must match')
+            return render_template('login.html')
+        
+        login_user(user)
+        return redirect('/')
+    else:
+        return render_template('login.html')
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+
+    if request.method == 'POST':
+
+        f_name = request.form.get('f_name')
+        l_name = request.form.get('l_name')
+        email = request.form.get('email')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm = request.form.get('confirm')
+
+        if confirm != password:
+            flash('Your passwords must match')
+            return render_template('register.html')
+
+        new_user = Users()
+        new_user.f_name = f_name
+        new_user.l_name = l_name
+        new_user.email = email
+        new_user.username = username
+        new_user.password = generate_password_hash(password)
+        db.session.add(new_user)
+        db.session.commit()
+        login_user(new_user)
+        return redirect('/')
+    else:
+        return render_template('register.html')
+    
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
 
 @app.route('/all')
 def all():
@@ -55,6 +113,7 @@ def load():
     return jsonify(posts)
 
 @app.route('/new', methods=['POST', 'GET'])
+@login_required
 def new():
     if request.method == 'POST':
         new_post = Posts()

@@ -23,11 +23,26 @@
 
         <div class="navbar-collapse collapse justify-content-end me-2">
           <ul class="navbar-nav">
+            {% if current_user.is_anonymous %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/register">Register</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page">{{ current_user.username }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/new">New Post</a>
             </li>
+            {% endif %}
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/all">All Post</a>
+              <a class="nav-link active" aria-current="page" href="/all">All Posts</a>
             </li>
           </ul>
           <form>
