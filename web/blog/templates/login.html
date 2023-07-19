@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="container d-flex justify-content-center align-items-center mt-5">
+<div class="container d-flex justify-content-center align-items-center mt-5" style="margin-bottom: 25%;">
     <div class="col-3 justify-content-center align-items-center" style="text-align: left; font-size: 1.1rem;">
         <form action="/login" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

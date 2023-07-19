@@ -125,8 +125,8 @@ def load():
     return jsonify(posts)
 
 @app.route('/new', methods=['POST', 'GET'])
-@admin_only
 @login_required
+@admin_only
 def new():
     if request.method == 'POST':
         new_post = Posts()
@@ -197,13 +197,27 @@ def comment(postid):
     return redirect(f'/post/{postid}')
 
 @app.route('/update/<int:id>', methods=['PATCH', 'GET'])
-@admin_only
 @login_required
+@admin_only
 def update(id):
     return render_template('index.html')
 
-@app.route('/delete/<int:id>', methods=['POST', 'GET'])
-@admin_only
+@app.route('/delete/<int:postid>', methods=['DELETE'])
 @login_required
-def delete(id):
-    return render_template('index.html')
+@admin_only
+def delete(postid):
+
+    print(postid)
+    post = db.session.query(Posts).filter(Posts.id == postid).first()
+
+    if not post:
+        return jsonify({"error": "Post not found"}), 404
+
+    db.session.delete(post)
+    db.session.commit()
+
+    message = {
+        "success": "Post was successfully deleted"
+    }
+
+    return jsonify(message), 200
