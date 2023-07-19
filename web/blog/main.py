@@ -1,4 +1,5 @@
 from flask import redirect, render_template, request, jsonify, flash
+from functools import wraps
 from flask_wtf.csrf import CSRFProtect
 from models import app, db, login_manager, Posts, Users, Comments
 from flask_migrate import Migrate
@@ -10,13 +11,28 @@ app.config['SECRET_KEY'] = 'ilovecats'
 csrf = CSRFProtect(app)
 migrate = Migrate(app, db)
 
+
+with app.app_context():
+    db.create_all()
+
+@app.template_filter('current_year')
+def current_year_filter(value):
+    return datetime.now().year
+
+app.jinja_env.filters['current_year'] = current_year_filter
+
 @login_manager.user_loader
 def load_user(id):
     user  = db.session.query(Users).filter(Users.id == id).first()
     return user
 
-with app.app_context():
-    db.create_all()
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.id != 1:
+            return redirect('/')
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def index():
@@ -109,6 +125,7 @@ def load():
     return jsonify(posts)
 
 @app.route('/new', methods=['POST', 'GET'])
+@admin_only
 @login_required
 def new():
     if request.method == 'POST':
@@ -180,11 +197,13 @@ def comment(postid):
     return redirect(f'/post/{postid}')
 
 @app.route('/update/<int:id>', methods=['PATCH', 'GET'])
+@admin_only
 @login_required
 def update(id):
     return render_template('index.html')
 
 @app.route('/delete/<int:id>', methods=['POST', 'GET'])
+@admin_only
 @login_required
 def delete(id):
     return render_template('index.html')

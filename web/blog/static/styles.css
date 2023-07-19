@@ -89,9 +89,4 @@
 
 .ind-post-comments-section tr {
     text-align: left; 
-    border: 2px solid black;
-}
-
-.ind-post-comments-section td {
-    padding: 10px;
 }
