@@ -64,10 +64,9 @@
 }
 
 #ind-post-body {
-    margin: 5vh auto;
+    margin: 5vh auto 0;
     text-align: left;
     font-size: 1.2rem;
-    width: 60%; 
 }
 
 #ind-post hr {

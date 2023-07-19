@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="p-4" id="ind-post">
+<div class="container p-4" id="ind-post">
     <div>
         <h1><b>{{ post.title }}</b></h1>    
         <p id="ind-post-subtitle">{{ post.subtitle }}</p>
@@ -9,8 +9,10 @@
         <hr>
         <img src="{{ post.img_src }}" alt="Post Image" width="45%" style="box-shadow: 0px 0px 12px gray;">
     </div>
-    <div id="ind-post-body">
-        {{ post.body|safe }}
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-10 col-sm-12 col-12 d-flex justify-content-start mx-0" id="ind-post-body">
+            {{ post.body|safe }}
+        </div>
     </div>
     <hr>
     {% if current_user.is_authenticated %}
@@ -27,24 +29,26 @@
     </div>
     <hr>
     {% endif %}
-    <div class="container d-flex justify-content-center">
-        <div class="col-6 justify-content-start ind-post-comments-section">
-            {% if comments|length != 0 %}
-            <h2 class="mb-4">All Comments</h2>
-            <table>
-            {% for comment in comments %}
-                <tr>
-                    <td>
-                        <p><b>{{ comment.author }}</b></p>
-                        <p>{{ comment.comment|safe }}</p>
-                        <p class="text-muted mb-0">{{ comment.date }}</p>
-                    </td>
-                </tr>
-            {% endfor %}
-            </table>
-            {% else %}
-            <h5>No comments</h5><br>
-            {% endif %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-7 col-lg-9 col-sm-12 col-12">
+            <div class="ind-post-comments-section">
+                {% if comments|length != 0 %}
+                <h2 class="mb-4">All Comments</h2>
+                <table>
+                {% for comment in comments %}
+                    <tr>
+                        <td>
+                            <p><b>{{ comment.author }}</b></p>
+                            <p>{{ comment.comment|safe }}</p>
+                            <p class="text-muted mb-0">{{ comment.date }}</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
+                {% else %}
+                <h5>No comments</h5><br>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
