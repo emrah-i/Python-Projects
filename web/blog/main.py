@@ -1,6 +1,6 @@
 from flask import redirect, render_template, request, jsonify, flash
 from flask_wtf.csrf import CSRFProtect
-from models import app, db, login_manager, Posts, Users
+from models import app, db, login_manager, Posts, Users, Comments
 from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -83,8 +83,6 @@ def logout():
 @app.route('/all')
 def all():
     posts = db.session.query(Posts).limit(6).all()
-    for post in posts:
-        post.date = post.date.strftime("%B %d, %Y %I:%M %p")
     
     button = '''
     <div class="d-flex justify-content-center mt-3">
@@ -103,9 +101,7 @@ def load():
     for i in range(start, end + 1):
         if len(all_posts) > i:
             all_posts[i] = all_posts[i].__dict__
-            print(all_posts[i])
             del all_posts[i]['_sa_instance_state']
-            all_posts[i]['date'] = all_posts[i]['date'].strftime("%B %d, %Y %I:%M %p")
             posts.append(all_posts[i])
         else:
             break
@@ -123,6 +119,7 @@ def new():
         new_post.body = request.form.get('body')
         new_post.img_src = request.form.get('img')
         new_post.category = request.form.get('category')
+        new_post.date = datetime.now().strftime("%B %d, %Y %I:%M %p")
         db.session.add(new_post)
         db.session.commit()
         return redirect('/new')
@@ -133,13 +130,14 @@ def new():
 @app.route('/post/<int:id>')
 def post(id):
     post = db.session.query(Posts).filter(Posts.id == id).first()
-    return render_template('post.html', post=post)
+    comments = []
+    for comment in post.comments:
+        comments.append(comment)
+    return render_template('post.html', post=post, comments=comments)
 
 @app.route('/category/<category>')
 def category(category):
     posts = db.session.query(Posts).filter(Posts.category == category).limit(6).all()
-    for post in posts:
-        post.date = post.date.strftime("%B %d, %Y %I:%M %p")
 
     button = f'''
     <div class="d-flex justify-content-center mt-3">
@@ -158,19 +156,35 @@ def category_load(category):
     for i in range(start, end + 1):
         if len(all_posts) > i:
             all_posts[i] = all_posts[i].__dict__
-            print(all_posts[i])
             del all_posts[i]['_sa_instance_state']
-            all_posts[i]['date'] = all_posts[i]['date'].strftime("%B %d, %Y %I:%M %p")
             posts.append(all_posts[i])
         else:
             break
 
     return jsonify(posts)
 
+@app.route('/comment/<int:id>', methods=['POST'])
+def comment(id):
+
+    username = request.form.get('username')
+    post_id = request.form.get('post')
+    body = request.form.get('body')
+
+    new_comment = Comments()
+    new_comment.comment = body
+    new_comment.author = username
+    new_comment.post = post_id
+    new_comment.date = datetime.now().strftime("%B %d, %Y %I:%M %p")
+    db.session.add(new_comment)
+    db.session.commit()
+    return redirect(f'/post/{id}')
+
 @app.route('/update/<int:id>', methods=['PATCH', 'GET'])
+@login_required
 def update(id):
     return render_template('index.html')
 
 @app.route('/delete/<int:id>', methods=['POST', 'GET'])
+@login_required
 def delete(id):
     return render_template('index.html')

@@ -5,12 +5,36 @@
     <div>
         <h1><b>{{ post.title }}</b></h1>    
         <p id="ind-post-subtitle">{{ post.subtitle }}</p>
-        <p class="text-muted">Posted by {{ post.author }} on {{ post.date.strftime("%B %d, %Y %I:%M %p") }}</p>
+        <p class="text-muted">Posted by {{ post.author }} on {{ post.date }}</p>
         <hr>
         <img src="{{ post.img_src }}" alt="Post Image" width="45%" style="box-shadow: 0px 0px 12px gray;">
     </div>
     <div id="ind-post-body">
         {{ post.body|safe }}
+    </div>
+    <hr>
+    {% if current_user.is_authenticated %}
+    <button type="button" id="make_comment" class="btn btn-lg btn-primary">Comment</button>
+    <div id="ind-post-comments">
+        <form action="/comment/{{ post.id }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input hidden value="{{ current_user.username }}" name="username">
+            <input hidden value="{{ post.id }}" name="post">
+            <textarea name="body" id="editor" required></textarea><br>
+            <button type="submit" id="make_comment" class="btn btn-lg btn-primary">Add</button>
+        </form>
+    </div>
+    <hr>
+    {% endif %}
+    <div class="ind-post-comments-section mt-5" style="text-align: left;">
+        {% for comment in comments %}
+        {{ comment.author }}
+        {{ comment.comment|safe }}
+        {{ comment.new_date }}
+        {% endfor %}
+        {% if comments|length == 0 %}
+        No comments
+        {% endif %}
     </div>
 </div>
 {% endblock %}

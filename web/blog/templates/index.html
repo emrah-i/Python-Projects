@@ -21,7 +21,7 @@
                     <div class="main_posts_text col-xl-12 mt-3" onclick="window.location.pathname = '/post/' + {{ post.id }}">
                         <h2 class="main-post-title"><b>{{ post.title }}</b></h2>
                         <p class="main-post-subtitle">{{ post.subtitle }}</p>
-                        <p class="main-post-info text-muted">Posted by <i>{{ post.author }}</i> on <i>{{ post.date.strftime("%B %d, %Y %I:%M %p") }}</i></p>
+                        <p class="main-post-info text-muted">Posted by <i>{{ post.author }}</i> on <i>{{ post.date }}</i></p>
                         <hr>
                     </div>
                 </div>

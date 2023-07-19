@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
               img_src = data[i]['img_src']
 
               new_element = document.createElement('div')
-              new_element.class = "col" 
+              new_element.className = "col" 
               new_element.addEventListener('click', ()=> {
                 window.location.pathname = '/post/' + id
               })
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
               img_src = data[i]['img_src']
 
               new_element = document.createElement('div')
-              new_element.class = "col" 
+              new_element.className = "col" 
               new_element.addEventListener('click', ()=> {
                 window.location.pathname = '/post/' + id
               })
@@ -103,6 +103,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
           .catch(error => {
             console.error('Error:', error);
           });
+      })
+    }
+
+    if (document.querySelector('#make_comment')) {
+      document.querySelector('#make_comment').addEventListener('click', (event) => {
+        event.target.style.display = 'none'
+        make_comment = document.querySelector('#ind-post-comments')
+        make_comment.className = "d-flex justify-content-center"
+        make_comment.style.display = 'block'
       })
     }
   });
