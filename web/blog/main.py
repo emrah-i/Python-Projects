@@ -264,15 +264,46 @@ def contact():
         return render_template('contact.html')
 
 
-@app.route('/profile', methods=['PUT', 'GET'])
+@app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def edit_profile():
     
     user = db.session.query(Users).filter(Users.id == current_user.id).first()
-    user 
 
     if request.method == 'POST':
-        pass
+        f_name = request.form.get('f_name')
+        l_name = request.form.get('l_name')
+        email = request.form.get('email')
+        username = request.form.get('username')
 
+        user.f_name = f_name
+        user.l_name = l_name
+        user.email = email
+        user.username = username
+        db.session.commit()
+        flash('<p style="color:green">Your information was successfully updated.</p>')
+        return redirect('/profile')
     else:
         return render_template('profile.html', user=user)
+
+@app.route('/password', methods=['GET', 'PUT'])
+@login_required
+def password():
+
+    user = db.session.query(Users).filter(Users.id == current_user.id).first()
+
+    if request.method == 'PUT':
+        data = request.get_json()
+        password = data['password']
+        confirm = data['confirm']
+
+        if confirm != password:
+            flash('<p style="color:red">Your passwords must match.</p>')
+            return jsonify({"error": "Passwords must match."})
+
+        user.password = password
+        db.session.commit()
+        flash('<p style="color:green">Your information was successfully updated.</p>')
+        return jsonify({"success": "Post was successfully deleted"}), 200
+    else:
+        return render_template('password.html', user=user)

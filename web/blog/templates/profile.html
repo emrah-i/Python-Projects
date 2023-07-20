@@ -2,26 +2,27 @@
 
 {% block body %}
 <div class="container d-flex justify-content-center align-items-center mt-5" style="margin-bottom: 25%;"e>
-    <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 col-12 justify-content-center" style="text-align: left; font-size: 1.1rem;">
+    <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 col-12 justify-content-center" style="text-align: left; font-size: 1rem;">
         <div id="profile_info">
-            <form action="/contact" method="post">
-                <h2 class="mb-3" id="profile_heading">Profile Information:</h2>
+            <form action="/profile" method="post" id="edit_profile_form">
+                <h3 class="mb-3">Profile Information:</h3>
                 {% with messages = get_flashed_messages() %}
                 {% for message in messages %}
-                <p style="color:green;">{{ message }}</p>
+                {{ message|safe }}
                 {% endfor %}
                 {% endwith %}
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <label for="name">First Name:</label>
+                <label for="f_name">First Name:</label>
                 <input class="form-control" type="text" required value="{{ user.f_name }}" placeholder="Enter First Name" name="f_name" disabled><br>
-                <label for="name">Last Name:</label>
+                <label for="l_name">Last Name:</label>
                 <input class="form-control" type="text" required value="{{ user.l_name }}" placeholder="Enter Last Name" name="l_name" disabled><br>
                 <label for="email">Email:</label>
                 <input class="form-control" type="email" required value="{{ user.email }}" placeholder="Enter Email" name="email" disabled><br>
-                <label for="name">Username:</label>
-                <input class="form-control" type="text" required value="{{ user.username }}" placeholder="Enter Username" name="name" disabled><br>
-                <button type="button" class="btn btn-lg btn-primary me-2">Edit</button>
-                <button type="button" class="btn btn-lg btn-primary">Change Password</button>
+                <label for="username">Username:</label>
+                <input class="form-control" type="text" required value="{{ user.username }}" placeholder="Enter Username" name="username" disabled><br>
+                <button type="submit" class="btn btn-md btn-primary me-2" id="confirm_edit_button" style="display:none;">Confirm</button>
+                <button type="button" class="btn btn-md btn-primary me-2" id="edit_profile_button">Edit</button>
+                <button type="button" class="btn btn-md btn-primary" id="change_pw_button">Change Password</button>
             </form>
         </div>
     </div>

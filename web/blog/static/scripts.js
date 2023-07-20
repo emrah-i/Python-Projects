@@ -138,7 +138,33 @@ document.addEventListener('DOMContentLoaded', ()=>{
         }
       })
     }
-  
+
+    if (document.querySelector('#edit_profile_button')) {
+      document.querySelector('#edit_profile_button').addEventListener('click', (event) => {
+        event.target.style.display = 'none'
+        document.querySelector('#change_pw_button').style.display = 'none'
+        document.querySelector('#confirm_edit_button').style.display = 'block'
+        
+        form = document.querySelector('#edit_profile_form')
+        form.querySelector('input[name="f_name"]').disabled = false,
+        form.querySelector('input[name="l_name"]').disabled = false,
+        form.querySelector('input[name="email"]').disabled = false,
+        form.querySelector('input[name="username"]').disabled = false
+      })
+    }
+
+    if (document.querySelector('#change_pw_button')) {
+      document.querySelector('#change_pw_button').addEventListener('click', () => {
+        window.location.pathname = '/password'
+      })
+    }
+
+    if (document.querySelector('#confirm_pw_button')) {
+      document.querySelector('#confirm_pw_button').addEventListener('click', (event)=>{
+        event.preventDefault()
+        update_pw()
+      })
+    }
   });
 
 
@@ -198,6 +224,34 @@ document.addEventListener('DOMContentLoaded', ()=>{
       .then(response => response.json())
       .then(data => {
         window.location.pathname = '/all'
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
+  async function update_pw() {
+    csrf = await getCSRF()
+    form = document.querySelector('#change_pw_form')
+
+    data = {
+      'password': form.querySelector('input[name="password"]').value,
+      'confirm': form.querySelector('input[name="confirm"]').value,
+    }
+
+    fetch(`/password`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success){
+          window.location.pathname = '/'
+        }
       })
       .catch(error => {
         console.error('Error:', error);

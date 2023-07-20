@@ -2,9 +2,8 @@ from sqlalchemy import Column, Integer, String
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, DateTime, CheckConstraint, ForeignKey
+from sqlalchemy import Column, Integer, String, CheckConstraint, ForeignKey
 from sqlalchemy.orm import relationship
-from datetime import datetime
 from flask import Flask
 from flask_login import LoginManager, UserMixin
 
