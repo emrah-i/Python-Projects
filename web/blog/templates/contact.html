@@ -1,5 +1,24 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-
+<div class="container d-flex justify-content-center align-items-center mt-5" style="margin-bottom: 25%;"e>
+    <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 col-12 justify-content-center" style="text-align: left; font-size: 1.1rem;">
+        <form action="/contact" method="post">
+            <h2 class="mb-3">Contact Me:</h2>
+            {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+            <p style="color:green;">{{ message }}</p>
+            {% endfor %}
+            {% endwith %}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="name">Full Name:</label>
+            <input class="form-control" type="text" required placeholder="Enter Name" name="name"><br>
+            <label for="email">Email:</label>
+            <input class="form-control" type="email" required placeholder="Enter Email" name="email"><br>
+            <label for="textarea">Comments:</label>
+            <textarea id="editor" name="body" requirede></textarea>
+            <button type="submit" class="btn btn-lg btn-primary mt-3">Send</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

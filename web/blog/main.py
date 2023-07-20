@@ -1,4 +1,5 @@
 from flask import redirect, render_template, request, jsonify, flash
+from bs4 import BeautifulSoup
 from functools import wraps
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from models import app, db, login_manager, Posts, Users, Comments
@@ -255,7 +256,23 @@ def contact():
         connection.starttls()
         connection.login(my_email, password)
         connection.sendmail(from_addr=my_email, to_addrs=my_email, 
-                            msg=f'Subject: Book Recommendation!\n\n')
+                            msg=f'Subject: Blog Contact!\n\nA user wanted to contact you saying the following: \n{body}\n Their name is {name} and they can be reached at {email}.')
         connection.close()
+        flash('Email was successfully sent.')
+        return redirect('/contact')
     else:
         return render_template('contact.html')
+
+
+@app.route('/profile', methods=['PUT', 'GET'])
+@login_required
+def edit_profile():
+    
+    user = db.session.query(Users).filter(Users.id == current_user.id).first()
+    user 
+
+    if request.method == 'POST':
+        pass
+
+    else:
+        return render_template('profile.html', user=user)
