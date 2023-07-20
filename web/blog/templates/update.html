@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+New Post
+{% endblock %}
+
+{% block body %}
+<div class="container d-flex justify-content-center">
+    <div class="row w-100 d-flex justify-content-center">
+        <div class="col-xl-9 col-lg-10 col-md-11 col-12">
+            <form id="update_post_form">
+                <h3 class="my-4">Update Blog Post:</h3>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label for="title">Title:</label>
+                <input class="form-control" type="text" name="title" maxlength="80" value="{{ post.title }}" placeholder="Enter Title" required><br>
+                <label for="subtitle">Subtitle:</label>
+                <input class="form-control" type="text" name="subtitle" maxlength="80" value="{{ post.subtitle }}" placeholder="Enter Subtitle" required><br>
+                <label for="author">Author: </label>
+                <input class="form-control" type="text" name="author" maxlength="100" value="{{ post.author }}" placeholder="Enter Author" required><br>
+                <label for="img">Image Source: </label>
+                <input class="form-control" type="text" name="img" value="{{ post.img_src }}" placeholder="Enter Image Source" required><br>
+                <label for="categories">Select Category: </label>
+                <select class="form-control" name="category" required>
+                    <option selected>{{ post.category }}</option>
+                    {% for category in categories %}
+                    <option>{{ category }}</option>
+                    {% endfor %}
+                </select><br>
+                <label for="body">Body: </label>
+                <textarea name="body" id="editor" required>{{ post.body }}</textarea><br>
+                <button type="button" id="update_post_button" data-id="{{ post.id }}" class="btn btn-lg btn-primary mb-5">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

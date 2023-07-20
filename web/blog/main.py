@@ -200,18 +200,33 @@ def comment(postid):
 
     return redirect(f'/post/{postid}')
 
-@app.route('/update/<int:postid>', methods=['PATCH', 'GET'])
+@app.route('/update/<int:postid>', methods=['PUT', 'GET'])
 @login_required
 @admin_only
 def update(postid):
-    return render_template('index.html')
+    post = db.session.query(Posts).filter(Posts.id == postid).first()
+
+    if request.method == 'PUT':
+        data = request.get_json()
+        post.title = data['title']
+        post.subtitle = data['subtitle']
+        post.author = data['author']
+        post.body = data['body']
+        post.img_src = data['img_src']
+        post.category = data['category']
+        post.date = datetime.now().strftime("%B %d, %Y %I:%M %p")
+        db.session.commit()
+        return jsonify({"success": "Post was successfully deleted"}), 200
+    else:
+        categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
+        categories.pop(categories.index(post.category))
+        return render_template('update.html', post=post, categories=categories)
 
 @app.route('/delete/<int:postid>', methods=['DELETE'])
 @login_required
 @admin_only
 def delete(postid):
 
-    print(postid)
     post = db.session.query(Posts).filter(Posts.id == postid).first()
 
     if not post:
@@ -220,8 +235,4 @@ def delete(postid):
     db.session.delete(post)
     db.session.commit()
 
-    message = {
-        "success": "Post was successfully deleted"
-    }
-
-    return jsonify(message), 200
+    return jsonify({"success": "Post was successfully deleted"}), 200

@@ -116,7 +116,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
       })
     }
     
-    if (document.querySelector('#edit_post')) {}
+    if (document.querySelector('#edit_post')) {
+      document.querySelector('#edit_post').addEventListener('click', (event)=>{
+        postid = event.target.dataset.id
+        window.location.pathname = '/update/' + postid
+      })
+    }
+
+    if (document.querySelector('#update_post_button')) {
+      document.querySelector('#update_post_button').addEventListener('click', (event)=>{
+        postid = event.target.dataset.id
+        update_post(postid)
+      })
+    }
 
     if (document.querySelector('#delete_post')) {
       document.querySelector('#delete_post').addEventListener('click', (event)=>{
@@ -143,6 +155,36 @@ document.addEventListener('DOMContentLoaded', ()=>{
     return csrfToken
   }
 
+  async function update_post(postid) {
+    csrf = await getCSRF()
+    form = document.querySelector('#update_post_form')
+
+    data = {
+      'title': form.querySelector('input[name="title"]').value,
+      'subtitle': form.querySelector('input[name="subtitle"]').value,
+      'author': form.querySelector('input[name="author"]').value,
+      'img_src': form.querySelector('input[name="img"]').value,
+      'category': form.querySelector('select[name="category"]').value,
+      'body': form.querySelector('textarea[name="body"]').value
+    }
+
+    fetch(`/update/${postid}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        window.location.pathname = `/post/${postid}`
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+
   async function delete_post(postid) {
     csrf = await getCSRF()
 
@@ -155,8 +197,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-        window.location.pathname = '/'
+        window.location.pathname = '/all'
       })
       .catch(error => {
         console.error('Error:', error);

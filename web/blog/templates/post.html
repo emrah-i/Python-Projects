@@ -8,7 +8,7 @@
         <p class="text-muted">Posted by {{ post.author }} on {{ post.date }}</p>
         {% if current_user.is_authenticated %}
         {% if current_user.id == 1 %}
-        <button type="button" id="edit_post" class="btn btn-md btn-primary me-1">Edit Post</button>
+        <button type="button" id="edit_post" class="btn btn-md btn-primary me-1" data-id="{{ post.id }}">Edit Post</button>
         <button type="button" id="delete_post" data-id="{{ post.id }}" class="btn btn-md btn-primary">Delete Post</button>
         {% endif %}
         {% endif %}
