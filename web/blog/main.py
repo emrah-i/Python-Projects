@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+import smtplib
 
 app.config['SECRET_KEY'] = 'ilovecats'
 csrf = CSRFProtect(app)
@@ -143,7 +144,7 @@ def new():
         new_post.date = datetime.now().strftime("%B %d, %Y %I:%M %p")
         db.session.add(new_post)
         db.session.commit()
-        return redirect('/new')
+        return redirect(f'/post/{new_post.id}')
     else:
         categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
         return render_template('new.html', categories=categories)
@@ -185,11 +186,11 @@ def category_load(category):
     return jsonify(posts)
 
 @app.route('/comment/<int:postid>', methods=['POST'])
+@login_required
 def comment(postid):
 
     username = request.form.get('username')
     body = request.form.get('body')
-
     new_comment = Comments()
     new_comment.comment = body
     new_comment.author = username
@@ -197,7 +198,6 @@ def comment(postid):
     new_comment.date = datetime.now().strftime("%B %d, %Y %I:%M %p")
     db.session.add(new_comment)
     db.session.commit()
-
     return redirect(f'/post/{postid}')
 
 @app.route('/update/<int:postid>', methods=['PUT', 'GET'])
@@ -236,3 +236,26 @@ def delete(postid):
     db.session.commit()
 
     return jsonify({"success": "Post was successfully deleted"}), 200
+
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
+
+@app.route('/contact', methods=['POST', 'GET'])
+def contact():
+
+    my_email = 'emrakhibragimov5@gmail.com'
+    password = 'rgbzaerhvevmdoou'
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        body = request.form.get('body')
+        connection = smtplib.SMTP("smtp.gmail.com")
+        connection.starttls()
+        connection.login(my_email, password)
+        connection.sendmail(from_addr=my_email, to_addrs=my_email, 
+                            msg=f'Subject: Book Recommendation!\n\n')
+        connection.close()
+    else:
+        return render_template('contact.html')
