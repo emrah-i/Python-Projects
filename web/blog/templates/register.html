@@ -5,13 +5,20 @@
     <div class="col-xl-4 col-lg-6 col-md-8 col-sm-11 col-12 justify-content-center align-items-center" style="text-align: left; font-size: 1.1rem;">
         <form action="/register" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <h2>Register:</h2>
+            <h2 class="mb-3">Register:</h2>
             {% with messages = get_flashed_messages() %}
             {% for message in messages %}
             <p style="color:red;">{{ message }}</p>
             {% endfor %}
             {% endwith %}
-            <label class="mt-2" for="f_name">First Name:</label>
+            <p>You password must meet these requirements:</p>
+            <ul>
+                <li>Must contain 8-20 characters</li>
+                <li>Must contain one uppercase character</li>
+                <li>Must contain one symbol</li>
+                <li>Cannot be in this list: "password", "password1", "password123", "qwertyuiop", "12345678", "123456789", "1234567890", "77777777", "princess", "qwerty123", "1q2w3e4r", and "iloveyou"</li>
+            </ul>
+            <label class="mt-1" for="f_name">First Name:</label>
             <input class="form-control" name="f_name" type="text" placeholder="Enter First Name" required autofocus>
             <label class="mt-2" for="l_name">Last Name:</label>
             <input class="form-control" name="l_name" type="text" placeholder="Enter Last Name" required>
@@ -20,9 +27,9 @@
             <label class="mt-2" for="username">Username:</label>
             <input class="form-control" name="username" type="text" placeholder="Enter Username" required autofocus minlength="6" maxlength="16">
             <label class="mt-2" for="password">Password:</label>
-            <input class="form-control" name="password" type="password" placeholder="Enter Password" required minlength="10" maxlength="20">
+            <input class="form-control" name="password" type="password" placeholder="Enter Password" required minlength="8" maxlength="20">
             <label class="mt-2" for="confirm">Confirm Password:</label>
-            <input class="form-control" name="confirm" type="password" placeholder="Re-Enter Password" required minlength="10" maxlength="20">
+            <input class="form-control" name="confirm" type="password" placeholder="Re-Enter Password" required minlength="8" maxlength="20">
             <button type="submit" class="btn btn-md btn-primary mt-3">Register</button>
         </form>
     </div>

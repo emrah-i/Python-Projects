@@ -5,13 +5,13 @@
     <div class="col-3 justify-content-center align-items-center" style="text-align: left; font-size: 1.1rem;">
         <form action="/login" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <h2>Login:</h2>
+            <h2 class="mb-3">Login:</h2>
             {% with messages = get_flashed_messages() %}
             {% for message in messages %}
             <p style="color:red;">{{ message }}</p>
             {% endfor %}
             {% endwith %}
-            <label class="mt-2" for="username">Username:</label>
+            <label for="username">Username:</label>
             <input class="form-control" name="username" type="text" placeholder="Enter Username" required autofocus>
             <label class="mt-2" for="password">Password:</label>
             <input class="form-control" name="password" type="password" placeholder="Enter Password" required>

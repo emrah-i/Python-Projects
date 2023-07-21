@@ -20,7 +20,10 @@
                 <input class="form-control" type="email" required value="{{ user.email }}" placeholder="Enter Email" name="email" disabled><br>
                 <label for="username">Username:</label>
                 <input class="form-control" type="text" required value="{{ user.username }}" placeholder="Enter Username" name="username" disabled><br>
-                <button type="submit" class="btn btn-md btn-primary me-2" id="confirm_edit_button" style="display:none;">Confirm</button>
+                <div id="edit_buttons" style="display:none;">
+                    <button type="submit" class="btn btn-md btn-primary me-2" id="confirm_edit_button">Confirm</button>
+                    <button type="button" class="btn btn-md btn-primary" id="cancel_edit_button" onclick="if(confirm('Are you sure you would like to cancel?')) {location.reload()}">Cancel</button>
+                </div>
                 <button type="button" class="btn btn-md btn-primary me-2" id="edit_profile_button">Edit</button>
                 <button type="button" class="btn btn-md btn-primary" id="change_pw_button">Change Password</button>
             </form>

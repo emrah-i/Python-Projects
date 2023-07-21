@@ -23,7 +23,7 @@ class Posts(db.Model):
     title = db.Column(String(80), unique=True, nullable=False)
     subtitle = db.Column(String(80), unique=True, nullable=False)
     author = db.Column(String(100), nullable=False)
-    body = db.Column(String(1600), unique=True, nullable=False)
+    body = db.Column(String(4000), unique=True, nullable=False)
     img_src = db.Column(String(), nullable=False)
     date = db.Column(String(), nullable=False)
     category = db.Column(String(), nullable=False)

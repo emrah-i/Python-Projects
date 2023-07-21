@@ -57,11 +57,11 @@ def login():
 
         if user is None:
             flash('Username and password do not match.')
-            return render_template('login.html')
+            return redirect('/login')
 
         elif not check_password_hash(user.password, password):
-            flash('Your passwords must match')
-            return render_template('login.html')
+            flash('Username and password do not match.')
+            return redirect('/login')
         
         login_user(user)
         return redirect('/')
@@ -70,6 +70,13 @@ def login():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+
+    no_passwords = ["password", "password1", "password123", "qwertyuiop", "12345678", "123456789", "1234567890", "77777777", "princess", "qwerty123", "1q2w3e4r", "iloveyou"]
+    password_symbols = [
+    '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/',
+    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}',
+    '~'
+    ]
 
     if request.method == 'POST':
 
@@ -80,9 +87,38 @@ def register():
         password = request.form.get('password')
         confirm = request.form.get('confirm')
 
+        email_a = db.session.query(Users).filter(Users.email == email).first()
+        username_a = db.session.query(Users).filter(Users.username == username).first()
+
+        if email_a != None:
+            flash('This email is already associated with an account.')
+            return redirect('/register')
+
+        if username_a != None:
+            flash('That username is taken.')
+            return redirect('/register')
+        
+        if password in no_passwords:
+            flash('Your passwords must not be from the list.')
+            return redirect('/register')
+        
+        for i in password:
+            if password[i].isupper():
+                break
+            elif password[i] == password[-1]:
+                flash('Your passwords must contain an uppercase letter.')
+                return redirect('/register')
+
+        for i in password:
+            if password[i] in password_symbols:
+                break
+            elif password[i] == password[-1]:
+                flash('Your passwords must contain a symbol.')
+                return redirect('/register')
+
         if confirm != password:
-            flash('Your passwords must match')
-            return render_template('register.html')
+            flash('Your passwords must match.')
+            return redirect('/register')
 
         new_user = Users()
         new_user.f_name = f_name
@@ -276,6 +312,20 @@ def edit_profile():
         email = request.form.get('email')
         username = request.form.get('username')
 
+        email_a = db.session.query(Users).filter(Users.email == email).first()
+        username_a = db.session.query(Users).filter(Users.username == username).first()
+
+        if email_a != None and email_a != current_user:
+            flash('<p style="color:red">This email is already associated with an account.</p>')
+            return redirect('/profile')
+
+        if username_a != None and username_a != current_user:
+            flash('<p style="color:red">That username is taken.</p>')
+            return redirect('/profile')
+        
+        if user.f_name == f_name and user.l_name == l_name and user.email == email and user.username == username:
+            return redirect('/profile')
+
         user.f_name = f_name
         user.l_name = l_name
         user.email = email
@@ -292,14 +342,39 @@ def password():
 
     user = db.session.query(Users).filter(Users.id == current_user.id).first()
 
+    no_passwords = ["password", "password1", "password123", "qwertyuiop", "12345678", "123456789", "1234567890", "77777777", "princess", "qwerty123", "1q2w3e4r", "iloveyou"]
+    password_symbols = [
+    '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/',
+    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}',
+    '~'
+    ]
+
     if request.method == 'PUT':
         data = request.get_json()
         password = data['password']
         confirm = data['confirm']
 
+        if password in no_passwords:
+            flash('<p style="color:red">Your passwords must not be from the list.</p>')
+            return jsonify({"error": "Your passwords must not be from the list."})
+        
+        for i in range(len(password)):
+            if password[i].isupper():
+                break
+            elif password[i] == password[-1]:
+                flash('<p style="color:red">Your passwords must contain an uppercase letter.</p>')
+                return jsonify({"error": "Your passwords must contain an uppercase letter."})
+
+        for i in range(len(password)):
+            if password[i] in password_symbols:
+                break
+            elif password[i] == password[-1]:
+                flash('<p style="color:red">Your passwords must contain a symbol.</p>')
+                return jsonify({"error": "Your passwords must contain a symbol."})
+
         if confirm != password:
             flash('<p style="color:red">Your passwords must match.</p>')
-            return jsonify({"error": "Passwords must match."})
+            return jsonify({"error": "Your passwords must match."})
 
         user.password = password
         db.session.commit()
