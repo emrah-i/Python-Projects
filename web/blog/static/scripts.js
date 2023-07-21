@@ -202,8 +202,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
       'author': form.querySelector('input[name="author"]').value,
       'img_src': form.querySelector('input[name="img"]').value,
       'category': form.querySelector('select[name="category"]').value,
-      'body': form.querySelector('textarea[name="body"]').value
+      'body': CKEDITOR.instances.editor.getData()
     }
+
+    console.log(data['body'])
 
     fetch(`/update/${postid}`, {
       method: 'PUT',

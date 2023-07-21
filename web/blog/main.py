@@ -1,5 +1,5 @@
 from flask import redirect, render_template, request, jsonify, flash
-from bs4 import BeautifulSoup
+from sqlalchemy import desc
 from functools import wraps
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from models import app, db, login_manager, Posts, Users, Comments
@@ -43,8 +43,19 @@ def get_csrf_token():
 @app.route('/')
 def index():
     categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
-    posts = db.session.query(Posts).limit(3).all()
-    return render_template('index.html', posts=posts, categories=categories)
+    posts = db.session.query(Posts).all()
+
+    show = []
+
+    for _ in range(4):
+        min = posts[0]
+        for post in posts:
+            if datetime.strptime(post.date, "%B %d, %Y %I:%M %p") < datetime.strptime(min.date, "%B %d, %Y %I:%M %p"):
+                min = post
+        min_post = db.session.query(Posts).filter(Posts.id == min.id).first()
+        posts.remove(min_post)
+        show.append(min)
+    return render_template('index.html', posts=show, categories=categories)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -140,7 +151,9 @@ def logout():
 
 @app.route('/all')
 def all():
-    posts = db.session.query(Posts).limit(6).all()
+    all = db.session.query(Posts).all()
+
+    posts = all[0:6]
     
     button = '''
     <div class="d-flex justify-content-center mt-3">
@@ -253,7 +266,7 @@ def update(postid):
         post.category = data['category']
         post.date = datetime.now().strftime("%B %d, %Y %I:%M %p")
         db.session.commit()
-        return jsonify({"success": "Post was successfully deleted"}), 200
+        return jsonify({"success": "Post was successfully updated"}), 200
     else:
         categories = ["Personal", "Travel", "Health", "Food", "Lifestyle", "Fitness", "Technology", "Business", "Book Review"]
         categories.pop(categories.index(post.category))

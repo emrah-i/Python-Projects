@@ -15,18 +15,6 @@
     min-height: 3rem
 }
 
-@media (max-width: 1200px) {
-    .card-text {
-        min-height: 4.4rem
-    }
-}
-
-@media (max-width: 768px) {
-    .card-text {
-        min-height: 0rem
-    }
-}
-
 #main_img_div {
     width: 100%;
     height: 70vh;
@@ -85,6 +73,11 @@
     font-size: 1.2rem;
 }
 
+#ind-post-img {
+    box-shadow: 0px 0px 12px gray;
+    width: 50%
+}
+
 #ind-post hr {
     margin: 20px auto 25px;
 }
@@ -104,4 +97,28 @@
 
 .ind-post-comments-section tr {
     text-align: left; 
+}
+
+@media (max-width: 1200px) {
+    .card-text {
+        min-height: 4.4rem
+    }
+    #ind-post-img {
+        width: 70%
+    }
+}
+
+@media (max-width: 992px) {
+    #ind-post-img {
+        width: 90%
+    }
+}
+
+@media (max-width: 768px) {
+    .card-text {
+        min-height: 0rem
+    }
+    #ind-post-img {
+        width: 100%
+    }
 }

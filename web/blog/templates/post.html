@@ -17,10 +17,10 @@
                 <hr style="width:100%">
             </div>
         </div>
-        <img src="{{ post.img_src }}" alt="Post Image" width="45%" style="box-shadow: 0px 0px 12px gray;">
+        <img src="{{ post.img_src }}" alt="Post Image" id="ind-post-img">
     </div>
     <div class="row d-flex justify-content-center">
-        <div class="col-lg-10 col-sm-12 col-12 d-flex justify-content-start mx-0" id="ind-post-body">
+        <div class="col-lg-10 col-sm-12 col-12 justify-content-start mx-0" id="ind-post-body">
             {{ post.body|safe }}
         </div>
     </div>

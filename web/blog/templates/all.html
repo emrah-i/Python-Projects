@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="album py-5 bg-light">
-    <div class="d-flex justify-content-center mb-2">
+    <div class="d-flex justify-content-center mb-3">
         {% if heading == 'All' %}
         <h1>All Posts</h1>
         {% else %}
@@ -24,7 +24,7 @@
             <div class="col" onclick="window.location.pathname = '/post/' + {{ post.id }}">
                 <div class="card all_posts_container">
                 <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <image href="{{ post.img_src }}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
+                    <image href="{{ post.img_src }}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
                 </svg>
 
                 <div class="card-body">
