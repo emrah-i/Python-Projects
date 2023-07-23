@@ -2,7 +2,6 @@ from flask import redirect, render_template, request, jsonify, flash
 from functools import wraps
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from models import app, db, login_manager, Posts, Users, Comments
-from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
@@ -10,7 +9,6 @@ import smtplib
 
 app.config['SECRET_KEY'] = 'ilovecats'
 csrf = CSRFProtect(app)
-migrate = Migrate(app, db)
 
 with app.app_context():
     db.create_all()

@@ -1,11 +1,15 @@
 {% extends 'layout.html' %}
 
+{% block title %}
+About
+{% endblock %}
+
 {% block body %}
-<div class="conatiner justify-content-center mt-3">
+<div class="conatiner justify-content-center mt-4">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-sm-10 col-11" style="text-align: left;">
             <h2>About This Project:</h2>
-            <h4 class="mt-3">Full Stack:</h4>
+            <h4 class="mt-4 mb-2">Full Stack:</h4>
             <p>
             Every single tool presented below found it's utility at various stages during the development process. 
             While not all of these tools constitute current component of the working code, each one was indispensable in the construction of this project. 
@@ -26,7 +30,7 @@
                 <li>Gunicorn</li>
                 <li>Heroku</li>
             </ul>
-            <h4 class="mt-3">Front End:</h4>
+            <h4 class="mt-4 mb-2">Front End:</h4>
             <p>
             The tools employed for the development of the front end encompassed a combination of HTML, CSS, Bootstrap, and JavaScript. 
             HTML was augmented through the utilization of a jinja layout template, serving as the foundation for constructing each page. 
@@ -55,17 +59,24 @@
             Once again, the acquisition of the CSRF key precedes the 'PUT' request. 
             In the context of post deletion, an appropriately tailored 'DELETE' request supersedes the 'PUT' counterpart.
             </p>
-            <h4 class="mt-3">Back End:</h4>
+            <h4 class="mt-4 mb-2">Back End:</h4>
             <p>
             The tools harnessed in the backend development encompasses the following array: Python, Flask, WTForms, SQLAlchemy, PostgreSQL, and SQLite. 
+            I opted for Python as the backend programming language due to my expertise and proficiency in it, along with its vast collection of installable modules that offer remarkable flexibility.
+            From it's large library of modules, I incorporated the SMTPlib and Werkzeug modules. 
+            When the contact form is submitted, the SMTPlib module is used to send an email to my personal inbox, providing the message details and sender's information.
+            Moreover, Werkzeug is utilized to hash and salt passwords in the database, ensuring utmost security.
+            </p>
+            <p>
             Flask, distinguished by its lightweight nature, streamlined setup process, and accelerated development capabilities, was deliberately chosen over Django. 
             The seamless integration of WTForms and SQLAlchemy modules tailored for Flask reinforced these benefits. 
             WTForms did not substantially feature in this project because HTML forms were preferred for their simplicity. 
             The predominant application of WTForms centered around its CSRF functionality, enabling the effortless addition of CSRF codes to each form.
             </p>
             <p>
-            Initially, the database was implemented through SQLite, but its limitations in handling certain functions necessitated a transition to the more robust SQLAlchemy. 
-            Nonetheless, in the project's initial iteration, SQLite, in tandem with the Python Faker module, facilitated the population of the database, even though a subsequent shift was mandated in the current version.
+            Initially, the database was implemented through SQLite, but its limitations in handling certain functions necessitated a transition to SQLAlchemy. 
+            Nonetheless, in the project's initial iteration, SQLite, in tandem with the Python Faker module, facilitated the population of the database.
+            Eventually, when the decision was made to host the webpage online, PostgreSQL was utilized to host the database. 
             </p>
         </div>
     </div>
