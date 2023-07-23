@@ -6,9 +6,11 @@
         <div class="col-lg-8 col-sm-10 col-11" style="text-align: left;">
             <h2>About This Project:</h2>
             <h4 class="mt-3">Full Stack:</h4>
-            <p>Each one of the tools listed below was used at some point in the development process. 
-            Not all of the tools are currently apart of the working code, however, I required each one to build this project.
-            I will discuss how each one was used in the coming sections. The full list of tools includes:
+            <p>
+            Every single tool presented below found it's utility at various stages during the development process. 
+            While not all of these tools constitute current component of the working code, each one was indispensable in the construction of this project. 
+            In the subsequent sections, a description of the utilization of each tool will be provided. 
+            The roster of tools includes the following:
             </p>
             <ul>
                 <li>Python</li>
@@ -26,33 +28,45 @@
             </ul>
             <h4 class="mt-3">Front End:</h4>
             <p>
-            The tools used for developing the front end were: HTML, CSS, Bootstrap, and JavaScript. 
-            For the HTML, a jinja layout template was used to build each page off of. 
-            The CSS was kept to a minimum as I focused of Boostrap to sharpen my skillset.
-            Boostrap was a great help in efficiently building the layout of each page and adding responsiveness. 
-            The main implemtations of BS include the navbar and container divs.
-            Most of the pages are built using containers, rows, and col from the BS package. 
-            The blog post display page is built using a BS  'album' class. These are all of the design aspects.
+            The tools employed for the development of the front end encompassed a combination of HTML, CSS, Bootstrap, and JavaScript. 
+            HTML was augmented through the utilization of a jinja layout template, serving as the foundation for constructing each page. 
+            In the interest of honing my skillset, the extent of CSS usage was kept to a minimum, with a primary focus on harnessing the power of Bootstrap. 
+            The latter proved to be an invaluable asset, facilitating the expeditious creation of page layouts while ensuring optimal responsiveness. 
+            Key implementations of Bootstrap included the integration of navbar and container divs throughout the project. 
+            Moreover, the majority of pages were skillfully crafted through the manipulation of containers, rows, and columns offered by the Bootstrap package. 
+            For the blog post display page, the BS 'album' class was elegantly employed to achieve a distinctive design flair.
             </p>
             <p>
-            In terms of frontend functionality, I only used JavaScript. The main implementation was for the blog post display page, post editing, and account updates. 
-            The post display page displays all of the blog posts either in a specific category, matching a search query, or simply all of the posts. 
-            The page initially only displays six posts. To display six more posts, you click a 'load more' button which sends an API 'GET' request to the server. 
-            If there are no more posts to be displayed, an alert will appear to notify the user.
+            In terms of frontend functionality, JavaScript served as the sole driving force. 
+            Its principal implementations manifested in the blog post display page, post editing, and account updates. 
+            The post display page, by default, presents all the available blog posts, however, these can be sorted either by specific categories or search queries.
+            Initially, only six posts are visible, but through the simple act of clicking a 'load more' button, an API 'GET' request is dispatched to the server, dynamically fetching an additional six posts. 
+            If no further posts are available, a user-friendly alert duly notifies the user of this circumstance.
             </p>
             <p>
-            If you is signed in, you will be able to edit your profile information. When an editted information is submitted, the JS function first retrieves a CSRF security key from the server. 
-            Without retrieving this key, any request other than a 'GET' request cannot be submitted. With the key, a 'PUT' request is sent with all of the updated information. 
-            If the information is valid, the database will update and the user will recieve a flashing Flask message to let them know.
-            </p>
+            For authenticated users, the capacity to edit their profile information is granted. 
+            This necessitates a preliminary JavaScript function to procure a CSRF security key from the server, a crucial requirement for authorizing any non-'GET' request. 
+            Armed with the security key, a 'PUT' request conveys all updated information to the server. Upon successful validation, the database promptly updates, and a Flask message conveys the outcome to the user.
             </p>
             <p>
-            If you are signed in to the the admin account, you also are able to upload new posts, edit posts, and delete posts. 
-            Uploading new posts is done using an HTML form and backend end form retrieval. The other two options are handled by JS API. 
-            Again, the JS function first retrieves a CSRF key. With the key, a 'PUT' request is sent with all of the updated information.
-            The same process occurs for deleting a post, however, the request is a 'DELETE' request instead of 'PUT'.
+            There are privileges only accessible to an admin account, which includes the capability to upload, edit, and delete posts. 
+            The former task is accomplished through the utilization of an HTML form and back end form retrieval. 
+            As for the latter two responsibilities, JavaScript is entrusted with handling the underlying API interactions. 
+            Once again, the acquisition of the CSRF key precedes the 'PUT' request. 
+            In the context of post deletion, an appropriately tailored 'DELETE' request supersedes the 'PUT' counterpart.
             </p>
             <h4 class="mt-3">Back End:</h4>
+            <p>
+            The tools harnessed in the backend development encompasses the following array: Python, Flask, WTForms, SQLAlchemy, PostgreSQL, and SQLite. 
+            Flask, distinguished by its lightweight nature, streamlined setup process, and accelerated development capabilities, was deliberately chosen over Django. 
+            The seamless integration of WTForms and SQLAlchemy modules tailored for Flask reinforced these benefits. 
+            WTForms did not substantially feature in this project because HTML forms were preferred for their simplicity. 
+            The predominant application of WTForms centered around its CSRF functionality, enabling the effortless addition of CSRF codes to each form.
+            </p>
+            <p>
+            Initially, the database was implemented through SQLite, but its limitations in handling certain functions necessitated a transition to the more robust SQLAlchemy. 
+            Nonetheless, in the project's initial iteration, SQLite, in tandem with the Python Faker module, facilitated the population of the database, even though a subsequent shift was mandated in the current version.
+            </p>
         </div>
     </div>
 </div>
