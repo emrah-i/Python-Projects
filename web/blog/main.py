@@ -6,6 +6,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import smtplib
+import os
 
 app.config['SECRET_KEY'] = 'ilovecats'
 csrf = CSRFProtect(app)
@@ -291,8 +292,8 @@ def about():
 @app.route('/contact', methods=['POST', 'GET'])
 def contact():
 
-    my_email = 'emrakhibragimov5@gmail.com'
-    password = 'rgbzaerhvevmdoou'
+    my_email = os.environ.get('SMTP_EMAIL')
+    password = os.environ.get('SMTP_PASSWORD')
 
     if request.method == 'POST':
         name = request.form.get('name')

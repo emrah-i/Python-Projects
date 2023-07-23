@@ -12,7 +12,7 @@ Post
         <p class="text-muted">Posted by {{ post.author }} on {{ post.date }}</p>
         {% if current_user.is_authenticated %}
         {% if current_user.id == 1 %}
-        <button type="button" id="edit_post" class="btn btn-md btn-primary me-1" data-id="{{ post.id }}">Edit Post</button>
+        <button type="button" id="edit_post" class="btn btn-primary me-1" data-id="{{ post.id }}">Edit Post</button>
         <button type="button" id="delete_post" data-id="{{ post.id }}" class="btn btn-md btn-primary">Delete Post</button>
         {% endif %}
         {% endif %}
@@ -35,15 +35,15 @@ Post
     </div>
     <h2 class="mb-3">Comments</h2>
     {% if current_user.is_authenticated %}
-    <button type="button" id="make_comment" class="btn btn-md btn-primary">Add Comment</button>
+    <button type="button" id="make_comment" class="btn btn-primary">Add Comment</button>
     <div id="ind-post-comments">
         <form action="/comment/{{ post.id }}" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input hidden value="comment" name="type">
             <input hidden value="{{ current_user.username }}" name="username">
             <textarea name="body" id="editor" required></textarea><br>
-            <button type="submit" class="btn btn-lg btn-primary me-2">Post</button>
-            <button type="button" class="btn btn-lg btn-primary" onclick="if (confirm('Are you sure?')) {window.location.reload()}">Cancel</button>
+            <button type="submit" class="btn btn-primary me-2">Post</button>
+            <button type="button" class="btn btn-primary" onclick="if (confirm('Are you sure?')) {window.location.reload()}">Cancel</button>
         </form>
     </div>
     {% endif %}
