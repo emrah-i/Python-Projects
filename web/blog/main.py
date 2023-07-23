@@ -1,5 +1,4 @@
 from flask import redirect, render_template, request, jsonify, flash
-from sqlalchemy import desc
 from functools import wraps
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from models import app, db, login_manager, Posts, Users, Comments

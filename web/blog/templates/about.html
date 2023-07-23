@@ -3,8 +3,56 @@
 {% block body %}
 <div class="conatiner justify-content-center mt-3">
     <div class="row justify-content-center">
-        <div class="col-8" style="text-align: left;">
+        <div class="col-lg-8 col-sm-10 col-11" style="text-align: left;">
             <h2>About This Project:</h2>
+            <h4 class="mt-3">Full Stack:</h4>
+            <p>Each one of the tools listed below was used at some point in the development process. 
+            Not all of the tools are currently apart of the working code, however, I required each one to build this project.
+            I will discuss how each one was used in the coming sections. The full list of tools includes:
+            </p>
+            <ul>
+                <li>Python</li>
+                <li>Flask</li>
+                <li>WTForms</li>
+                <li>SQLAlchemy</li>
+                <li>PostgreSQL</li>
+                <li>SQLite</li>
+                <li>JavaScript</li>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>Boostrap</li>
+                <li>Gunicorn</li>
+                <li>Heroku</li>
+            </ul>
+            <h4 class="mt-3">Front End:</h4>
+            <p>
+            The tools used for developing the front end were: HTML, CSS, Bootstrap, and JavaScript. 
+            For the HTML, a jinja layout template was used to build each page off of. 
+            The CSS was kept to a minimum as I focused of Boostrap to sharpen my skillset.
+            Boostrap was a great help in efficiently building the layout of each page and adding responsiveness. 
+            The main implemtations of BS include the navbar and container divs.
+            Most of the pages are built using containers, rows, and col from the BS package. 
+            The blog post display page is built using a BS  'album' class. These are all of the design aspects.
+            </p>
+            <p>
+            In terms of frontend functionality, I only used JavaScript. The main implementation was for the blog post display page, post editing, and account updates. 
+            The post display page displays all of the blog posts either in a specific category, matching a search query, or simply all of the posts. 
+            The page initially only displays six posts. To display six more posts, you click a 'load more' button which sends an API 'GET' request to the server. 
+            If there are no more posts to be displayed, an alert will appear to notify the user.
+            </p>
+            <p>
+            If you is signed in, you will be able to edit your profile information. When an editted information is submitted, the JS function first retrieves a CSRF security key from the server. 
+            Without retrieving this key, any request other than a 'GET' request cannot be submitted. With the key, a 'PUT' request is sent with all of the updated information. 
+            If the information is valid, the database will update and the user will recieve a flashing Flask message to let them know.
+            </p>
+            </p>
+            <p>
+            If you are signed in to the the admin account, you also are able to upload new posts, edit posts, and delete posts. 
+            Uploading new posts is done using an HTML form and backend end form retrieval. The other two options are handled by JS API. 
+            Again, the JS function first retrieves a CSRF key. With the key, a 'PUT' request is sent with all of the updated information.
+            The same process occurs for deleting a post, however, the request is a 'DELETE' request instead of 'PUT'.
+            </p>
+            <h4 class="mt-3">Back End:</h4>
         </div>
     </div>
 </div>

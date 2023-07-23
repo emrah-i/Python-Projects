@@ -1,6 +1,3 @@
-from sqlalchemy import Column, Integer, String
-from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, CheckConstraint, ForeignKey
 from sqlalchemy.orm import relationship

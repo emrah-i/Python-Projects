@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="container d-flex justify-content-center align-items-center mt-5" style="margin-bottom: 25%;"e>
+<div class="container d-flex justify-content-center align-items-center mt-3" style="margin-bottom: 25%;"e>
     <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 col-12 justify-content-center" style="text-align: left; font-size: 1rem;">
         <div id="profile_info">
             <form action="/profile" method="post" id="edit_profile_form">
-                <h3 class="mb-3">Profile Information:</h3>
+                <h2 class="mb-3">Profile Information:</h2>
                 {% with messages = get_flashed_messages() %}
                 {% for message in messages %}
                 {{ message|safe }}
