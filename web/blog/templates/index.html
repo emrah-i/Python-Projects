@@ -23,7 +23,7 @@ Homepage
                 {% for post in posts %}
                 <div class="row d-flex justify-content-center">
                     <div class="main_posts_text col-xl-12 mt-3" onclick="window.location.pathname = '/post/' + {{ post.id }}">
-                        <h2 class="main-post-title"><b>{{ post.title }}</b></h2>
+                        <h3 class="main-post-title"><b>{{ post.title }}</b></h3>
                         <p class="main-post-subtitle">{{ post.subtitle }}</p>
                         <p class="main-post-info text-muted">Posted by <i>{{ post.author }}</i> on <i>{{ post.date }}</i></p>
                         <hr>

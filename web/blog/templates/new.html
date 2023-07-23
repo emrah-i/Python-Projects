@@ -9,7 +9,7 @@ New Post
     <div class="row w-100 d-flex justify-content-center">
         <div class="col-xl-9 col-lg-10 col-md-11 col-12">
             <form action="/new" method="post">
-                <h2 class="my-4">New Blog Post:</h2>
+                <h2 class="my-4"><b>New Blog Post:</b></h2>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <label for="title">Title:</label>
                 <input class="form-control" type="text" name="title" maxlength="80" placeholder="Enter Title" required><br>

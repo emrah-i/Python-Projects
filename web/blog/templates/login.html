@@ -9,7 +9,7 @@ Login
     <div class="col-3 justify-content-center align-items-center" style="text-align: left; font-size: 1.1rem;">
         <form action="/login" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <h2 class="mb-3">Login:</h2>
+            <h2 class="mb-3"><b>Login:</b></h2>
             {% with messages = get_flashed_messages() %}
             {% for message in messages %}
             <p style="color:red;">{{ message }}</p>
