@@ -248,6 +248,16 @@ def comment(postid):
     db.session.commit()
     return redirect(f'/post/{postid}')
 
+@app.route('/search/<query>')
+def category(query):
+    posts = db.session.query(Posts).filter(Posts.category == category).limit(6).all()
+
+    button = f'''
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary btn-lg" id="category-load-button" data-category="{category}">Load More</button>
+    </div>'''
+    return render_template('all.html', posts=posts, heading=category, button=button)
+
 @app.route('/update/<int:postid>', methods=['PUT', 'GET'])
 @login_required
 @admin_only
