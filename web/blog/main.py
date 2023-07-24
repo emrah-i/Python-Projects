@@ -2,6 +2,7 @@ from flask import redirect, render_template, request, jsonify, flash
 from functools import wraps
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from models import app, db, login_manager, Posts, Users, Comments
+from sqlalchemy import or_
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
@@ -233,6 +234,52 @@ def category_load(category):
 
     return jsonify(posts)
 
+@app.route('/search/<query>')
+def search(query):
+
+    posts = db.session.query(Posts).filter(
+        or_(Posts.title.ilike(f'%{query}%'),
+            Posts.subtitle.ilike(f'%{query}%'),
+            Posts.author.ilike(f'%{query}%'),
+            Posts.body.ilike(f'%{query}%'),
+            Posts.date.ilike(f'%{query}%'),
+            Posts.category.ilike(f'%{query}%'),
+        )
+    ).distinct(Posts.id).limit(6).all()
+
+    button = f'''
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary btn-lg" id="search-load-button" data-query="{query}">Load More</button>
+    </div>'''
+    return render_template('all.html', posts=posts, heading=query, button=button)
+
+@app.route('/search_load/<query>')
+def search_load(query):
+
+    start = int(request.args.get('start')) or 0
+    end = start + 5
+
+    all_posts = db.session.query(Posts).filter(
+        or_(Posts.title.ilike(f'%{query}%'),
+            Posts.subtitle.ilike(f'%{query}%'),
+            Posts.author.ilike(f'%{query}%'),
+            Posts.body.ilike(f'%{query}%'),
+            Posts.date.ilike(f'%{query}%'),
+            Posts.category.ilike(f'%{query}%'),
+        )
+    ).distinct(Posts.id).all()
+    posts = []
+
+    for i in range(start, end + 1):
+        if len(all_posts) > i:
+            all_posts[i] = all_posts[i].__dict__
+            del all_posts[i]['_sa_instance_state']
+            posts.append(all_posts[i])
+        else:
+            break
+
+    return jsonify(posts)
+
 @app.route('/comment/<int:postid>', methods=['POST'])
 @login_required
 def comment(postid):
@@ -247,16 +294,6 @@ def comment(postid):
     db.session.add(new_comment)
     db.session.commit()
     return redirect(f'/post/{postid}')
-
-@app.route('/search/<query>')
-def category(query):
-    posts = db.session.query(Posts).filter(Posts.category == category).limit(6).all()
-
-    button = f'''
-    <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-primary btn-lg" id="category-load-button" data-category="{category}">Load More</button>
-    </div>'''
-    return render_template('all.html', posts=posts, heading=category, button=button)
 
 @app.route('/update/<int:postid>', methods=['PUT', 'GET'])
 @login_required

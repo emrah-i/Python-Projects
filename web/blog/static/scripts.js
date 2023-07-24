@@ -1,15 +1,30 @@
 
 all_counter = 0
 cat_counter = 0
+srch_counter = 0
 
 document.addEventListener('DOMContentLoaded', ()=>{
     CKEDITOR.replace('editor');
     CKEDITOR.replace('editor2');
 
+    document.querySelector('#search_form').addEventListener('submit', (event)=>{
+      event.preventDefault()
+      query = document.querySelector('#search_form_input').value
+      window.location.pathname = `/search/${query}`
+    })
+
     if (document.querySelector('#all-posts-load-button')) {
       document.querySelector('#all-posts-load-button').addEventListener('click', ()=>{
         all_counter += 6
         load_all_posts(all_counter)
+      })
+    }
+
+    if (document.querySelector('#search-load-button')) {
+      document.querySelector('#search-load-button').addEventListener('click', (event)=>{
+        query = event.target.dataset.query
+        srch_counter += 6
+        load_search_posts(query, srch_counter)
       })
     }
 
@@ -127,6 +142,55 @@ document.addEventListener('DOMContentLoaded', ()=>{
       .catch(error => {
         console.error('Error:', error);
       });
+  }
+
+  function load_search_posts(query, srch_counter) {
+
+    main_div = document.querySelector('.album_rows')
+
+    fetch(`/search_load/${query}?start=` + srch_counter)
+    .then(response => response.json())
+    .then(data => {
+
+      if (data.length === 0) {
+        alert('No more blog posts in this query.')
+        return
+      }
+
+      for (i=0;i<data.length;i++) {
+        id = data[i]['id']
+        title = data[i]['title']
+        subtitle = data[i]['subtitle']
+        author = data[i]['author']
+        date = data[i]['date']
+        body = data[i]['body']
+        img_src = data[i]['img_src']
+
+        new_element = document.createElement('div')
+        new_element.className = "col" 
+        new_element.addEventListener('click', ()=> {
+          window.location.pathname = '/post/' + id
+        })
+
+        new_element.innerHTML = `
+        <div class="card all_posts_container">
+          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <image href="${img_src}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
+          </svg>
+
+          <div class="card-body">
+              <p class="card-text"><b>${title}</b></p>
+              <small class="text-muted">${date}</small>
+          </div>
+        </div>
+        `
+
+        main_div.append(new_element)
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   }
 
   function load_cat_posts(category, cat_counter) {
