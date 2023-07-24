@@ -7,6 +7,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
     CKEDITOR.replace('editor');
     CKEDITOR.replace('editor2');
 
+    if (window.localStorage.getItem('dark_mode')) {
+      dark_mode(window.localStorage.getItem('dark_mode'))
+    }
+    else {
+      window.localStorage.setItem('dark_mode', 'light')
+    }
+
+    document.querySelector('#dark_mode').addEventListener('click', (event)=>{
+      mode = event.target.dataset.color
+      dark_mode(mode)
+      window.localStorage.setItem('dark_mode', mode)
+    })
+
     document.querySelector('#search_form').addEventListener('submit', (event)=>{
       event.preventDefault()
       query = document.querySelector('#search_form_input').value
@@ -95,6 +108,50 @@ document.addEventListener('DOMContentLoaded', ()=>{
       })
     }
   });
+
+  function dark_mode(mode) {
+
+    button = document.querySelector('#dark_mode')
+    body = document.querySelector('body').style
+
+    if (mode == 'light') {
+      body.backgroundColor = '#1C2833'
+      body.color = 'white'
+
+      document.querySelectorAll('.navbar-color').forEach(element => {
+        element.style.color = 'white'})
+      document.querySelector('#navbar-custom').style.backgroundColor = '#2E4053' 
+      document.querySelector('#footer').style.backgroundColor = '#2E4053'
+
+      try {
+      document.querySelector('#album').style.backgroundColor = '#1C2833'
+      document.querySelector('#album_heading').style.color = 'white'
+      }
+      catch {}
+
+      button.dataset.color = 'dark'
+      button.innerHTML = 'Dark Mode: On'
+    }
+    
+    else {
+      body.backgroundColor = 'white'
+      body.color = 'black'
+
+      document.querySelectorAll('.navbar-color').forEach(element => {
+          element.style.color = 'black'})
+      document.querySelector('#navbar-custom').style.backgroundColor = '#F8F9FA' 
+      document.querySelector('#footer').style.backgroundColor = '#F8F9FA' 
+
+      try {
+        document.querySelector('#album').style.backgroundColor = 'white'
+        document.querySelector('#album_heading').style.color = 'black'
+      }
+      catch {}
+
+      button.dataset.color = 'light'
+      button.innerHTML = 'Dark Mode: Off'
+    }
+  }
 
   function load_all_posts(all_counter) {
     main_div = document.querySelector('.album_rows')

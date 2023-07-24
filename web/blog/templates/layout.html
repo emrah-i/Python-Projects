@@ -12,50 +12,51 @@
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-custom" id="navbar-custom">
       <div class="container-fluid">
         <div class="col-1">
-          <a class="navbar-brand p-2" href="/" style="font-size: 2rem;"><b>My Blog</b></a>
+          <a class="navbar-color navbar-brand p-2" href="/" style="font-size: 2rem;"><b>My Blog</b></a>
         </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
-        <div class="navbar-collapse collapse justify-content-end me-2 p-2" id="navbarsExample05" style="font-size: 1.1rem;">
+        <div class="navbar-collapse collapse justify-content-end me-2 p-2 pe-0" id="navbarsExample05" style="font-size: 1.1rem;">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
+              <a class="navbar-color nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/all">All Posts</a>
+              <a class="navbar-color nav-link active" aria-current="page" href="/all">All Posts</a>
             </li>
             {% if current_user.is_anonymous %}
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/about">About</a>
+              <a class="navbar-color nav-link active" aria-current="page" href="/about">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/contact">Contact</a>
+              <a class="navbar-color nav-link active" aria-current="page" href="/contact">Contact</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/login">Login</a>
+              <a class="navbar-color nav-link active" aria-current="page" href="/login">Login</a>
             </li>
             <li class="nav-item me-2">
-              <a class="nav-link active" aria-current="page" href="/register">Register</a>
+              <a class="navbar-color nav-link active" aria-current="page" href="/register">Register</a>
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/new">New Post</a>
+              <a class="navbar-color nav-link active" aria-current="page" href="/new">New Post</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/about">About</a>
+              <a class="navbar-color nav-link active" aria-current="page" href="/about">About</a>
             </li>
             <li class="nav-item dropdown me-2">
-              <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+              <a class="navbar-color nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ current_user.username }}
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <ul class="navbar-color dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <li><a class="dropdown-item" href="/profile">Profile</a></li>
                 <li><a class="dropdown-item" href="/contact">Contact</a></li>
+                <li><a class="dropdown-item" id="dark_mode" data-color="light">Dark Mode: On</a></li>
                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
               </ul>
             </li>
@@ -63,14 +64,14 @@
             {% endif %}
             {% endif %}
           </ul>
-          <form class="form-inline my-2 my-md-0" id="search_form">
+          <form class="form-inline ms-1 my-md-0" id="search_form">
             <input class="form-control" type="text" placeholder="Search" id="search_form_input">
           </form>
         </div>
       </div>
     </nav>
     {% block body %}{% endblock %}
-    <div class="d-flex justify-content-center my-3">
+    <div class="d-flex justify-content-center pt-4 pb-2 mt-3 navbar-color" id="footer">
       <p>Copyright © Emrah's Blog {{ " "|current_year }}</p>
     </div>
 </body>

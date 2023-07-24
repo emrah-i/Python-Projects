@@ -1,3 +1,26 @@
+body {
+    background-color: white;
+    color: black;
+}
+
+#navbar-custom, #footer {
+    background-color: #F8F9FA;
+    color: black;
+}
+
+.navbar-color {
+    color: black;
+}
+
+#album {
+    background-color: white;
+    color: black;
+}
+
+#album_heading {
+    color: black;
+}
+
 .btn {
     background-color: white;
     color: black;
