@@ -152,18 +152,19 @@ def logout():
 def all():
     all = db.session.query(Posts).all()
 
-    posts = all[0:6]
+    posts = all[0:9]
     
     button = '''
-    <div class="d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center my-4">
         <button class="btn btn-primary btn-lg" id="all-posts-load-button">Load More</button>
     </div>'''
     return render_template('all.html', posts=posts, heading='All', button=button)
 
 @app.route('/load')
 def load():
+
     start = int(request.args.get('start')) or 0
-    end = start + 5
+    end = start + 8
 
     all_posts = db.session.query(Posts).all()
     posts = []
@@ -208,18 +209,19 @@ def post(postid):
 
 @app.route('/category/<category>')
 def category(category):
-    posts = db.session.query(Posts).filter(Posts.category == category).limit(6).all()
+    posts = db.session.query(Posts).filter(Posts.category == category).limit(9).all()
 
     button = f'''
-    <div class="d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center my-4">
         <button class="btn btn-primary btn-lg" id="category-load-button" data-category="{category}">Load More</button>
     </div>'''
     return render_template('all.html', posts=posts, heading=category, button=button)
 
 @app.route('/category_load/<category>')
 def category_load(category):
+
     start = int(request.args.get('start')) or 0
-    end = start + 5
+    end = start + 8
 
     all_posts = db.session.query(Posts).filter(Posts.category == category).all()
     posts = []
@@ -245,10 +247,10 @@ def search(query):
             Posts.date.ilike(f'%{query}%'),
             Posts.category.ilike(f'%{query}%'),
         )
-    ).distinct(Posts.id).limit(6).all()
+    ).distinct(Posts.id).limit(9).all()
 
     button = f'''
-    <div class="d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center my-4">
         <button class="btn btn-primary btn-lg" id="search-load-button" data-query="{query}">Load More</button>
     </div>'''
     return render_template('all.html', posts=posts, heading=query, button=button)
@@ -257,7 +259,7 @@ def search(query):
 def search_load(query):
 
     start = int(request.args.get('start')) or 0
-    end = start + 5
+    end = start + 8
 
     all_posts = db.session.query(Posts).filter(
         or_(Posts.title.ilike(f'%{query}%'),

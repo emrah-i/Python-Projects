@@ -29,15 +29,23 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     if (document.querySelector('#all-posts-load-button')) {
       document.querySelector('#all-posts-load-button').addEventListener('click', ()=>{
-        all_counter += 6
+        all_counter += 9
         load_all_posts(all_counter)
+      })
+    }
+
+    if (document.querySelector('.album-item-click')) {
+      document.querySelectorAll('.album-item-click').forEach(element => {
+        element.addEventListener('click', (event)=>{
+          window.location.pathname = "/post/" + event.target.dataset.id
+        })
       })
     }
 
     if (document.querySelector('#search-load-button')) {
       document.querySelector('#search-load-button').addEventListener('click', (event)=>{
         query = event.target.dataset.query
-        srch_counter += 6
+        srch_counter += 9
         load_search_posts(query, srch_counter)
       })
     }
@@ -45,7 +53,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if (document.querySelector('#category-load-button')) {
       document.querySelector('#category-load-button').addEventListener('click', (event)=>{
         category = event.target.dataset.category
-        cat_counter += 6
+        cat_counter += 9
         load_cat_posts(category, cat_counter)
       })
     }
@@ -176,15 +184,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
           img_src = data[i]['img_src']
 
           new_element = document.createElement('div')
-          new_element.className = "col" 
-          new_element.addEventListener('click', ()=> {
-            window.location.pathname = '/post/' + id
-          })
+          new_element.className = "col album-item-click" 
+          new_element.dataset.id = id
 
           new_element.innerHTML = `
-          <div class="card all_posts_container">
-            <div class="card-img-top overflow-hidden" >
-              <img loading="lazy" src="${img_src }" width="100%" height="225">
+          <div class="card all_posts_container" onclick="window.location.pathname = '/post/${id}'">
+            <div class="card-img">
+              <img loading="lazy" src='${img_src }' width="100%" style="object-fit: fill; min-height: 255px;">
             </div>
 
             <div class="card-body">
@@ -225,16 +231,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
         img_src = data[i]['img_src']
 
         new_element = document.createElement('div')
-        new_element.className = "col" 
-        new_element.addEventListener('click', ()=> {
-          window.location.pathname = '/post/' + id
-        })
+        new_element.className = "col album-item-click" 
+        new_element.dataset.id = id
 
         new_element.innerHTML = `
-        <div class="card all_posts_container">
-          <div class="card-img-top overflow-hidden" >
-            <img loading="lazy" src="${img_src }" width="100%" height="225">
-          </div>
+        <div class="card all_posts_container" onclick="window.location.pathname = '/post/${id}'">
+            <div class="card-img">
+              <img loading="lazy" src='${img_src }' width="100%" style="object-fit: fill; min-height: 255px;">
+            </div>
 
           <div class="card-body">
               <p class="card-text"><b>${title}</b></p>
@@ -274,15 +278,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
         img_src = data[i]['img_src']
 
         new_element = document.createElement('div')
-        new_element.className = "col" 
-        new_element.addEventListener('click', ()=> {
-          window.location.pathname = '/post/' + id
-        })
+        new_element.className = "col album-item-click" 
+        new_element.dataset.id = id
 
         new_element.innerHTML = `
-        <div class="card all_posts_container">
+        <div class="card all_posts_container" onclick="window.location.pathname = '/post/${id}'">
           <div class="card-img-top overflow-hidden" >
-            <img loading="lazy" src="${img_src }" width="100%" height="225">
+            <img loading="lazy" src='${img_src }' width="100%" style="object-fit: fill; min-height: 255px;">
           </div>
 
           <div class="card-body">

@@ -9,6 +9,7 @@ Post
     <div>
         <h1><b>{{ post.title }}</b></h1>    
         <p id="ind-post-subtitle">{{ post.subtitle }}</p>
+        <p class="text-muted mb-2">{{ post.category }}</p>
         <p class="text-muted">Posted by {{ post.author }} on {{ post.date }}</p>
         {% if current_user.is_authenticated %}
         {% if current_user.id == 1 %}

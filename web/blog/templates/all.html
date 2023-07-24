@@ -5,7 +5,7 @@ Post display
 {% endblock %}
 
 {% block body %}
-<div class="album py-5" id="album">
+<div class="album pt-5" id="album">
     <div class="d-flex justify-content-center mb-3" id="album_heading">
         {% if heading == 'All' %}
         <h1><b>All Posts</b></h1>
@@ -16,25 +16,25 @@ Post display
     <div class="container">
 
         {% if posts|length == 0 %}
-        <div class="d-flex justify-content-center mt-5">
+        <div class="d-flex justify-content-center my-5">
             <ul style="list-style: none;text-align: center;padding: 0;">
-                <li><h5>No posts in this category.</h5></li>
-                <li style="margin:20px"><button class="btn btn-primary btn-lg" onclick="window.location.pathname='/'">Return Home</button></li>
+                <li class="navbar-color"><h5>No posts in this category.</h5></li>
+                <li class="mt-4 mb-5"><button class="btn btn-primary btn-lg" onclick="window.location.pathname='/'">Return Home</button></li>
             </ul>
         </div>
         {% else %}
         <div class="album_rows row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3">
         {% for post in posts %}
-            <div class="col" onclick="window.location.pathname = '/post/' + {{ post.id }}">
-                <div class="card all_posts_container">
-                    <div class="card-img-top overflow-hidden" >
-                        <img loading="lazy" src='{{ post.img_src }}' width="100%" height="225">
-                      </div>
-
-                <div class="card-body">
-                    <p class="card-text"><b>{{ post.title }}</b></p>
-                    <small class="text-muted">{{ post.date }}</small>
-                </div>
+            <div class="col">
+                <div class="card all_posts_container" onclick="window.location.pathname = '/post/' + {{ post.id }}">
+                    <div class="card-img">
+                        <img loading="lazy" src='{{ post.img_src }}' width="100%" style="object-fit: fill; min-height: 255px;">
+                    </div>
+                
+                    <div class="card-body">
+                        <p class="card-text"><b>{{ post.title }}</b></p>
+                        <small class="text-muted">{{ post.date }}</small>
+                    </div>
                 </div>
             </div>
         {% endfor %}

@@ -39,6 +39,18 @@ body {
     min-height: 3rem
 }
 
+.card-img {
+    overflow: hidden; 
+    width: 100%; 
+    height: 255px;
+    border-radius: 0;
+}
+
+.card-img img {
+    object-fit: fill; 
+    min-height: 255px;
+}
+
 #main_img_div {
     width: 100%;
     height: 70vh;
