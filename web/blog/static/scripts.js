@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
 
     document.querySelector('#dark_mode').addEventListener('click', (event)=>{
+      event.preventDefault()
       mode = event.target.dataset.color
       dark_mode(mode)
       window.localStorage.setItem('dark_mode', mode)

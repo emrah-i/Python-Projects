@@ -6,7 +6,7 @@ Homepage
 
 {% block body %}
 <div div="container d-flex justify-content-center align-items-center" id="main_img_div">
-    <img src="/static/books.jpg">
+    <img src="/static/images/books.jpg">
     <div class="d-flex justify-content-center align-items-center" id="main_img_words">
         <ul style="list-style: none;">
             <li><h1>Emrah's Blog</h1></li>
@@ -22,7 +22,7 @@ Homepage
                 <hr>
                 {% for post in posts %}
                 <div class="row d-flex justify-content-center">
-                    <div class="main_posts_text col-xl-12 mt-3" onclick="window.location.pathname = '/post/' + {{ post.id }}">
+                    <div class="main_posts_text col-xl-12 mt-3" onclick="window.location.pathname = '/post/' + {{ post.id }} ">
                         <h3 class="main-post-title"><b>{{ post.title }}</b></h3>
                         <p class="main-post-subtitle">{{ post.subtitle }}</p>
                         <p class="main-post-info text-muted">Posted by <i>{{ post.author }}</i> on <i>{{ post.date }}</i></p>
