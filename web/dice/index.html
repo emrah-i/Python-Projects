@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: black;
+            font-family: American Typewriter, serif;
+            color: white;
+        }
+        .box {
+            margin: 10vh 10vw;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 200px 0 1fr;
+            grid-gap: 10rem;
+        }
+        .box > * {
+            min-height: 40vh;
+            min-width: 40vh;
+            display: flex;
+            font-size: 7rem;
+        }
+        #item1 {
+            text-align: center;
+            margin: 100px auto;
+            grid-column: span 3;
+            background-color: transparent;
+        }
+        #item2 {
+            border-radius: 65px;
+            grid-column-start: 1;
+            background-color: #940212;
+        }
+        #item3 {
+            border-radius: 65px;
+            grid-column-start: 3;
+            background-color: #940212;
+        }
+        #p1 {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 3rem;
+            text-align: center;
+            grid-column-start: 1;
+        }
+        #p2 {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 3rem;
+            grid-column-start: 3;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', ()=> {
+
+            rolls = ['<img width="100%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Dice-1-b.svg/240px-Dice-1-b.svg.png">', 
+            '<img width="100%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Dice-2-b.svg/240px-Dice-2-b.svg.png">', 
+            '<img width="100%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Dice-3-b.svg/240px-Dice-3-b.svg.png">',
+            '<img width="100%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Dice-4-b.svg/240px-Dice-4-b.svg.png">', 
+            '<img width="100%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Dice-5-b.svg/240px-Dice-5-b.svg.png">', 
+            '<img width="100%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Dice-6a-b.svg/240px-Dice-6a-b.svg.png">']
+
+            p1 = Math.floor(Math.random() * 6);
+            p2 = Math.floor(Math.random() * 6);
+
+            document.querySelector('#item2').innerHTML = rolls[p1];
+            document.querySelector('#item3').innerHTML = rolls[p2];
+
+            if (p1 > p2) {
+                document.querySelector('#item1').textContent = 'Player 1 Wins';
+                document.querySelector('#p1').style.color = 'gold';
+            }
+            else {
+                document.querySelector('#item1').textContent = 'Player 2 Wins';
+                document.querySelector('#p2').style.color = 'gold';
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="box">
+        <div id="item1">Roll the dice</div>
+        <div id="p1">Player 1</div>
+        <div id="p2">Player 2</div>
+        <div id="item2"></div>
+        <div id="item3"></div>
+    </div>
+</body>
+</html>
