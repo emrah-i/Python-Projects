@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: SteelBlue;
+            font-family: Verdana, sans-serif;
+            color: white;
+        }
+        #heading {
+            display: flex;
+            justify-content: center;
+            font-size: 10rem;
+            text-shadow: 5px 2px 2px salmon, 10px 2px 2px black;
+        }
+        #buttons {
+            display: flex;
+            margin: 0 10vw;
+            justify-content: space-between;
+        }
+        #buttons > * {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: red;
+            height: 10vw;
+            width: 10vw;
+            text-shadow: 5px 2px 2px plum;
+            font-size: 7rem;
+            border-radius: 40px;
+            border: 10px solid black;
+            background-color: #00000080;
+        }
+        #w {
+            background-image: url('images/crash.png');
+        }
+        #a {
+            background-image: url('images/kick.png');
+        }
+        #s {
+            background-image: url('images/snare.png');
+        }
+        #d {
+            background-image: url('images/tom1.png');
+        }
+        #f {
+            background-image: url('images/tom3.png');
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', ()=>{
+
+            document.addEventListener('keydown', (event)=>{
+                key = event.key
+                audio = document.querySelector("#" + key).dataset.audio
+                var davul = new Audio(audio);
+                davul.play();
+            })
+
+            document.querySelectorAll('.drums').forEach(element => {
+                element.addEventListener('click', (event)=> {
+                    audio = event.target.dataset.audio;
+                    var davul = new Audio(audio);
+                    davul.play();
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <div id="heading">
+        <p>Drum 🥁 Set</p>
+    </div>
+    <div id="buttons">
+        <div class="drums" id="w" data-audio="sounds/drum_1.mp3">w</div>
+        <div class="drums" id="a" data-audio="sounds/drum_2.mp3">a</div>
+        <div class="drums" id="s" data-audio="sounds/drum_3.mp3">s</div>
+        <div class="drums" id="d" data-audio="sounds/drum_4.mp3">d</div>
+        <div class="drums" id="f" data-audio="sounds/drum_5.mp3">f</div>
+    </div>
+</body>
+</html>
