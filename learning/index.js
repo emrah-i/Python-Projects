@@ -11,6 +11,8 @@ function logger(req, res, next) {
     next();
 }
 
+var all_items = []
+
 const app = express();
 const port = 3000;
 
@@ -21,9 +23,29 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/', (req, res) => {
     res.render("index.ejs", {
-        day: 'weekday',
-        advice: 'hi'
+        all_items: all_items
     })
+})
+
+app.post('/new', (req, res) => {
+    var item = {
+        item: req.body['item'],
+        date: req.body['date'],
+        time: req.body['time']
+    }
+    all_items.push(item)
+    res.redirect('/')
+})
+
+app.post('/remove', (req, res) => {
+    var item = {
+        item: req.body['item'],
+        date: req.body['date'],
+        time: req.body['time']
+    }
+    var index = all_items.indexOf(item)
+    all_items.splice(index, 1)
+    res.redirect('/')
 })
 
 app.listen(port, () => {
