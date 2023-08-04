@@ -2,6 +2,7 @@
 const a_ch = document.querySelector('#about_chevron');
 const p_ch = document.querySelector('#projects_chevron');
 const about_element = document.querySelector('#about_section');
+const quote = document.querySelector('.quote')
 const lightColor = '#FBF7F2';
 const darkColor = '#212F3C';
 const eye = document.querySelector('#eye')
@@ -19,7 +20,7 @@ if (window.localStorage.getItem('color')) {
 
 if (a_ch) {
     a_ch.addEventListener('click', ()=>{
-        about_element.scrollIntoView()
+        quote.scrollIntoView({block: "center"})
     })
 }
 
