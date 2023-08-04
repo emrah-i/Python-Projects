@@ -1,6 +1,7 @@
 
 const a_ch = document.querySelector('#about_chevron');
 const p_ch = document.querySelector('#projects_chevron');
+const resume_button = document.querySelector('button.resume')
 const about_element = document.querySelector('#about_section');
 const quote = document.querySelector('.quote')
 const lightColor = '#FBF7F2';
@@ -20,13 +21,19 @@ if (window.localStorage.getItem('color')) {
 
 if (a_ch) {
     a_ch.addEventListener('click', ()=>{
-        quote.scrollIntoView({block: "center"})
+        quote.scrollIntoView({block: "center", behavior: 'smooth'})
     })
 }
 
 if (p_ch) {
     p_ch.addEventListener('click', ()=>{
         document.querySelector('#project1').scrollIntoView({ block: 'center' });
+    })
+}
+
+if (resume_button) {
+    resume_button.addEventListener('click', ()=>{
+        window.open('https://www.docdroid.net/WyjIuyO/fake-resume-pdf', 'Resume')
     })
 }
 
