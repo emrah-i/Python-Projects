@@ -1,7 +1,8 @@
 
 const a_ch = document.querySelector('#about_chevron');
 const p_ch = document.querySelector('#projects_chevron');
-const resume_button = document.querySelector('button.resume')
+const resume_button = document.querySelector('button.resume');
+const chars = document.querySelector('#chars')
 const about_element = document.querySelector('#about_section');
 const quote = document.querySelector('.quote')
 const lightColor = '#FBF7F2';
@@ -34,6 +35,15 @@ if (p_ch) {
 if (resume_button) {
     resume_button.addEventListener('click', ()=>{
         window.open('https://www.docdroid.net/WyjIuyO/fake-resume-pdf', 'Resume')
+    })
+}
+
+if (chars) {
+    document.querySelector('#contact_section textarea').addEventListener('input', (event)=>{
+        let char_count = chars.querySelector('#char_count');
+        let current = event.target.value.length;
+
+        char_count.innerHTML = current;
     })
 }
 
