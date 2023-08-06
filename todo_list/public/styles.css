@@ -1,5 +1,6 @@
 body {
     font-size: 1.15rem;
+    background-color: #F6F4EB;
 }
 
 #copyright {
@@ -21,6 +22,7 @@ body {
     border-radius: 6px;
     padding: 7px;
     margin: 1rem 0;
+    border: 2px solid #99A3A480;
 }
 
 #index div {
@@ -28,12 +30,32 @@ body {
     width: 60vw;
 }
 
+#all_items { 
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid #99A3A480;
+    padding: 0;
+}
+
 table {
     width: 100%;
+    text-align: center;
+}
+
+table th {
+    padding: .5rem;
+    border-bottom: 2px solid #99A3A480;
+    border-right: 2px solid #99A3A480;
 }
 
 table td {
     width: 25%;
+    padding: 0 1rem;
+    border-right: 2px solid #99A3A480;
+}
+
+.last_col {
+    border-right: 0;
 }
 
 #remove {
@@ -41,17 +63,22 @@ table td {
 }
 
 #remove .btn {
-    min-height: 2.75rem;
     background-color: #E74C3C;
     color: white;
+    margin: .75rem auto;
 }
 
 .btn {
     font-size: 1.15rem;
     min-height: 3rem;
+    transition: all 500ms ease-in-out;
 }
 
 .btn:hover {
-    border-radius: 15px;
-    transition: 200ms;
+    transform: scale(1.25);
+    border-radius: 20px !important;
+}
+
+#remove .btn:hover {
+    background-color: #CF4336;
 }

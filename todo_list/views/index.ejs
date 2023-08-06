@@ -1,27 +1,28 @@
-c
+<%- include("partials/header.ejs") %>
 
 <main id="index">
     <div>
+        <h2><u>All Items</u></h2>
         <div id="all_items">
-            <h2>All Items</h2>
-            <% if (all_items.length > 0) { %>
+            <% if (all_items) { %>
                 <table>
                     <tr>
                         <th>Item</th>
                         <th>Date (YYYY-MM-DD)</th>
                         <th>Time (24hr)</th>
+                        <th class="last_col">Remove</th>
                     </tr>
                 <% for( let index = 0; index < all_items.length; index++ ) { %>
                     <tr>
                         <td><%= all_items[index]['item'] %></td>
                         <td><%= all_items[index]['date'] %></td>
                         <td><%= all_items[index]['time'] %></td>
-                        <td id="remove">
+                        <td class="last_col" id="remove">
                             <form action="/remove" method="post">
                                 <input type="hidden" name="item" value="<%= all_items[index]['item'] %>">
                                 <input type="hidden" name="date" value="<%= all_items[index]['date'] %>">
                                 <input type="hidden" name="time" value="<%= all_items[index]['time'] %>">
-                                <button class="btn" style="height: 1rem">Remove</button>
+                                <button class="btn btn-danger">Remove</button>
                             </form>
                         </td>
                     </tr>
@@ -30,8 +31,8 @@ c
             <% } %>
         </div>
         <hr>
+        <h2><u>Add Item</u></h2>
         <form action="/new" method="post">
-            <h2>Enter Your To-Do Item</h2>
             <input class="form control" type="text" placeholder="Item" name="item" required>
             <input class="form control" type="date" name="date" min=<%= new Date().toISOString().split('T')[0] %> required>
             <input class="form control" type="time" name="time" required>
