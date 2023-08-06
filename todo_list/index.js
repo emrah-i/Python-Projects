@@ -2,9 +2,6 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import { MongoClient } from 'mongodb'
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const uri = "mongodb://127.0.0.1:27017";
 
