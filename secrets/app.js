@@ -3,22 +3,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
-
-const uri = "mongodb://127.0.0.1:27017/secretsDB";
-const salt_rounds = 10
-
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
-const userSchema = new mongoose.Schema({
-    email: String,
-    password: String
-});
-
-const User = new mongoose.model('User', userSchema);
+import session from 'express-session';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import passportLocalMongoose from 'passport-local-mongoose';
 
 const app = express();
 const port = 3000;
@@ -30,6 +18,35 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 
+app.use(session({
+    secret: 'ilovetosleep',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session())
+
+mongoose.connect("mongodb://127.0.0.1:27017/secretsDB", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+
+const userSchema = new mongoose.Schema({
+    email: String,
+    password: String
+});
+
+userSchema.plugin(passportLocalMongoose);
+
+const User = new mongoose.model('User', userSchema);
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.get('/', (req, res)=> {
     res.render('index.ejs')
 })
@@ -39,50 +56,34 @@ app.route('/login')
         res.render('login.ejs', { message: '<p>Please fill out the form below:</p>' })
     })
     .post(async (req, res)=>{
-        const f_email = req.body.email
-        const f_password = req.body.password
-        const user = await User.findOne({email: f_email})
-        bcrypt.compare(f_password, user.password, function(err, result) {
-            if (err) {
-                console.log(err)
-            }
         
-            if (result === true) {
-                res.redirect('/secrets')
-            }
-        })
     });
 
 app.route('/register')
     .get((req, res)=>{
         res.render('register.ejs', {message: '<p>Please fill out the follow form:<p>'})
     })
-    .post(async (req, res)=>{
-        const f_email = req.body.email
-        const f_password = req.body.password
-        const confirm = req.body.confirm
-        
-        if (confirm !== f_password) {
-            res.render('register.ejs', {message: '<p class="error">Error: passwords do not match!</p>'})
-        }
-
-        bcrypt.hash(req.body.password, salt_rounds, async function(err, hash) {
-            if (err) {
-                console.log(err)
+    .post(async (req, res)=> {
+        try {
+            const user = await User.register({ username: req.body.email }, req.body.password);
+            passport.authenticate('local', { failureRedirect: '/register'}),
+            function(req, res) {
+                res.redirect('/secrets');
             }
-
-            const newUser = new User({
-                email: f_email,
-                password: hash
-            });
-
-            await newUser.save()
-            res.redirect('/secrets')
-        })
+        } catch (err) {
+            console.log(err);
+            res.redirect('/register');
+        }
     });
 
-app.get('/secrets', (req, res)=>{
-    res.render('secrets.ejs')
+app.get('/secrets', async (req, res)=>{
+    console.log(req.user)
+    if (req.user) {
+        res.render('secrets.ejs')
+    }
+    else {
+        res.redirect('/')
+    }
 })
 
 app.listen(port, () => {
