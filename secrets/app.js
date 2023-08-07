@@ -3,9 +3,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-import encrypt from 'mongoose-encryption';
+import bcrypt from 'bcrypt';
 
 const uri = "mongodb://127.0.0.1:27017/secretsDB";
+const salt_rounds = 10
 
 mongoose.connect(uri, {
     useNewUrlParser: true,
@@ -16,10 +17,6 @@ const userSchema = new mongoose.Schema({
     email: String,
     password: String
 });
-
-console.log(process.env.SECRET)
-const secret = process.env.SECRET
-userSchema.plugin(encrypt, { secret: secret, encryptedFields: ['password'] })
 
 const User = new mongoose.model('User', userSchema);
 
@@ -45,12 +42,15 @@ app.route('/login')
         const f_email = req.body.email
         const f_password = req.body.password
         const user = await User.findOne({email: f_email})
-
-        if (user.password !== f_password) {
-            res.render('/login', { message: '<p class="error">Please fill out the form below:</p>' })
-        }
-
-        res.redirect('/secrets')
+        bcrypt.compare(f_password, user.password, function(err, result) {
+            if (err) {
+                console.log(err)
+            }
+        
+            if (result === true) {
+                res.redirect('/secrets')
+            }
+        })
     });
 
 app.route('/register')
@@ -66,14 +66,19 @@ app.route('/register')
             res.render('register.ejs', {message: '<p class="error">Error: passwords do not match!</p>'})
         }
 
-        const newUser = new User({
-            email: f_email,
-            password: f_password
-        })
-        const save = await newUser.save()
-        console.log(save)
+        bcrypt.hash(req.body.password, salt_rounds, async function(err, hash) {
+            if (err) {
+                console.log(err)
+            }
 
-        res.redirect('/secrets')
+            const newUser = new User({
+                email: f_email,
+                password: hash
+            });
+
+            await newUser.save()
+            res.redirect('/secrets')
+        })
     });
 
 app.get('/secrets', (req, res)=>{
