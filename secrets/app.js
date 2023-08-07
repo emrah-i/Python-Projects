@@ -3,9 +3,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-import session from 'express-session';
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+import session from "express-session";
+import passport from 'passport'; 
 import passportLocalMongoose from 'passport-local-mongoose';
 
 const app = express();
@@ -21,17 +20,16 @@ app.use(bodyParser.urlencoded({
 app.use(session({
     secret: 'ilovetosleep',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
 }));
 
 app.use(passport.initialize());
-app.use(passport.session())
+app.use(passport.session());
 
 mongoose.connect("mongodb://127.0.0.1:27017/secretsDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-
 
 const userSchema = new mongoose.Schema({
     email: String,
@@ -55,30 +53,31 @@ app.route('/login')
     .get((req, res)=>{
         res.render('login.ejs', { message: '<p>Please fill out the form below:</p>' })
     })
-    .post(async (req, res)=>{
-        
-    });
+    .post((req, res) => {
+        passport.authenticate('local', {
+          successRedirect: '/secrets',
+          failureRedirect: '/login',
+        })(req, res);
+      });
 
 app.route('/register')
     .get((req, res)=>{
         res.render('register.ejs', {message: '<p>Please fill out the follow form:<p>'})
     })
     .post(async (req, res)=> {
-        try {
-            const user = await User.register({ username: req.body.email }, req.body.password);
-            passport.authenticate('local', { failureRedirect: '/register'}),
-            function(req, res) {
-                res.redirect('/secrets');
+        const user = await User.register({ username: req.body.username }, req.body.password);
+        req.login(user, (err) => {
+            if (err) {
+              console.error('Error during login after registration:', err);
             }
-        } catch (err) {
-            console.log(err);
-            res.redirect('/register');
-        }
+            res.redirect('/secrets');
+        })
     });
 
 app.get('/secrets', async (req, res)=>{
     console.log(req.user)
-    if (req.user) {
+    console.log(req.isAuthenticated())
+    if (req.isAuthenticated()){
         res.render('secrets.ejs')
     }
     else {
