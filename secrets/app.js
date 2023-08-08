@@ -6,6 +6,9 @@ import mongoose from 'mongoose';
 import session from "express-session";
 import passport from 'passport'; 
 import passportLocalMongoose from 'passport-local-mongoose';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as FacebookStrategy } from 'passport-facebook';
+import findOrCreate from 'mongoose-findorcreate';
 
 const app = express();
 const port = 3000;
@@ -33,25 +36,124 @@ mongoose.connect("mongodb://127.0.0.1:27017/secretsDB", {
 
 const userSchema = new mongoose.Schema({
     email: String,
-    password: String
+    password: String,
+    googleId: String,
+    facebookId: String
 });
 
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
 
 const User = new mongoose.model('User', userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(function(user, cb) {
+    process.nextTick(function() {
+      return cb(null, {
+        id: user.id,
+        username: user.username,
+        picture: user.picture
+      });
+    });
+  });
+
+passport.deserializeUser(function(user, cb) {
+    process.nextTick(function() {
+      return cb(null, user);
+    });
+  });
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/secrets",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FB_ID,
+    clientSecret: process.env.FB_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/secrets"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
+// nodemon restarts sever every edit so the isAuthenticated() doesn't work after refresh
 
 app.get('/', (req, res)=> {
-    res.render('index.ejs')
-})
+    if (req.isAuthenticated()){
+        res.redirect('/secrets')
+    }
+    else {
+        res.render('index.ejs')
+    }
+});
+
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/secrets',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/secrets');
+  });
+
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['email', 'profile'] }))
+
+app.get('/auth/google/secrets', 
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function(req, res) {
+      res.redirect('/secrets');
+    });
+
+app.route('/register')
+    .get((req, res)=>{
+        if (req.isAuthenticated()){
+            res.redirect('/secrets')
+        }
+        else {
+            res.render('register.ejs', {message: '<p>Please fill out the follow form:<p>'})
+        }
+    })
+    .post(async (req, res)=> {
+        try {
+            const user = await User.register({ username: req.body.username }, req.body.password);
+            req.login(user, (err) => {
+            if (err) {
+                console.error('Error during login:', err);
+                return res.redirect('/login');
+            }
+
+            res.redirect('/secrets');
+            });
+        }
+        catch {
+            console.log(err);
+            res.redirect('/register');
+        }
+    });
 
 app.route('/login')
     .get((req, res)=>{
-        res.render('login.ejs', { message: '<p>Please fill out the form below:</p>' })
+        console.log(req.isAuthenticated())
+        if (req.isAuthenticated()){
+            res.redirect('/secrets');
+        }
+        else {
+            res.render('login.ejs', { message: '<p>Please fill out the form below:</p>' });
+        }
     })
     .post((req, res) => {
         passport.authenticate('local', {
@@ -60,30 +162,33 @@ app.route('/login')
         })(req, res);
       });
 
-app.route('/register')
-    .get((req, res)=>{
-        res.render('register.ejs', {message: '<p>Please fill out the follow form:<p>'})
+app.get('/logout', (req, res)=>{
+    req.logout(()=>{
+    res.redirect('/')
     })
-    .post(async (req, res)=> {
-        const user = await User.register({ username: req.body.username }, req.body.password);
-        req.login(user, (err) => {
-            if (err) {
-              console.error('Error during login after registration:', err);
-            }
-            res.redirect('/secrets');
-        })
-    });
+});
 
 app.get('/secrets', async (req, res)=>{
-    console.log(req.user)
-    console.log(req.isAuthenticated())
     if (req.isAuthenticated()){
         res.render('secrets.ejs')
     }
     else {
         res.redirect('/')
     }
-})
+});
+
+app.route('/create')
+    .get((req, res)=>{
+        if (req.isAuthenticated()){
+            res.render('create.ejs')
+        }
+        else {
+            res.redirect('/login')
+        }
+    })
+    .post( (req, res)=>{
+        const item = new 
+    })
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}.`);
