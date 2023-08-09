@@ -22,3 +22,15 @@ if (document.querySelector('.fb_btn')) {
         window.location.pathname = '/auth/facebook'
     })
 }
+
+if (document.querySelector('.secret_btn')) {
+    document.querySelector('.secret_btn').addEventListener('click', (event)=>{
+        event.target.style.display = 'none'
+        document.querySelector('.secrets form').style.display = 'block'
+
+        document.querySelector('.secrets form textarea').addEventListener('input', (event)=>{
+            const chars = event.target.value.length
+            document.querySelector('.secrets form span').innerHTML = chars
+        })
+    })
+}

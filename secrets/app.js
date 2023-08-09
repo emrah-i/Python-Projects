@@ -41,10 +41,19 @@ const userSchema = new mongoose.Schema({
     facebookId: String
 });
 
+const secretSchema = new mongoose.Schema({
+  secret: String,
+  date: {
+    type: String,
+    default: Date.now
+  }
+});
+
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
 const User = new mongoose.model('User', userSchema);
+const Secret = new mongoose.model('Secret', secretSchema)
 
 passport.use(User.createStrategy());
 
@@ -147,7 +156,6 @@ app.route('/register')
 
 app.route('/login')
     .get((req, res)=>{
-        console.log(req.isAuthenticated())
         if (req.isAuthenticated()){
             res.redirect('/secrets');
         }
@@ -168,27 +176,29 @@ app.get('/logout', (req, res)=>{
     })
 });
 
-app.get('/secrets', async (req, res)=>{
-    if (req.isAuthenticated()){
-        res.render('secrets.ejs')
-    }
-    else {
-        res.redirect('/')
-    }
-});
+app.route('/secrets')
+  .get((req, res)=>{
+      if (req.isAuthenticated()){
+          res.render('secrets.ejs', { secrets: [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce rhoncus enim at fringilla consectetur.",
+            "Morbi sodales sit amet lacus sit amet vestibulum. Integer vel dui orci.",
+            "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+          ] })
+      }
+      else {
+          res.redirect('/')
+      }
+  })
+  .post((req, res)=>{
+    
+    const secret = req.body.text
+    const new_secret = new Secret({ secret: secret })
+    res.redirect('/secret')
+  })
 
-app.route('/create')
-    .get((req, res)=>{
-        if (req.isAuthenticated()){
-            res.render('create.ejs')
-        }
-        else {
-            res.redirect('/login')
-        }
-    })
-    .post( (req, res)=>{
-        const item = new 
-    })
+app.get('/load', (req, res)=>{
+
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}.`);
