@@ -179,21 +179,17 @@ app.get('/logout', (req, res)=>{
 app.route('/secrets')
   .get((req, res)=>{
       if (req.isAuthenticated()){
-          res.render('secrets.ejs', { secrets: [
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce rhoncus enim at fringilla consectetur.",
-            "Morbi sodales sit amet lacus sit amet vestibulum. Integer vel dui orci.",
-            "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
-          ] })
+          res.render('secrets.ejs', { secrets: Secret.find({}) })
       }
       else {
           res.redirect('/')
       }
   })
-  .post((req, res)=>{
-    
+  .post(async (req, res)=>{
     const secret = req.body.text
     const new_secret = new Secret({ secret: secret })
-    res.redirect('/secret')
+    await new_secret.save()
+    res.redirect('/secrets')
   })
 
 app.get('/load', (req, res)=>{
