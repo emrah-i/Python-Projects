@@ -4,9 +4,9 @@ from twilio.rest import Client
 
 my_lat = 39.644207
 my_long = -77.73143
-key = '1d5ff10648113295967c8ddf47029d53'
-account_sid = 'ACe623bfcec1d9eb7873721f4b182f20fa'
-auth_token = '64c7526fb299e71c72570776258b77e8'
+key = ''
+account_sid = ''
+auth_token = ''
 client = Client(account_sid, auth_token)
 
 

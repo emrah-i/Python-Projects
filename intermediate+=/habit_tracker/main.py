@@ -6,7 +6,7 @@ from datetime import datetime
 url = 'https://pixe.la/v1/users'
 
 params = {
-    'token': 'j12jhl3blhb34j23n4s4rfq1',
+    'token': '',
     'username': 'emrah26',
     'agreeTermsOfService': 'yes',
     'notMinor': 'yes'
@@ -38,7 +38,7 @@ now = datetime.now()
 today = datetime.strftime(now, '%Y%m%d')
 
 username = 'emrah26'
-token = 'j12jhl3blhb34j23n4s4rfq1'
+token = ''
 graph = 'graph1'
 
 headers = {

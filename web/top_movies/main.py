@@ -25,7 +25,7 @@ def search():
             url = f"https://api.themoviedb.org/3/search/movie?query={title}"
             headers = {
                 "accept": "application/json",
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZmY3NWFhZWZjN2JhNTcyOTU1Y2NlNzIyODQ0NThhZiIsInN1YiI6IjY0YjFlY2VhZTBjYTdmMDBhZTc0ZTAxZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6p5_kLqkcX9uYw_-6aNdAOSI9a5vxAEpu0S84JPZU98"
+                "Authorization": "Personally Erased"
             }
             response = requests.get(url, headers=headers)
             data = response.json()
@@ -48,7 +48,7 @@ def add(id):
     url = f"https://api.themoviedb.org/3/movie/{id}"
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZmY3NWFhZWZjN2JhNTcyOTU1Y2NlNzIyODQ0NThhZiIsInN1YiI6IjY0YjFlY2VhZTBjYTdmMDBhZTc0ZTAxZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6p5_kLqkcX9uYw_-6aNdAOSI9a5vxAEpu0S84JPZU98"
+        "Authorization": "Personally Erased"
     }
     response = requests.get(url, headers=headers)
     movie = response.json()

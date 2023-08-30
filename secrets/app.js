@@ -133,7 +133,7 @@ app.route('/register')
             res.redirect('/secrets')
         }
         else {
-            res.render('register.ejs', {message: '<p>Please fill out the follow form:<p>'})
+            res.render('register.ejs', {message: '<p>Please fill out the follow form:</p>'})
         }
     })
     .post(async (req, res)=> {

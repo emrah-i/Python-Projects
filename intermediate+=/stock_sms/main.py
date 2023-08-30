@@ -4,11 +4,11 @@ from twilio.rest import Client
 
 stock = "TSLA"
 cmpny = "Tesla"
-news_api_key = 'b1ee1a9d861a41999b417954e6e2e0de'
+news_api_key = ''
 time_series = 'TIME_SERIES_DAILY_ADJUSTED'
-stock_api_key = 'DLRC08HBOHI6IKV3'
-account_sid = 'ACe623bfcec1d9eb7873721f4b182f20fa'
-auth_token = '64c7526fb299e71c72570776258b77e8'
+stock_api_key = ''
+account_sid = ''
+auth_token = ''
 client = Client(account_sid, auth_token)
 
 response = requests.get(f'https://www.alphavantage.co/query?function={time_series}&symbol={stock}&apikey={stock_api_key}')

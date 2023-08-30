@@ -10,8 +10,8 @@ FS.date_from = datetime.now().strftime('%d/%m/%Y')
 FS.date_to = (datetime.now() + timedelta(days=180)).strftime('%d/%m/%Y')
 
 # Initialize twilio
-account_sid = 'ACe623bfcec1d9eb7873721f4b182f20fa'
-auth_token = '64c7526fb299e71c72570776258b77e8'
+account_sid = ''
+auth_token = ''
 client = Client(account_sid, auth_token)
 
 # Get all google sheets data
