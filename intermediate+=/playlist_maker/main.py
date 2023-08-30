@@ -42,8 +42,8 @@ artists = soup.select('div[class="o-chart-results-list-row-container"] ul li[cla
 artists = [name.text.strip() for name in artists if name.get("class")[1] == 'a-no-trucate']
 songs = [song[i].text.strip() for i in range(len(artists))]
 
-client_id = '6e8733d5c93346929371e20f250ba4c1'
-client_secret = '85382ad5178145afae9198ba9e8b16e3'
+client_id = ''
+client_secret = ''
 
 scope = "user-library-read"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(show_dialog=True, username='emrakh26', cache_path='intermediate+=/playlist_maker/info.txt', client_id=client_id, client_secret=client_secret, redirect_uri="http://example.com", scope="playlist-modify-private"))

@@ -2,7 +2,7 @@ from flask import render_template, request, redirect
 from models import Movies, db, app
 import requests
 
-app.config['SECRET_KEY'] = 'ilovecats'
+app.config['SECRET_KEY'] = ''
 
 with app.app_context():
     db.create_all()

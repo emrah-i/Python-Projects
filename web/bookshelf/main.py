@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap5
 from flask_wtf.csrf import CSRFProtect, validate_csrf
 import smtplib
 
-app.config['SECRET_KEY'] = 'ilovecats'
+app.config['SECRET_KEY'] = ''
 csrf = CSRFProtect(app)
 bootstrap = Bootstrap5(app)
 
