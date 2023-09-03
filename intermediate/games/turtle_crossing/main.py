@@ -23,7 +23,7 @@ lives.start()
 
 level = Level() 
 
-with open("intermediate/turtle_crossing/hs.txt") as file:
+with open("/Users/emrakh/Python-Projects/intermediate/games/turtle_crossing/hs.txt") as file:
     contents = int(file.read())
     level.highscore = contents
 
@@ -56,7 +56,7 @@ while gameover == False:
                 level.reset()
                 cars.reset()
                 lives.hit()
-                with open("intermediate/turtle_crossing/hs.txt", mode='w') as file:
+                with open("/Users/emrakh/Python-Projects/intermediate/games/turtle_crossing/hs.txt", mode='w') as file:
                     if level.highscore > contents:
                         file.write(str(level.highscore))
                     else:

@@ -1,6 +1,9 @@
 from tkinter import *
 import pygame
 import time
+import os
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
 
 bgc = '#FEF5E7'
 check = '✔'
@@ -13,7 +16,7 @@ window.minsize(width=300, height=300)
 pygame.mixer.init()
 
 def beep():
-     pygame.mixer.music.load('intermediate/pomodoro/beep-07a.mp3')
+     pygame.mixer.music.load(os.path.join(current_directory, 'beep-07a.mp3'))
      pygame.mixer.music.set_volume(.1) 
      pygame.mixer.music.play()
 
@@ -101,7 +104,7 @@ def reset_button():
     return
 
 canvas = Canvas(width=200, height=224, bg=bgc, highlightthickness=0)
-tomato_img = PhotoImage(file='intermediate/pomodoro/tomato.png')
+tomato_img = PhotoImage(file=os.path.join(current_directory, 'tomato.png'))
 canvas.create_image(100, 112, image=tomato_img)
 text_item = canvas.create_text(100, 130, text='00:00', font=('Courier', 35, 'bold'), fill='white')
 canvas.grid(column=2, row=2)
